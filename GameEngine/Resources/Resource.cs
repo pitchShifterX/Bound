@@ -6,15 +6,39 @@ namespace GameEngine.Resources
         public string Path { get; init; }
         protected bool Disposed { get; set; } = false;
 
+        /// <summary>
+        /// Resource persists during engine lifetime. 
+        /// This does not change the existing behavior 
+        /// of disposing the resource. It will always 
+        /// be disposed.
+        /// 
+        /// Only persist a resource if you need a 
+        /// texture, font, etc. to exist across scenes.
+        /// </summary>
+        public bool Persistent { get; set; } = false;
+
         public Resource(string id, string path)
         {
             Id = id;
             Path = path;
         }
 
-        public abstract void Load();
+        /// <summary>
+        /// Load in the resource e.g. IMG_LoadTexture
+        /// </summary>
+        public virtual void Load(){}
+
+        /// <summary>
+        /// Unload the resource. This method is called 
+        /// during disposal. If you have any hanging 
+        /// IntPtrs related to the resource, set them 
+        /// to zero here.
+        /// </summary>
         protected abstract void Destroy();
 
+        /// <summary>
+        /// Call this when ready to unload the resource.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);

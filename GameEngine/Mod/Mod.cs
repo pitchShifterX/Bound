@@ -1,8 +1,11 @@
 using GameEngine.Event;
 using GameEngine.Event.Input;
 using GameEngine.Render;
+using GameEngine.Resources;
+using GameEngine.Scene;
 using GameEngine.Settings;
 using GameEngine.Window;
+using SDL2;
 
 namespace GameEngine.Mod
 {
@@ -37,8 +40,26 @@ namespace GameEngine.Mod
 
             Context.InputManager = new InputManager();
             Context.EventManager = new EventManager(Context.InputManager);
+            Context.ResourceManager = new ResourceManager(Context.RendererManager.Renderer);
+            Context.SceneManager = new SceneManager();
 
             IsRunning = true;
+        }
+
+        public virtual void Start()
+        {
+            try
+            {
+                Run();
+            }
+            catch(System.Exception e)
+            {
+                Console.WriteLine($"Fatal error: {e}");
+            }
+            finally
+            {
+                Close();
+            }
         }
 
         public abstract void Update();
@@ -66,6 +87,15 @@ namespace GameEngine.Mod
                 Update();
                 Render();
             }
+        }
+
+        public virtual void Close()
+        {
+            Context?.ResourceManager?.UnloadAllResourceCaches();
+            Context?.RendererManager?.Destroy();
+            Context?.WindowManager?.Destroy();
+
+            SDL.SDL_Quit();
         }
     }
 }

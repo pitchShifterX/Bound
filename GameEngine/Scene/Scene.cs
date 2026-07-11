@@ -1,24 +1,29 @@
 using GameEngine.Event;
 using GameEngine.Event.Input;
+using GameEngine.Resources;
 
 namespace GameEngine.Scene
 {
     public abstract class Scene : IScene
     {
-        public Scene()
+        public ISceneContext Context { get; init; }
+
+        public Scene(IResourceController resourceController)
         {
+            Context = new SceneContext(resourceController);
         }
 
-        /// <summary>
-        /// Begin loading resources
-        /// </summary>
         public virtual void Initialize()
         {
-            OnLoad();
+            Load();
         }
 
-        public abstract void OnLoad();
-        public abstract void OnUnload();
+        public abstract void Load();
+
+        public virtual void Unload()
+        {
+            Context.UnloadAll();
+        }
 
         public void ProcessInput(InputManager inputHandler)
         {

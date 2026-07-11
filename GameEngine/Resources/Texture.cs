@@ -1,18 +1,26 @@
+using SDL2;
+
 namespace GameEngine.Resources
 {
     public class Texture : Resource
     {
-        public Texture(string id, string path)
-            : base(id, path) {}
+        public IntPtr Handle { get; private set; }
 
-        public override void Load()
+        public bool Transient { get; set; }
+
+        public Texture(IntPtr handle, string id, string path)
+            : base(id, path)
         {
-            throw new NotImplementedException();
+            Handle = handle;
         }
 
         protected override void Destroy()
         {
-            throw new NotImplementedException();
+            if(Handle != IntPtr.Zero)
+            {
+                SDL.SDL_DestroyTexture(Handle);
+                Handle = IntPtr.Zero;
+            }
         }
     }
 }

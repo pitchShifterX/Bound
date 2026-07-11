@@ -6,16 +6,7 @@ namespace Mods.Bound
     {
         public BoundMod() : base(new())
         {
-            try
-            {
-                Initialize();
-
-                Run();
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine($"Fatal error: {e}");
-            }
+            Initialize();
         }
 
         public override void Initialize()
@@ -23,6 +14,22 @@ namespace Mods.Bound
             base.Initialize();
 
             // setup scenes
+        }
+
+        public override void Start()
+        {
+            try
+            {
+                Run();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine($"Fatal error: {e}");
+            }
+            finally
+            {
+                Close();
+            }
         }
 
         public override void Update()
