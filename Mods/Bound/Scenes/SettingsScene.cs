@@ -4,7 +4,7 @@ using GameEngine.Scene;
 
 namespace Mods.Bound.Scenes
 {
-    public class MainMenuScene(IModContext modContext)
+    public class SettingsScene(IModContext modContext)
         : Scene(modContext)
     {
         public override void Load()
@@ -14,16 +14,9 @@ namespace Mods.Bound.Scenes
 
         public override void ProcessInput(IRecordInput input)
         {
-            if(input.WasKeyPressed(KeyCode.Enter))
+            if(input.WasKeyPressed(KeyCode.B))
             {
-                Console.WriteLine("pressed enter");
-            }
-
-            if(input.WasKeyPressed(KeyCode.A))
-            {
-                Console.WriteLine("changing scene");
-
-                Context.SceneManager.PushScene(() => new SettingsScene(ModContext));
+                Console.WriteLine("pressed b");
             }
         }
 
