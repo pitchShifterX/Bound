@@ -23,8 +23,6 @@ namespace GameEngine.Resources
         {
             if(!_caches.TryGetValue(typeof(T), out var cache))
                 throw new ResourceException($"Could not load {typeof(T).Name} resource with id: {resource.Id}");
-
-            Console.WriteLine($"loaded res::{resource.Id} ... {resource.Path}");
             
             ((ResourceCache<T>)cache).Load(resource);
         }
@@ -65,8 +63,6 @@ namespace GameEngine.Resources
         {
             foreach(var cache in _caches.Values)
             {
-                Console.WriteLine("unloading a resource cache...");
-
                 ((IResourceCache)cache).UnloadAll();
             }
         }

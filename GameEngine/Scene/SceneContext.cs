@@ -33,8 +33,6 @@ namespace GameEngine.Scene
         /// <param name="path"></param>
         public void Load<T>(string id, string path) where T : Resource
         {
-            Console.WriteLine("loading resource in scene context");
-
             _resourceManager.Load<T>(id, path);
 
             _loadedResources.Add((typeof(T), id));

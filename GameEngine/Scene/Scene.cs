@@ -29,11 +29,7 @@ namespace GameEngine.Scene
 
         public virtual void Initialize() => Load();
         public abstract void Load();
-        public virtual void Unload()
-        {
-            Console.WriteLine("attempting to unload scene resources");
-            Context.UnloadAll();
-        }
+        public virtual void Unload() => Context.UnloadAll();
         public abstract void ProcessInput(IRecordInput input);
         public abstract void Update(float? delta);
         public abstract void Render();

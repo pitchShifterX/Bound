@@ -14,12 +14,8 @@ namespace GameEngine.Resources
 
         protected override void Destroy()
         {
-            Console.WriteLine("attempting to destroy texture");
-
             if(Handle != IntPtr.Zero)
             {
-                Console.WriteLine("Texture destroyed");
-
                 SDL.SDL_DestroyTexture(Handle);
                 Handle = IntPtr.Zero;
             }
