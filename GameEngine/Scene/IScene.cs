@@ -6,6 +6,6 @@ namespace GameEngine.Scene
     public interface IScene : IInitializable, IUpdatable, IRenderable, ILoadable
     {
         public ISceneContext Context { get; init; }
-        public void ProcessInput(InputManager inputHandler);
+        public void ProcessInput(IRecordInput input);
     }
 }

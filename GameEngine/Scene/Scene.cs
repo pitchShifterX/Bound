@@ -1,6 +1,5 @@
-using GameEngine.Event;
 using GameEngine.Event.Input;
-using GameEngine.Resources;
+using GameEngine.Mod;
 
 namespace GameEngine.Scene
 {
@@ -8,36 +7,16 @@ namespace GameEngine.Scene
     {
         public ISceneContext Context { get; init; }
 
-        public Scene(IResourceController resourceController)
+        public Scene(IModContext modContext)
         {
-            Context = new SceneContext(resourceController);
+            Context = new SceneContext(modContext);
         }
 
-        public virtual void Initialize()
-        {
-            Load();
-        }
-
+        public virtual void Initialize() => Load();
         public abstract void Load();
-
-        public virtual void Unload()
-        {
-            Context.UnloadAll();
-        }
-
-        public void ProcessInput(InputManager inputHandler)
-        {
-            
-        }
-
-        public void Update()
-        {
-            
-        }
-
-        public void Render()
-        {
-            
-        }
+        public virtual void Unload() => Context.UnloadAll();
+        public abstract void ProcessInput(IRecordInput input);
+        public abstract void Update(float? delta);
+        public abstract void Render();
     }
 }

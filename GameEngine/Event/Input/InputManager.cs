@@ -1,6 +1,8 @@
+using GameEngine.SharedInterface;
+
 namespace GameEngine.Event.Input
 {
-    public class InputManager : IReceiveEvents, IRecordInput
+    public class InputManager : IInputController
     {
         private HashSet<KeyCode> _currentKeys = new();
         private HashSet<KeyCode> _previousKeys = new();
@@ -16,6 +18,8 @@ namespace GameEngine.Event.Input
             foreach(var gamepad in _gamepads.Values)
                 gamepad.BeginFrame();
         }
+
+        public void EndFrame(){}
 
         public void HandleEvent(EngineEvent e)
         {
@@ -76,7 +80,7 @@ namespace GameEngine.Event.Input
                     : 0f;
     }
 
-    public class GamepadState
+    public class GamepadState : IFrameLifecycle
     {
         public HashSet<GamepadButton> CurrentButtons { get; } = new();
         public HashSet<GamepadButton> PreviousButtons { get; } = new();
@@ -89,5 +93,7 @@ namespace GameEngine.Event.Input
             foreach(var button in CurrentButtons)
                 PreviousButtons.Add(button);
         }
+
+        public void EndFrame(){}
     }
 }

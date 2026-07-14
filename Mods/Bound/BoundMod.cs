@@ -1,4 +1,5 @@
 using GameEngine.Mod;
+using Mods.Bound.Scenes;
 
 namespace Mods.Bound
 {
@@ -6,40 +7,14 @@ namespace Mods.Bound
     {
         public BoundMod() : base(new())
         {
-            Initialize();
+            Console.WriteLine("Bound initializing...");
         }
 
         public override void Initialize()
         {
             base.Initialize();
 
-            // setup scenes
-        }
-
-        public override void Start()
-        {
-            try
-            {
-                Run();
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine($"Fatal error: {e}");
-            }
-            finally
-            {
-                Close();
-            }
-        }
-
-        public override void Update()
-        {
-            
-        }
-
-        public override void Render()
-        {
-            
+            Context.SceneManager?.PushScene(() => new MainMenuScene(Context));
         }
     }
 }

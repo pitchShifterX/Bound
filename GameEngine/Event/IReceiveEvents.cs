@@ -1,8 +1,9 @@
+using GameEngine.SharedInterface;
+
 namespace GameEngine.Event
 {
-    public interface IReceiveEvents
+    public interface IReceiveEvents : IFrameLifecycle
     {
-        public void BeginFrame();
         public void HandleEvent(EngineEvent e);
     }
 }

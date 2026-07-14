@@ -1,4 +1,5 @@
 using GameEngine.Event;
+using GameEngine.Event.Input;
 using GameEngine.Render;
 using GameEngine.Resources;
 using GameEngine.Scene;
@@ -13,7 +14,7 @@ namespace GameEngine.Mod
         public IWindowController? WindowManager { get; set; }
         public IRendererController? RendererManager { get; set; }
         public IEventController? EventManager { get; set; }
-        public IReceiveEvents? InputManager { get; set; }
+        public IInputController? InputManager { get; set; }
         public IResourceController? ResourceManager { get; set; }
         public ISceneController? SceneManager { get; set; }
     }

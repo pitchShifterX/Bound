@@ -1,5 +1,7 @@
+using System.Diagnostics;
 using GameEngine.Event;
 using GameEngine.Event.Input;
+using GameEngine.Exception;
 using GameEngine.Render;
 using GameEngine.Resources;
 using GameEngine.Scene;
@@ -21,10 +23,28 @@ namespace GameEngine.Mod
             Config = config;
 
             Context = new ModContext();
+
+            Initialize();
         }
 
         public virtual void Initialize()
         {
+            if(SDL.SDL_Init(SDL.SDL_INIT_VIDEO) < 0)
+            {
+                throw new SDLInitException($"Could not initialize SDL: {SDL.SDL_GetError()}");
+            }
+
+            var imgFlags = 
+                SDL_image.IMG_InitFlags.IMG_INIT_JPG |
+                SDL_image.IMG_InitFlags.IMG_INIT_PNG;
+
+            var imgInit = SDL_image.IMG_Init(imgFlags);
+
+            if((imgInit & (int)imgFlags) != (int)imgFlags)
+            {
+                throw new SDLInitException($"Could not initialize SDL_image: {SDL.SDL_GetError()}");
+            }
+
             Context.SettingsManager = new SettingsManager(Config.SettingPath);
             
             Context.WindowManager = new WindowManager();
@@ -62,30 +82,56 @@ namespace GameEngine.Mod
             }
         }
 
-        public abstract void Update();
-        public abstract void Render();
-
         public virtual void Run()
         {
-            if(Context.InputManager == null)
-                throw new System.Exception("Input manager not initialized");
+            var stopwatch = Stopwatch.StartNew();
+            double previous = stopwatch.Elapsed.TotalSeconds;
+            const double fixedDelta = 1.0 / 60.0;
+            double timeAccumulator = 0;
 
-            if(Context.EventManager == null)
-                throw new System.Exception("Event manager not initialized");
-            
             while(IsRunning)
             {
-                Context.InputManager.BeginFrame();
-                Context.EventManager.PollEvents();
+                double now = stopwatch.Elapsed.TotalSeconds;
+                double frameDelta = now - previous;
+                previous = now;
+                timeAccumulator += frameDelta;
 
-                if(Context.EventManager.IsQuitting)
+                var maxFramerate = Context.SettingsManager?.Settings.MaxFramerate ?? 60;
+                double minFrameMs = (maxFramerate > 0) ? 1000.0 / maxFramerate : 0;
+
+                Context.InputManager?.BeginFrame();
+                Context.EventManager?.PollEvents();
+
+                if(Context.EventManager == null || Context.EventManager.IsQuitting)
                 {
                     IsRunning = false;
                     break;
                 }
 
-                Update();
-                Render();
+                Context.SceneManager?.BeginFrame();
+                Context.SceneManager?.ProcessInput(Context.InputManager!);
+
+                while (timeAccumulator >= fixedDelta)
+                {
+                    Context.SceneManager?.Update((float)fixedDelta);
+                    timeAccumulator -= fixedDelta;
+                }
+
+                Context.RendererManager?.Clear();
+                Context.SceneManager?.Render();
+                Context.RendererManager?.Present();
+                
+                Context.SceneManager?.EndFrame();
+                Context.InputManager?.EndFrame();
+
+                if(minFrameMs > 0)
+                {
+                    var elapsedMs = (stopwatch.Elapsed.TotalSeconds - now) * 1000.0;
+                    var sleepMs = minFrameMs - elapsedMs;
+
+                    if(sleepMs > 1)
+                        SDL.SDL_Delay((uint)sleepMs);
+                }
             }
         }
 
@@ -95,6 +141,7 @@ namespace GameEngine.Mod
             Context?.RendererManager?.Destroy();
             Context?.WindowManager?.Destroy();
 
+            SDL_image.IMG_Quit();
             SDL.SDL_Quit();
         }
     }

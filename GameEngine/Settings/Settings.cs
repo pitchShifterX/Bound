@@ -11,9 +11,9 @@ namespace GameEngine.Settings
         public bool VerticalSync { get; set; } = false;
 
         /// <summary>
-        /// Capped framerate; if 0, unlimited.
+        /// Capped framerate; 60 by default
         /// </summary>
-        public int MaxFramerate { get; set; } = 0; 
+        public int MaxFramerate { get; set; } = 60; 
 
         public Vector2<int> WindowSize => new Vector2<int>(
             WindowWidth, WindowHeight

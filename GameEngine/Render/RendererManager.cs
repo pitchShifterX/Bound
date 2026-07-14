@@ -35,6 +35,11 @@ namespace GameEngine.Render
             SDL.SDL_RenderCopy(Renderer, texture, ref source, ref destination);
         }
 
+        public void Present()
+        {
+            SDL.SDL_RenderPresent(Renderer);
+        }
+
         public void Clear()
         {
             SDL.SDL_RenderClear(Renderer);
