@@ -7,17 +7,6 @@ namespace GameEngine.Resources
         public IntPtr Handle { get; protected set; }
         protected bool Disposed { get; set; } = false;
 
-        /// <summary>
-        /// Resource persists during engine lifetime. 
-        /// This does not change the existing behavior 
-        /// of disposing the resource. It will always 
-        /// be disposed.
-        /// 
-        /// Only persist a resource if you need a 
-        /// texture, font, etc. to exist across scenes.
-        /// </summary>
-        public bool Persistent { get; set; } = false;
-
         public Resource(string id, string path)
         {
             Id = id;

@@ -56,7 +56,7 @@ namespace GameEngine.Mod
             Context.WindowManager = new WindowManager();
             Context.WindowManager.Create(
                 Config.ModName,
-                Config.WindowResolution
+                Context.SettingsManager.Settings.WindowSize
             );
 
             Context.RendererManager = new RendererManager(
