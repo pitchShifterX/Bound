@@ -1,13 +1,16 @@
 using GameEngine.Exception;
+using GameEngine.Utilities;
 
 namespace GameEngine.Resources
 {
     public class ResourceManager : IResourceController
     {
+        private IModPath _paths;
         private readonly Dictionary<Type, object> _caches = [];
 
-        public ResourceManager(IntPtr renderer)
+        public ResourceManager(IModPath paths, IntPtr renderer)
         {
+            _paths = paths;
             _caches[typeof(Texture)] = new TextureCache(renderer);
         }
 
@@ -15,8 +18,10 @@ namespace GameEngine.Resources
         {
             if(!_caches.TryGetValue(typeof(T), out var cache))
                 throw new ResourceException($"Could not load {typeof(T).Name} resource with id: {id}");
+
+            var fullPath = _paths.GetAssetPath(path);
             
-            ((ResourceCache<T>)cache).Load(id, path);
+            ((ResourceCache<T>)cache).Load(id, fullPath);
         }
 
         public void Load<T>(T resource) where T : Resource

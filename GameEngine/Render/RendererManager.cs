@@ -30,9 +30,20 @@ namespace GameEngine.Render
             }
         }
 
-        public void Draw(IntPtr texture, SDL.SDL_Rect source, SDL.SDL_Rect destination)
+        public void Draw(IntPtr texture, SDL.SDL_Rect? source, SDL.SDL_Rect destination)
         {
-            SDL.SDL_RenderCopy(Renderer, texture, ref source, ref destination);
+            if(texture == IntPtr.Zero) return;
+
+            if(source.HasValue)
+            {
+                var src = source.Value;
+
+                SDL.SDL_RenderCopy(Renderer, texture, ref src, ref destination);
+            }
+            else
+            {
+                SDL.SDL_RenderCopy(Renderer, texture, IntPtr.Zero, ref destination);
+            }
         }
 
         public void Present()

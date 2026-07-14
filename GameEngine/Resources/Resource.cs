@@ -4,6 +4,7 @@ namespace GameEngine.Resources
     {
         public string Id { get; init; }
         public string Path { get; init; }
+        public IntPtr Handle { get; protected set; }
         protected bool Disposed { get; set; } = false;
 
         /// <summary>

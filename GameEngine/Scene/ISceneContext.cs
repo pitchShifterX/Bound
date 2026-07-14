@@ -1,4 +1,5 @@
 using GameEngine.Resources;
+using SDL2;
 
 namespace GameEngine.Scene
 {
@@ -11,5 +12,7 @@ namespace GameEngine.Scene
         public T? GetById<T>(string id) where T : Resource;
         public void UnloadById<T>(string id) where T : Resource;
         public void UnloadAll();
+
+        public void DrawTexture(Texture texture, SDL.SDL_Rect? source, SDL.SDL_Rect destination);
     }
 }

@@ -48,6 +48,7 @@ namespace GameEngine.Mod
 
             var appDirectory = AppContext.BaseDirectory;
             Context.Paths = ModPath.Create(appDirectory, Config.ModName);
+            Context.Paths.EnsureDirectories();
 
             var settingsPath = Context.Paths.GetConfigPath(Config.SettingPath);
             Context.SettingsManager = new SettingsManager(settingsPath);
@@ -66,7 +67,10 @@ namespace GameEngine.Mod
 
             Context.InputManager = new InputManager();
             Context.EventManager = new EventManager(Context.InputManager);
-            Context.ResourceManager = new ResourceManager(Context.RendererManager.Renderer);
+            Context.ResourceManager = new ResourceManager(
+                Context.Paths,
+                Context.RendererManager.Renderer
+            );
             Context.SceneManager = new SceneManager();
 
             IsRunning = true;

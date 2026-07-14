@@ -1,5 +1,6 @@
 using GameEngine.Mod;
 using GameEngine.Resources;
+using SDL2;
 
 namespace GameEngine.Scene
 {
@@ -71,14 +72,17 @@ namespace GameEngine.Scene
                 switch(type.Name)
                 {
                     case nameof(Texture):
-                        Console.WriteLine($"unloading {id}");
-                        
                         _resourceManager.UnloadById<Texture>(id);
                     break;
                 }
             }
 
             _loadedResources.Clear();
+        }
+
+        public void DrawTexture(Texture texture, SDL.SDL_Rect? source, SDL.SDL_Rect destination)
+        {
+            _modContext.RendererManager?.Draw(texture.Handle, source, destination);
         }
     }
 }
