@@ -11,10 +11,20 @@ namespace GameEngine.Resources
             _caches[typeof(Texture)] = new TextureCache(renderer);
         }
 
+        public void Load<T>(string id, string path) where T : Resource
+        {
+            if(!_caches.TryGetValue(typeof(T), out var cache))
+                throw new ResourceException($"Could not load {typeof(T).Name} resource with id: {id}");
+            
+            ((ResourceCache<T>)cache).Load(id, path);
+        }
+
         public void Load<T>(T resource) where T : Resource
         {
             if(!_caches.TryGetValue(typeof(T), out var cache))
                 throw new ResourceException($"Could not load {typeof(T).Name} resource with id: {resource.Id}");
+
+            Console.WriteLine($"loaded res::{resource.Id} ... {resource.Path}");
             
             ((ResourceCache<T>)cache).Load(resource);
         }
@@ -55,6 +65,8 @@ namespace GameEngine.Resources
         {
             foreach(var cache in _caches.Values)
             {
+                Console.WriteLine("unloading a resource cache...");
+
                 ((IResourceCache)cache).UnloadAll();
             }
         }

@@ -8,6 +8,7 @@ namespace GameEngine.Scene
         private IModContext _modContext { get; }
         private IResourceController _resourceManager => _modContext.ResourceManager!;
 
+        public IntPtr Renderer => _modContext.RendererManager!.Renderer;
         public ISceneController SceneManager => _modContext.SceneManager!;
 
         /// <summary>
@@ -28,12 +29,15 @@ namespace GameEngine.Scene
         /// to remember what was added by this scene.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="resource"></param>
-        public void Load<T>(T resource) where T : Resource
+        /// <param name="id"></param>
+        /// <param name="path"></param>
+        public void Load<T>(string id, string path) where T : Resource
         {
-            _resourceManager.Load(resource);
+            Console.WriteLine("loading resource in scene context");
 
-            _loadedResources.Add((typeof(T), resource.Id));
+            _resourceManager.Load<T>(id, path);
+
+            _loadedResources.Add((typeof(T), id));
         }
 
         /// <summary>
@@ -69,6 +73,8 @@ namespace GameEngine.Scene
                 switch(type.Name)
                 {
                     case nameof(Texture):
+                        Console.WriteLine($"unloading {id}");
+                        
                         _resourceManager.UnloadById<Texture>(id);
                     break;
                 }

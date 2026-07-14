@@ -14,7 +14,8 @@ namespace GameEngine.Resources
 
         public override void Load(string id, string path)
         {
-            IntPtr handle = SDL_image.IMG_LoadTexture(_renderer, path);
+            var texturePath = Path.Combine(AppContext.BaseDirectory, path);
+            IntPtr handle = SDL_image.IMG_LoadTexture(_renderer, texturePath);
 
             if(handle == IntPtr.Zero)
                 throw new ResourceException($"Could not load texture: {SDL.SDL_GetError()}");

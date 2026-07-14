@@ -6,6 +6,7 @@ using GameEngine.Render;
 using GameEngine.Resources;
 using GameEngine.Scene;
 using GameEngine.Settings;
+using GameEngine.Utilities;
 using GameEngine.Window;
 using SDL2;
 
@@ -45,7 +46,11 @@ namespace GameEngine.Mod
                 throw new SDLInitException($"Could not initialize SDL_image: {SDL.SDL_GetError()}");
             }
 
-            Context.SettingsManager = new SettingsManager(Config.SettingPath);
+            var appDirectory = AppContext.BaseDirectory;
+            Context.Paths = ModPath.Create(appDirectory, Config.ModName);
+
+            var settingsPath = Context.Paths.GetConfigPath(Config.SettingPath);
+            Context.SettingsManager = new SettingsManager(settingsPath);
             
             Context.WindowManager = new WindowManager();
             Context.WindowManager.Create(
@@ -57,6 +62,7 @@ namespace GameEngine.Mod
                 Context.SettingsManager.Settings,
                 Context.WindowManager.Window
             );
+            Context.RendererManager.Create();
 
             Context.InputManager = new InputManager();
             Context.EventManager = new EventManager(Context.InputManager);

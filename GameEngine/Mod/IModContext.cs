@@ -4,12 +4,14 @@ using GameEngine.Render;
 using GameEngine.Resources;
 using GameEngine.Scene;
 using GameEngine.Settings;
+using GameEngine.Utilities;
 using GameEngine.Window;
 
 namespace GameEngine.Mod
 {
     public interface IModContext
     {
+        public IModPath? Paths { get; set; }
         public ISettingsController? SettingsManager { get; set; }
         public IWindowController? WindowManager { get; set; }
         public IRendererController? RendererManager { get; set; }

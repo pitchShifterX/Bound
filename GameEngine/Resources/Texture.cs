@@ -6,8 +6,6 @@ namespace GameEngine.Resources
     {
         public IntPtr Handle { get; private set; }
 
-        public bool Transient { get; set; }
-
         public Texture(IntPtr handle, string id, string path)
             : base(id, path)
         {
@@ -16,8 +14,12 @@ namespace GameEngine.Resources
 
         protected override void Destroy()
         {
+            Console.WriteLine("attempting to destroy texture");
+
             if(Handle != IntPtr.Zero)
             {
+                Console.WriteLine("Texture destroyed");
+
                 SDL.SDL_DestroyTexture(Handle);
                 Handle = IntPtr.Zero;
             }

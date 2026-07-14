@@ -1,5 +1,6 @@
 using GameEngine.Event.Input;
 using GameEngine.Mod;
+using GameEngine.Resources;
 using GameEngine.Scene;
 
 namespace Mods.Bound.Scenes
@@ -9,7 +10,7 @@ namespace Mods.Bound.Scenes
     {
         public override void Load()
         {
-            
+            Context.Load<Texture>("opm", "opm.png");
         }
 
         public override void ProcessInput(IRecordInput input)

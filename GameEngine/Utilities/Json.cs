@@ -18,7 +18,7 @@ namespace GameEngine.Utilities
         {
             var exePath = AppContext.BaseDirectory;
 
-            FilePath = Path.Combine(exePath, path);
+            FilePath = System.IO.Path.Combine(exePath, path);
         }
 
         public bool TryLoad()
