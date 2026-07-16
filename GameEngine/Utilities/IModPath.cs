@@ -2,6 +2,7 @@ namespace GameEngine.Utilities
 {
     public interface IModPath
     {
+        public string ModName { get; }
         public string EngineRoot { get; }
         public string ModRoot { get; }
 
@@ -12,6 +13,7 @@ namespace GameEngine.Utilities
 
         public void EnsureDirectories();
 
+        public string GetModPath(string path);
         public string GetAssetPath(string path);
         public string GetConfigPath(string path);
         public string GetMapsPath(string path);

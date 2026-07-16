@@ -2,6 +2,7 @@ using GameEngine.Event.Input;
 using GameEngine.Mod;
 using GameEngine.Resources;
 using GameEngine.Scene;
+using GameEngine.Utilities;
 using SDL2;
 
 namespace Mods.Bound.Scenes
@@ -9,12 +10,13 @@ namespace Mods.Bound.Scenes
     public class MainMenuScene(IModContext modContext)
         : Scene(modContext)
     {
-        private Texture? _opm;
+        private Texture? _menu;
+        private Vector2<int> _windowResolution => ModContext.SettingsManager!.Settings.WindowSize;
 
         public override void Load()
         {
-            Context.Load<Texture>("opm", "opm.png");
-            _opm = Context.GetById<Texture>("opm");
+            Context.Load<Texture>("menu", "menu.png");
+            _menu = Context.GetById<Texture>("menu");
         }
 
         public override void ProcessInput(IRecordInput input)
@@ -34,10 +36,10 @@ namespace Mods.Bound.Scenes
 
         public override void Render()
         {
-            if(_opm != null)
+            if(_menu != null)
             {
-                var dst = new SDL.SDL_Rect { x = 200, y = 200, w = 337, h = 361 };
-                Context.DrawTexture(_opm, null, dst);
+                var dst = new SDL.SDL_Rect { x = 0, y = 0, w = _windowResolution.x, h = _windowResolution.y };
+                Context.DrawTexture(_menu, null, dst);
             }
         }
 

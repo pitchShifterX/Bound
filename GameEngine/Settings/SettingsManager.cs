@@ -8,9 +8,9 @@ namespace GameEngine.Settings
 
         public Settings Settings => _serializer.Value!;
 
-        public SettingsManager(string filename)
+        public SettingsManager(string settingsPath)
         {
-            _serializer = new Json<Settings>(filename);
+            _serializer = new Json<Settings>(settingsPath);
 
             if (!_serializer.TryLoad())
             {

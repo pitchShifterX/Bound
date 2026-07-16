@@ -19,13 +19,14 @@ namespace GameEngine.Mod
         public TConfig Config { get; }
         public IModContext Context { get; init; }
 
+        public virtual string DevelopmentAssetsDirectory
+            => Path.Combine("Mods", Config.ModName, "Assets");
+
         public Mod(TConfig config)
         {
             Config = config;
 
             Context = new ModContext();
-
-            Initialize();
         }
 
         public virtual void Initialize()
@@ -46,11 +47,9 @@ namespace GameEngine.Mod
                 throw new SDLInitException($"Could not initialize SDL_image: {SDL.SDL_GetError()}");
             }
 
-            var appDirectory = AppContext.BaseDirectory;
-            Context.Paths = ModPath.Create(appDirectory, Config.ModName);
-            Context.Paths.EnsureDirectories();
+            ensurePaths();
 
-            var settingsPath = Context.Paths.GetConfigPath(Config.SettingPath);
+            var settingsPath = Context.Paths!.GetConfigPath(Config.SettingsPath);
             Context.SettingsManager = new SettingsManager(settingsPath);
             
             Context.WindowManager = new WindowManager();
@@ -153,6 +152,17 @@ namespace GameEngine.Mod
 
             SDL_image.IMG_Quit();
             SDL.SDL_Quit();
+        }
+
+        protected void ensurePaths()
+        {
+            if(Context.Paths != null)
+                return;
+
+            var appDirectory = AppContext.BaseDirectory;
+
+            Context.Paths = ModPath.Create(appDirectory, Config.ModName);
+            Context.Paths.EnsureDirectories();
         }
     }
 }

@@ -28,6 +28,7 @@ class Program
         }
 
         var mod = factory();
+        mod.Initialize();
         mod.Start();
     }
 

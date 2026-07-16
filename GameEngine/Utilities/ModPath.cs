@@ -4,6 +4,7 @@ namespace GameEngine.Utilities
 {
     public class ModPath : IModPath
     {
+        public string ModName { get; }
         public string EngineRoot { get; }
         public string ModRoot { get; }
 
@@ -14,6 +15,7 @@ namespace GameEngine.Utilities
 
         public ModPath(string engineRoot, string modName)
         {
+            ModName = modName;
             EngineRoot = engineRoot;
 
             var safeModName = sanitizeModName(modName);
@@ -38,6 +40,9 @@ namespace GameEngine.Utilities
             Directory.CreateDirectory(Maps);
             Directory.CreateDirectory(Logs);
         }
+
+        public string GetModPath(string path)
+            => combineSafe(ModRoot, path);
 
         public string GetAssetPath(string path)
             => combineSafe(Assets, path);

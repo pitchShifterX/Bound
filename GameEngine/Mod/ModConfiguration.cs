@@ -6,6 +6,6 @@ namespace GameEngine.Mod
     {
         public virtual string ModName { get; init; } = "Unknown Mod";
         public Vector2<int> WindowResolution = new(1920, 1080);
-        public string SettingPath { get; init; } = "settings.json";
+        public string SettingsPath { get; init; } = "settings.json";
     }
 }

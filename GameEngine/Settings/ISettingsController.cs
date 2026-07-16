@@ -1,3 +1,4 @@
+using GameEngine.SharedInterface;
 using GameEngine.Utilities;
 
 namespace GameEngine.Settings
