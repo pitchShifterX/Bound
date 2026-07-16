@@ -9,6 +9,7 @@ namespace GameEngine.Settings
         public int WindowHeight { get; set; } = 1080;
         public bool WindowFullScreen { get; set; } = false;
         public bool VerticalSync { get; set; } = false;
+        public float MasterVolume { get; set; } = 1.0f;
 
         /// <summary>
         /// Capped framerate; 60 by default

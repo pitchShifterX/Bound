@@ -47,6 +47,11 @@ namespace GameEngine.Settings
             Settings.MaxFramerate = value;
         }
 
+        public void UpdateMasterVolume(float value)
+        {
+            Settings.MasterVolume = value;
+        }
+
         public void Save()
         {
             _serializer.TryWrite();

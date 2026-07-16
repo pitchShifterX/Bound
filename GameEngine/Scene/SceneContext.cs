@@ -71,6 +71,9 @@ namespace GameEngine.Scene
             {
                 switch(type.Name)
                 {
+                    case nameof(Audio):
+                        _resourceManager.UnloadById<Resources.Audio>(id);
+                    break;
                     case nameof(Texture):
                         _resourceManager.UnloadById<Texture>(id);
                     break;
@@ -84,5 +87,14 @@ namespace GameEngine.Scene
         {
             _modContext.RendererManager?.Draw(texture.Handle, source, destination);
         }
+
+        public void PlayMusic(string id, int loop = -1)
+        {
+            _modContext.AudioManager?.PlayMusic(id, loop);
+        }
+
+        public void ResumeMusic() => _modContext.AudioManager?.ResumeMusic();
+        public void PauseMusic() => _modContext.AudioManager?.PauseMusic();
+        public void StopMusic() => _modContext.AudioManager?.StopMusic();
     }
 }

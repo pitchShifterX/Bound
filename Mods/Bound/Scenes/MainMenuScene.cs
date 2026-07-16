@@ -10,13 +10,20 @@ namespace Mods.Bound.Scenes
     public class MainMenuScene(IModContext modContext)
         : Scene(modContext)
     {
+        private Audio? _menuMusic;
         private Texture? _menu;
         private Vector2<int> _windowResolution => ModContext.SettingsManager!.Settings.WindowSize;
+        private IModPath _paths => ModContext.Paths!;
 
         public override void Load()
         {
-            Context.Load<Texture>("menu", "menu.png");
+            var menuImagePath = _paths.GetAssetPath("images/menu.png");
+
+            Context.Load<Texture>("menu", menuImagePath);
             _menu = Context.GetById<Texture>("menu");
+
+            // Context.Load<Audio>("menuMusic", menuMusicPath);
+            // Context.PlayMusic("menuMusic");
         }
 
         public override void ProcessInput(IRecordInput input)
@@ -30,6 +37,7 @@ namespace Mods.Bound.Scenes
             {
                 Console.WriteLine("changing scene");
 
+                Context.StopMusic();
                 Context.SceneManager.PushScene(() => new SettingsScene(ModContext));
             }
         }

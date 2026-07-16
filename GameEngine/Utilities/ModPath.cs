@@ -63,8 +63,8 @@ namespace GameEngine.Utilities
                 Path.DirectorySeparatorChar
             );
 
-            if(Path.IsPathRooted(relative))
-                throw new ArgumentException("Relative path must not be root", nameof(relative));
+            // if(Path.IsPathRooted(relative))
+            //     throw new ArgumentException("Relative path must not be root", nameof(relative));
             
             var combined = Path.GetFullPath(Path.Combine(baseDirectory, relative));
             var baseFull = Path.GetFullPath(baseDirectory).TrimEnd(Path.DirectorySeparatorChar) + 

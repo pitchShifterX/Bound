@@ -18,6 +18,13 @@ namespace Mods.Bound.Scenes
             {
                 Console.WriteLine("pressed b");
             }
+
+            if(input.WasKeyPressed(KeyCode.C))
+            {
+                Console.WriteLine("leaving settings");
+
+                Context.SceneManager.PopScene();
+            }
         }
 
         public override void Render()

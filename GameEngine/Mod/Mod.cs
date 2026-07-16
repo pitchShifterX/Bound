@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using GameEngine.Audio;
 using GameEngine.Event;
 using GameEngine.Event.Input;
 using GameEngine.Exception;
@@ -70,6 +71,12 @@ namespace GameEngine.Mod
                 Context.Paths,
                 Context.RendererManager.Renderer
             );
+
+            Context.AudioManager = new AudioManager(
+                Context.SettingsManager,
+                Context.ResourceManager
+            );
+            
             Context.SceneManager = new SceneManager();
 
             IsRunning = true;
@@ -146,6 +153,7 @@ namespace GameEngine.Mod
 
         public virtual void Close()
         {
+            Context?.AudioManager?.Close();
             Context?.ResourceManager?.UnloadAllResourceCaches();
             Context?.RendererManager?.Destroy();
             Context?.WindowManager?.Destroy();

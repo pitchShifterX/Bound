@@ -13,6 +13,8 @@ namespace GameEngine.Settings
         public void UpdateWindowFullscreen(bool value);
         public void UpdateVerticalSync(bool value);
         public void UpdateMaxFramerate(int value);
+
+        public void UpdateMasterVolume(float value);
         
         public void Save();
     }

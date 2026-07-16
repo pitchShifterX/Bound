@@ -43,6 +43,8 @@ namespace GameEngine.Resources
                 return;
             }
 
+            Console.WriteLine($"{id} was unloaded.");
+
             resource.Dispose();
             Resources.Remove(id);
         }
@@ -51,6 +53,7 @@ namespace GameEngine.Resources
         {
             foreach(var resource in Resources.Values)
             {
+                Console.WriteLine($"{resource.Id} was unloaded.");
                 resource.Dispose();
             }
 

@@ -1,3 +1,4 @@
+using GameEngine.Audio;
 using GameEngine.Event;
 using GameEngine.Event.Input;
 using GameEngine.Render;
@@ -18,6 +19,7 @@ namespace GameEngine.Mod
         public IEventController? EventManager { get; set; }
         public IInputController? InputManager { get; set; }
         public IResourceController? ResourceManager { get; set; }
+        public IAudioController? AudioManager { get; set; }
         public ISceneController? SceneManager { get; set; }
     }
 }

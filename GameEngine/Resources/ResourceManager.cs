@@ -1,5 +1,6 @@
 using GameEngine.Exception;
 using GameEngine.Utilities;
+using SDL2;
 
 namespace GameEngine.Resources
 {
@@ -12,6 +13,7 @@ namespace GameEngine.Resources
         {
             _paths = paths;
             _caches[typeof(Texture)] = new TextureCache(renderer);
+            _caches[typeof(Audio)] = new AudioCache();
         }
 
         public void Load<T>(string id, string path) where T : Resource

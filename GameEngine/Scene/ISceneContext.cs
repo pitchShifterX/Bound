@@ -1,9 +1,10 @@
+using GameEngine.Audio;
 using GameEngine.Resources;
 using SDL2;
 
 namespace GameEngine.Scene
 {
-    public interface ISceneContext
+    public interface ISceneContext : IControlMusic
     {
         public IntPtr Renderer { get; }
         public ISceneController SceneManager { get; }
