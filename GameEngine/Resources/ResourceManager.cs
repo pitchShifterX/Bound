@@ -12,8 +12,10 @@ namespace GameEngine.Resources
         public ResourceManager(IModPath paths, IntPtr renderer)
         {
             _paths = paths;
+            
             _caches[typeof(Texture)] = new TextureCache(renderer);
             _caches[typeof(Audio)] = new AudioCache();
+            _caches[typeof(Font)] = new FontCache();
         }
 
         public void Load<T>(string id, string path) where T : Resource

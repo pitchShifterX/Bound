@@ -1,5 +1,6 @@
 using SDL2;
 using GameEngine.Utilities;
+using GameEngine.Resources;
 
 namespace GameEngine.Render
 {
@@ -43,6 +44,44 @@ namespace GameEngine.Render
             else
             {
                 SDL.SDL_RenderCopy(Renderer, texture, IntPtr.Zero, ref destination);
+            }
+        }
+
+        public void DrawDynamicText(Font font, string text, SDL.SDL_Color color, SDL.SDL_Rect destination)
+        {
+            if(font.Handle == IntPtr.Zero) return;
+
+            var surface = SDL_ttf.TTF_RenderUTF8_Blended(font.Handle, text, color);
+            if (surface == IntPtr.Zero) return;
+
+            try
+            {
+                var texture = SDL.SDL_CreateTextureFromSurface(Renderer, surface);
+                if (texture == IntPtr.Zero) return;
+
+                var queryTexture = SDL.SDL_QueryTexture(
+                    texture,
+                    out _,
+                    out _,
+                    out var width,
+                    out var height
+                );
+
+                destination.w = width;
+                destination.h = height;
+
+                try
+                {
+                    Draw(texture, null, destination);
+                }
+                finally
+                {
+                    SDL.SDL_DestroyTexture(texture);
+                }
+            }
+            finally
+            {
+                SDL.SDL_FreeSurface(surface);
             }
         }
 

@@ -14,7 +14,7 @@ namespace Mods.Bound
         {
             base.Initialize();
 
-            Context.SceneManager?.PushScene(() => new MainMenuScene(Context));
+            Context.SceneManager?.Push(() => new MainMenuScene(Context));
         }
     }
 }

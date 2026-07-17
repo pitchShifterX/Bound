@@ -5,7 +5,7 @@ namespace GameEngine.Event
 {
     public class EventManager(IReceiveEvents receiver) : IEventController
     {
-        public bool IsQuitting { get; private set; } = false;
+        public bool IsQuitting { get; set; } = false;
 
         private readonly IReceiveEvents _receiver = receiver;
         private readonly Dictionary<SDL.SDL_Keycode, KeyCode> _keyMap = BuildKeyMap();

@@ -23,7 +23,7 @@ namespace Mods.Bound.Scenes
             {
                 Console.WriteLine("leaving settings");
 
-                Context.SceneManager.PopScene();
+                Context.PopScene();
             }
         }
 

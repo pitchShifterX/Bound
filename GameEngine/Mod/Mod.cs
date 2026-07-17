@@ -48,6 +48,11 @@ namespace GameEngine.Mod
                 throw new SDLInitException($"Could not initialize SDL_image: {SDL.SDL_GetError()}");
             }
 
+            if (SDL_ttf.TTF_Init() == -1)
+            {
+                throw new SDLInitException($"Could not initialize SDL_ttf: {SDL_ttf.TTF_GetError()}");
+            }
+
             ensurePaths();
 
             var settingsPath = Context.Paths!.GetConfigPath(Config.SettingsPath);
@@ -158,6 +163,7 @@ namespace GameEngine.Mod
             Context?.RendererManager?.Destroy();
             Context?.WindowManager?.Destroy();
 
+            SDL_ttf.TTF_Quit();
             SDL_image.IMG_Quit();
             SDL.SDL_Quit();
         }

@@ -12,11 +12,11 @@ namespace GameEngine.Scene
 
         public IScene? Current => _stack.Count > 0 ? _stack.Peek() : null;
 
-        public void BeginFrame(){}
+        public void Push(Func<IScene> scene) => _queuedPush = scene;
+        public void Pop() => _queuedPop = true;
+        public void Replace(Func<IScene> scene) => _queuedReplace = scene;
 
-        public void PushScene(Func<IScene> scene) => _queuedPush = scene;
-        public void PopScene() => _queuedPop = true;
-        public void ReplaceScene(Func<IScene> scene) => _queuedReplace = scene;
+        public void BeginFrame(){}
 
         public void EndFrame()
         {
