@@ -56,6 +56,11 @@ namespace Mods.Bound.Scenes
                 counter++;
             }
 
+            if(input.WasKeyPressed(KeyCode.P))
+            {
+                Context.ReplaceScene(() => new GameplayScene(ModContext));
+            }
+
             if(input.WasKeyPressed(KeyCode.Q))
             {
                 Console.WriteLine("quitting");
