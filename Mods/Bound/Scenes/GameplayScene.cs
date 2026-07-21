@@ -4,6 +4,7 @@ using GameEngine.Graphics;
 using GameEngine.Mod;
 using GameEngine.Resources;
 using GameEngine.Scene;
+using GameEngine.SharedInterface;
 using GameEngine.Utilities;
 using Mods.Bound.Gameplay;
 using SDL2;
@@ -23,14 +24,24 @@ namespace Mods.Bound.Scenes
 
         public override void ProcessInput(IRecordInput input)
         {
+            if(input.WasKeyPressed(KeyCode.Escape))
+            {
+                Context.ReplaceScene(() => new MainMenuScene(ModContext));
+
+                return;
+            }
+
+            _gameplay?.ProcessInput(input);
         }
 
         public override void Render()
         {
+            _gameplay?.Render();
         }
 
         public override void Update(float? delta)
         {
+            _gameplay?.Update(delta);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Mods.Bound.Scenes
         : Scene(modContext)
     {
         private Audio? _menuMusic;
-        private Font? _menuFont;
+        private Font? _font;
         private Texture? _menu;
         private Vector2<int> _windowResolution => ModContext.SettingsManager!.Settings.WindowSize;
 
@@ -24,16 +24,11 @@ namespace Mods.Bound.Scenes
         public override void Load()
         {
             var menuImagePath = Context.Paths.GetAssetPath("images/menu.png");
-            var fontPath = Context.Paths.GetAssetPath("fonts/Inter24Regular.ttf");
 
             Context.Load<Texture>("menu", menuImagePath);
             _menu = Context.GetById<Texture>("menu");
 
-            Context.Load<Font>("menuFont", fontPath);
-            _menuFont = Context.GetById<Font>("menuFont");
-
-            // Context.Load<Audio>("menuMusic", menuMusicPath);
-            // Context.PlayMusic("menuMusic");
+            _font = Context.GetById<Font>("default");
         }
 
         public override void ProcessInput(IRecordInput input)
@@ -77,10 +72,10 @@ namespace Mods.Bound.Scenes
                 Context.DrawTexture(_menu, null, dst);
             }
 
-            if(_menuFont != null)
+            if(_font != null)
             {
                 var dst = new SDL.SDL_Rect { x = 500, y = 500 };
-                Context.DrawText(_menuFont, getText(), Color.White, dst);
+                Context.DrawText(_font, getText(), Color.White, dst);
             }
         }
 

@@ -1,14 +1,18 @@
 using GameEngine.Audio;
+using GameEngine.Render;
 using GameEngine.Resources;
+using GameEngine.Settings;
 using GameEngine.Utilities;
 using SDL2;
 
 namespace GameEngine.Scene
 {
-    public interface ISceneContext : IControlMusic
+    public interface ISceneContext : IControlMusic, IDrawTexture
     {
         public IntPtr Renderer { get; }
         public IModPath Paths { get; }
+        public ISettingsController SettingsManager { get; }
+        public Settings.Settings Settings { get; }
 
         public void PushScene(Func<IScene> factory);
         public void PopScene();
@@ -20,7 +24,6 @@ namespace GameEngine.Scene
         public void UnloadAll();
 
         public void DrawText(Font font, string text, SDL.SDL_Color color, SDL.SDL_Rect destination);
-        public void DrawTexture(Texture texture, SDL.SDL_Rect? source, SDL.SDL_Rect destination);
 
         public void QuitMod();
     }

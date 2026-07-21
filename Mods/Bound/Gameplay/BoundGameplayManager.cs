@@ -1,13 +1,11 @@
 using GameEngine;
+using GameEngine.Resources;
 using GameEngine.Scene;
-using GameEngine.World.Map;
 
 namespace Mods.Bound.Gameplay
 {
     public class BoundGameplayManager : GameplayManager
     {
-        private MapLuaLoader _mapLoader = new MapLuaLoader();
-
         public BoundGameplayManager(ISceneContext context)
             : base(context)
         {
@@ -16,12 +14,16 @@ namespace Mods.Bound.Gameplay
 
         public override void Load()
         {
-            var mapPath = Context.Paths.GetMapsPath("TestMap.lua");
-            var mapData = _mapLoader.Load(mapPath);
-
-            Console.WriteLine(mapData.ToString());
+            loadDefaultTiles();
+            
+            MapContext.LoadMap("TestMap.lua");
 
             base.Load();
+        }
+
+        private void loadDefaultTiles()
+        {
+            SceneContext.Load<Texture>("dirt", "textures/dirt.png");
         }
     }
 }

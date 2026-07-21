@@ -1,4 +1,5 @@
 using GameEngine.Exception;
+using GameEngine.World.Map.Tiles;
 using GameEngine.World.Player;
 using MoonSharp.Interpreter;
 
@@ -29,10 +30,12 @@ namespace GameEngine.World.Map
         private MapData parseMapData(Table mapData)
         {
             var metadata = parseMetadata(mapData.Get("metadata").Table);
+            var tiles = parseTiles(mapData.Get("tiles"), metadata.Width.Value, metadata.Height.Value);
 
             return new MapData
             {
-                Metadata = metadata
+                Metadata = metadata,
+                Tiles = tiles
             };
         }
 
@@ -71,6 +74,53 @@ namespace GameEngine.World.Map
             }
 
             return playerList;
+        }
+
+        private Tile[][] parseTiles(DynValue tilesData, int width, int height)
+        {
+            var tiles = new Tile[width][];
+            for (int x = 0; x < width; x++)
+            {
+                tiles[x] = new Tile[height];
+                for (int y = 0; y < height; y++)
+                {
+                    tiles[x][y] = new Tile();
+                }
+            }
+
+            if (tilesData.Type == DataType.Table)
+            {
+                var tileTable = tilesData.Table;
+                
+                foreach (var pair in tileTable.Pairs)
+                {
+                    try
+                    {
+                        string key = pair.Key.String;
+                        string[] coords = key.Split(',');
+                        
+                        if (coords.Length != 2) continue;
+                        if (!int.TryParse(coords[0], out int x)) continue;
+                        if (!int.TryParse(coords[1], out int y)) continue;
+                        
+                        if (x < 0 || x >= width || y < 0 || y >= height) continue;
+
+                        var tileEntry = pair.Value.Table;
+                        if (tileEntry == null) continue;
+
+                        tiles[x][y] = new Tile
+                        {
+                            TextureId = "dirt"
+                        };
+                    }
+                    catch (System.Exception e)
+                    {
+                        Console.WriteLine($"Error parsing tile: {e.Message}");
+                    }
+                }
+            }
+
+            return tiles;
         }
     }
 }

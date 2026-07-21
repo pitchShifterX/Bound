@@ -1,5 +1,6 @@
 using GameEngine.Mod;
 using GameEngine.Resources;
+using GameEngine.Settings;
 using GameEngine.Utilities;
 using SDL2;
 
@@ -12,6 +13,8 @@ namespace GameEngine.Scene
 
         public IntPtr Renderer => _modContext.RendererManager!.Renderer;
         public IModPath Paths => _modContext.Paths!;
+        public ISettingsController SettingsManager => _modContext.SettingsManager!;
+        public Settings.Settings Settings => _modContext.SettingsManager!.Settings;
 
         /// <summary>
         /// Resources loaded by this scene. These 
@@ -119,9 +122,14 @@ namespace GameEngine.Scene
             _modContext.RendererManager?.DrawDynamicText(font, text, color, destination);
         }
 
+        public void DrawTexture(IntPtr texture, SDL.SDL_Rect? source, SDL.SDL_Rect destination)
+        {
+            _modContext.RendererManager?.Draw(texture, source, destination);
+        }
+
         public void DrawTexture(Texture texture, SDL.SDL_Rect? source, SDL.SDL_Rect destination)
         {
-            _modContext.RendererManager?.Draw(texture.Handle, source, destination);
+            DrawTexture(texture.Handle, source, destination);
         }
 
         public void PlayMusic(string id, int loop = -1)

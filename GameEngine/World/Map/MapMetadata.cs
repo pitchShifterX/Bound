@@ -1,3 +1,4 @@
+using GameEngine.Utilities;
 using GameEngine.World.Player;
 
 namespace GameEngine.World.Map
@@ -10,5 +11,12 @@ namespace GameEngine.World.Map
         public int? Width { get; set; }
         public int? Height { get; set; }
         public List<PlayerData>? Players { get; set; }
+
+        public Vector2<int>? GetSize()
+        {
+            if(Width == null || Height == null) return null;
+            
+            return new(Width.Value, Height.Value);
+        }
     }
 }

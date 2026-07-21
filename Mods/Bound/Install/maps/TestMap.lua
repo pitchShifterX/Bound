@@ -1,4 +1,16 @@
 function main()
+    local tiles = {}
+    
+    for x = 0, 63 do
+        for y = 0, 63 do
+            local key = x .. "," .. y
+            
+            tiles[key] = {
+                texture = "dirt"
+            }
+        end
+    end
+
     return {
         metadata = {
             title = "Test Map",
@@ -20,6 +32,7 @@ function main()
                     human = false,
                 }
             },
-        }
+        },
+        tiles = tiles
     }
 end
