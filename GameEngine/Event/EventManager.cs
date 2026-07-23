@@ -1,5 +1,6 @@
 using SDL2;
 using GameEngine.Event.Input;
+using GameEngine.Utilities;
 
 namespace GameEngine.Event
 {
@@ -34,6 +35,18 @@ namespace GameEngine.Event
             {
                 SDL.SDL_EventType.SDL_QUIT
                     => new QuitEvent(),
+
+                SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN
+                    => TranslateMouseButtonEvent(e.button, isPressed: true),
+                
+                SDL.SDL_EventType.SDL_MOUSEBUTTONUP
+                    => TranslateMouseButtonEvent(e.button, isPressed: false),
+
+                SDL.SDL_EventType.SDL_MOUSEMOTION
+                    => TranslateMouseMoveEvent(e.motion),
+
+                SDL.SDL_EventType.SDL_MOUSEWHEEL
+                    => TranslateMouseWheelEvent(e.wheel),
                 
                 SDL.SDL_EventType.SDL_KEYDOWN
                     => TranslateKeyboardEvent(e.key, isPressed: true),
@@ -65,6 +78,51 @@ namespace GameEngine.Event
                     },
 
                 _ => null
+            };
+        }
+
+        private InputEvent? TranslateMouseButtonEvent(SDL.SDL_MouseButtonEvent buttonEvent, bool isPressed)
+        {
+            MouseButton? parsedButton = buttonEvent.button switch
+            {
+                (byte)SDL.SDL_BUTTON_LEFT => MouseButton.Left,
+                (byte)SDL.SDL_BUTTON_MIDDLE => MouseButton.Middle,
+                (byte)SDL.SDL_BUTTON_RIGHT => MouseButton.Right,
+                _ => null
+            };
+            
+            if(parsedButton == null)
+                return null;
+            
+            return new MouseButtonEvent
+            {
+                Button = parsedButton.Value,
+                IsPressed = isPressed,
+                PositionX = buttonEvent.x,
+                PositionY = buttonEvent.y
+            };
+        }
+
+        private InputEvent? TranslateMouseMoveEvent(SDL.SDL_MouseMotionEvent motion)
+        {
+            return new MouseMoveEvent
+            {
+                PositionX = motion.x,
+                PositionY = motion.y,
+                DeltaX = motion.xrel,
+                DeltaY = motion.yrel
+            };
+        }
+
+        private InputEvent? TranslateMouseWheelEvent(SDL.SDL_MouseWheelEvent wheel)
+        {
+            int scrollX = wheel.x;
+            int scrollY = wheel.y;
+            
+            return new MouseWheelEvent
+            {
+                ScrollX = scrollX,
+                ScrollY = scrollY
             };
         }
 

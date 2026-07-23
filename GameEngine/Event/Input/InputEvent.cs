@@ -25,6 +25,47 @@ namespace GameEngine.Event.Input
         public KeyEventType EventType { get; set; }
     }
 
+    public enum MouseButton
+    {
+        Left,
+        Middle,
+        Right
+    }
+
+    public enum MouseEventType
+    {
+        Moved,
+        ButtonPressed,
+        ButtonReleased,
+        Wheel
+    }
+
+    public class MouseEvent : InputEvent
+    {
+        public MouseEventType Type { get; set; }
+
+        public int PositionX { get; set; }
+        public int PositionY { get; set; }
+    }
+
+    public class MouseButtonEvent : MouseEvent
+    {
+        public MouseButton Button { get; set; }
+        public bool IsPressed { get; set; }
+    }
+
+    public class MouseMoveEvent : MouseEvent
+    {
+        public int DeltaX { get; set; }
+        public int DeltaY { get; set; }
+    }
+
+    public class MouseWheelEvent : MouseEvent
+    {
+        public int ScrollX { get; set; }
+        public int ScrollY { get; set; }
+    }
+
     public enum GamepadButton
     {
         A, B, X, Y,
