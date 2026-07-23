@@ -72,34 +72,6 @@ namespace GameEngine.Event.Input
             }
         }
 
-        // public void HandleEvent(EngineEvent e)
-        // {
-        //     if (e is KeyboardEvent keyEvent)
-        //     {
-        //         if (keyEvent.EventType == KeyEventType.Pressed)
-        //             _currentKeys.Add(keyEvent.Key);
-        //         else if (keyEvent.EventType == KeyEventType.Released)
-        //             _currentKeys.Remove(keyEvent.Key);
-        //     }
-        //     else if (e is GamepadButtonEvent buttonEvent)
-        //     {
-        //         if (!_gamepads.ContainsKey(buttonEvent.GamepadId))
-        //             _gamepads[buttonEvent.GamepadId] = new GamepadState();
-
-        //         if (buttonEvent.IsPressed)
-        //             _gamepads[buttonEvent.GamepadId].CurrentButtons.Add(buttonEvent.Button);
-        //         else
-        //             _gamepads[buttonEvent.GamepadId].CurrentButtons.Remove(buttonEvent.Button);
-        //     }
-        //     else if (e is GamepadAxisEvent axisEvent)
-        //     {
-        //         if (!_gamepads.ContainsKey(axisEvent.GamepadId))
-        //             _gamepads[axisEvent.GamepadId] = new GamepadState();
-
-        //         _gamepads[axisEvent.GamepadId].AxisValues[axisEvent.Axis] = axisEvent.Value;
-        //     }
-        // }
-
         public bool IsMouseButtonPressed(MouseButton button)
             => _mouse.CurrentButtons.Contains(button);
 
