@@ -1,4 +1,4 @@
-using GameEngine.Render;
+using GameEngine.Graphics.Rendering;
 using GameEngine.Utilities;
 
 namespace GameEngine.Settings

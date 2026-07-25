@@ -1,3 +1,4 @@
+using GameEngine.Graphics.Primitives;
 using GameEngine.Mod;
 using GameEngine.Resources;
 using GameEngine.Settings;
@@ -124,12 +125,17 @@ namespace GameEngine.Scene
 
         public void DrawTexture(IntPtr texture, SDL.SDL_Rect? source, SDL.SDL_Rect destination)
         {
-            _modContext.RendererManager?.Draw(texture, source, destination);
+            _modContext.RendererManager?.DrawTexture(texture, source, destination);
         }
 
         public void DrawTexture(Texture texture, SDL.SDL_Rect? source, SDL.SDL_Rect destination)
         {
             DrawTexture(texture.Handle, source, destination);
+        }
+
+        public void DrawRectangle(Rectangle<float> rectangle, Color color, bool filled = false)
+        {
+            _modContext.RendererManager?.DrawRectangle(rectangle, color, filled);
         }
 
         public void PlayMusic(string id, int loop = -1)

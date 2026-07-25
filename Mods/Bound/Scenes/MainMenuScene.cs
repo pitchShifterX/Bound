@@ -1,5 +1,5 @@
 using GameEngine.Event.Input;
-using GameEngine.Graphics;
+using GameEngine.Graphics.Primitives;
 using GameEngine.Mod;
 using GameEngine.Resources;
 using GameEngine.Scene;

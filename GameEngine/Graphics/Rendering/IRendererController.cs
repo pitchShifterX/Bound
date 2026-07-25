@@ -1,13 +1,13 @@
+using GameEngine.Graphics.Drawing;
 using GameEngine.Resources;
 using SDL2;
 
-namespace GameEngine.Render
+namespace GameEngine.Graphics.Rendering
 {
-    public interface IRendererController
+    public interface IRendererController : IDrawPrimitive
     {
         public IntPtr Renderer { get; }
         public void Create();
-        public void Draw(IntPtr texture, SDL.SDL_Rect? source, SDL.SDL_Rect destination);
 
         /// <summary>
         /// <para>Draw text that is intended to be updated per frame.</para>

@@ -15,11 +15,11 @@ namespace GameEngine.World.Map
         public MapData? Data => _mapData;
         public ITileCoordinateConverter? TileCoordinateConverter => _tileGrid;
 
-        public MapContext(string mapsDirectory)
+        public MapContext(string mapsDirectory, MapAPI api)
         {
             _mapsDirectory = mapsDirectory;
 
-            _loader = new MapLuaLoader();
+            _loader = new MapLuaLoader(api);
         }
 
         public void LoadMap(string path)

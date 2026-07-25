@@ -1,7 +1,7 @@
 using System.Numerics;
 using GameEngine.Utilities;
 
-namespace GameEngine.Render
+namespace GameEngine.Graphics.Cameras
 {
     public class Camera : ICameraController, ICameraView
     {
@@ -101,6 +101,13 @@ namespace GameEngine.Render
                     _movementDirection.X = 1;
                 break;
             }
+        }
+
+        public Vector2 ScreenPositionToWorldPosition(int screenX, int screenY)
+        {
+            var vector2 = new Vector2(screenX, screenY);
+
+            return ScreenPositionToWorldPosition(vector2);
         }
 
         public Vector2 ScreenPositionToWorldPosition(Vector2 screenPosition)

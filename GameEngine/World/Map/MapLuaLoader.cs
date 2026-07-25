@@ -1,4 +1,7 @@
 using GameEngine.Exception;
+using GameEngine.Graphics.Primitives;
+using GameEngine.Utilities;
+using GameEngine.World.Map.Locations;
 using GameEngine.World.Map.Tiles;
 using GameEngine.World.Player;
 using MoonSharp.Interpreter;
@@ -8,6 +11,12 @@ namespace GameEngine.World.Map
     public class MapLuaLoader
     {
         private Script? _mapScript;
+        private MapAPI? _api;
+
+        public MapLuaLoader(MapAPI api)
+        {
+            _api = api;
+        }
 
         public MapData Load(string path)
         {
@@ -15,6 +24,11 @@ namespace GameEngine.World.Map
                 throw new MapNotFoundException($"Map not found: {path}");
             
             _mapScript = new Script();
+
+            UserData.RegisterType<MapAPI>();
+
+            _mapScript.Globals["api"] = _api;
+
             var dataChunk = _mapScript.LoadFile(path);
             _mapScript.Call(dataChunk);
 
@@ -30,7 +44,7 @@ namespace GameEngine.World.Map
         private MapData parseMapData(Table mapData)
         {
             var metadata = parseMetadata(mapData.Get("metadata").Table);
-            var tiles = parseTiles(mapData.Get("tiles"), metadata.Width.Value, metadata.Height.Value);
+            var tiles = parseTiles(mapData.Get("tiles"), metadata.Width!.Value, metadata.Height!.Value);
 
             return new MapData
             {
@@ -41,8 +55,6 @@ namespace GameEngine.World.Map
 
         private MapMetadata parseMetadata(Table metadata)
         {
-            var players = parsePlayers(metadata.Get("players").Table);
-
             return new MapMetadata
             {
                 Title = metadata.Get("title").String,
@@ -50,7 +62,8 @@ namespace GameEngine.World.Map
                 Author = metadata.Get("author").String,
                 Width = (int)metadata.Get("width").Number,
                 Height = (int)metadata.Get("height").Number,
-                Players = players
+                Players = parsePlayers(metadata.Get("players").Table),
+                Locations = parseLocations(metadata.Get("locations").Table)
             };
         }
 
@@ -74,6 +87,36 @@ namespace GameEngine.World.Map
             }
 
             return playerList;
+        }
+
+        private List<Location> parseLocations(Table locations)
+        {
+            var locationList = new List<Location>();
+
+            foreach(var pairing in locations.Pairs)
+            {
+                var locationTable = pairing.Value.Table;
+
+                locationList.Add(new Location
+                {
+                    Name = locationTable.Get("name").String,
+                    Tiles = parseRectangle(locationTable.Get("tiles").Table),
+                    Color = Color.FromString(locationTable.Get("color").String)
+                });
+            }
+
+            return locationList;
+        }
+
+        private Rectangle<int> parseRectangle(Table rect)
+        {
+            return new Rectangle<int>
+            {
+                X = (int)rect.Get("x").Number,
+                Y = (int)rect.Get("y").Number,
+                Width = (int)rect.Get("w").Number,
+                Height = (int)rect.Get("h").Number,
+            };
         }
 
         private Tile[][] parseTiles(DynValue tilesData, int width, int height)
@@ -115,7 +158,7 @@ namespace GameEngine.World.Map
                     }
                     catch (System.Exception e)
                     {
-                        Console.WriteLine($"Error parsing tile: {e.Message}");
+                        Log.Error($"Error parsing tile: {e.Message}");
                     }
                 }
             }

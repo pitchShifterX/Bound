@@ -1,4 +1,3 @@
-using System;
 using System.Text.Json;
 
 namespace GameEngine.Utilities
@@ -18,7 +17,7 @@ namespace GameEngine.Utilities
         {
             var exePath = AppContext.BaseDirectory;
 
-            FilePath = System.IO.Path.Combine(exePath, path);
+            FilePath = Path.Combine(exePath, path);
         }
 
         public bool TryLoad()

@@ -1,10 +1,11 @@
 using GameEngine;
 using GameEngine.Resources;
 using GameEngine.Scene;
+using Mods.Bound.Gameplay.Unit;
 
 namespace Mods.Bound.Gameplay
 {
-    public class BoundGameplayManager : GameplayManager
+    public sealed class BoundGameplayManager : GameplayManager
     {
         public BoundGameplayManager(ISceneContext context)
             : base(context)
@@ -19,6 +20,12 @@ namespace Mods.Bound.Gameplay
             MapContext.LoadMap("TestMap.lua");
 
             base.Load();
+        }
+
+        protected override void RegisterModContent()
+        {
+            SceneContext.Load<Texture>("runner", "textures/runner.png");
+            UnitRegistry.Register(new BounderPrefab());
         }
 
         private void loadDefaultTiles()

@@ -32,7 +32,30 @@ function main()
                     human = false,
                 }
             },
+            locations = {
+                {
+                    name = "start_area",
+                    tiles = {
+                        x = 10,
+                        y = 10,
+                        w = 3,
+                        h = 3
+                    }
+                },
+                {
+                    name = "red_loc",
+                    tiles = {
+                        x = 0,
+                        y = 0,
+                        w = 1,
+                        h = 1
+                    },
+                    color = "red"
+                }
+            }
         },
         tiles = tiles
     }
 end
+
+api:SpawnUnit("Bounder", "one", 500, 500);

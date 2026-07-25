@@ -1,7 +1,7 @@
 using GameEngine.Resources;
 using SDL2;
 
-namespace GameEngine.Render
+namespace GameEngine.Graphics.Drawing
 {
     public interface IDrawTexture
     {

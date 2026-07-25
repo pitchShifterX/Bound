@@ -1,8 +1,9 @@
 using SDL2;
 using GameEngine.Utilities;
 using GameEngine.Resources;
+using GameEngine.Graphics.Primitives;
 
-namespace GameEngine.Render
+namespace GameEngine.Graphics.Rendering
 {
     public class RendererManager(IRenderSettings settings, IntPtr window) : IRendererController
     {
@@ -31,7 +32,7 @@ namespace GameEngine.Render
             }
         }
 
-        public void Draw(IntPtr texture, SDL.SDL_Rect? source, SDL.SDL_Rect destination)
+        public void DrawTexture(IntPtr texture, SDL.SDL_Rect? source, SDL.SDL_Rect destination)
         {
             if(texture == IntPtr.Zero) return;
 
@@ -45,6 +46,29 @@ namespace GameEngine.Render
             {
                 SDL.SDL_RenderCopy(Renderer, texture, IntPtr.Zero, ref destination);
             }
+        }
+
+        public void DrawTexture(Texture texture, SDL.SDL_Rect? source, SDL.SDL_Rect destination)
+        {
+            DrawTexture(texture.Handle, source, destination);
+        }
+
+        public void DrawRectangle(Rectangle<float> rectangle, Color color, bool filled = false)
+        {
+            var rect = new SDL.SDL_Rect
+            {
+                x = (int)rectangle.X,
+                y = (int)rectangle.Y,
+                w = (int)rectangle.Width,
+                h = (int)rectangle.Height
+            };
+
+            SDL.SDL_SetRenderDrawColor(Renderer, color.R, color.G, color.B, color.A);
+
+            if(filled)
+                SDL.SDL_RenderFillRect(Renderer, ref rect);
+            else
+                SDL.SDL_RenderDrawRect(Renderer, ref rect);
         }
 
         public void DrawDynamicText(Font font, string text, SDL.SDL_Color color, SDL.SDL_Rect destination)
@@ -72,7 +96,7 @@ namespace GameEngine.Render
 
                 try
                 {
-                    Draw(texture, null, destination);
+                    DrawTexture(texture, null, destination);
                 }
                 finally
                 {

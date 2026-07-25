@@ -1,4 +1,5 @@
 using GameEngine.Utilities;
+using GameEngine.World.Map.Locations;
 using GameEngine.World.Player;
 
 namespace GameEngine.World.Map
@@ -11,6 +12,7 @@ namespace GameEngine.World.Map
         public int? Width { get; set; }
         public int? Height { get; set; }
         public List<PlayerData>? Players { get; set; }
+        public List<Location>? Locations { get; set; }
 
         public Vector2<int>? GetSize()
         {

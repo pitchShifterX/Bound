@@ -1,7 +1,7 @@
 using System.Reflection;
 using SDL2;
 
-namespace GameEngine.Graphics
+namespace GameEngine.Graphics.Primitives
 {
     public readonly struct Color
     {
@@ -45,15 +45,17 @@ namespace GameEngine.Graphics
 
         public static Color FromString(string color)
         {
+            if(color == null) return White;
+            
             var field = typeof(Color).GetField(
-                color,
+                name: color,
                 BindingFlags.Public | BindingFlags.Static | BindingFlags.IgnoreCase
             );
 
             if (field?.GetValue(null) is Color value)
                 return value;
 
-            throw new ArgumentException($"Unknown color: {color}");
+            return White;
         }
 
         public static implicit operator SDL.SDL_Color(Color color)

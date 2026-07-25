@@ -1,4 +1,5 @@
-using GameEngine.Render;
+using GameEngine.Graphics.Cameras;
+using GameEngine.Graphics.Drawing;
 
 namespace GameEngine.World.Map.Tiles
 {

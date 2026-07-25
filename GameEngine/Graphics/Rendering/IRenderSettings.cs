@@ -1,4 +1,4 @@
-namespace GameEngine.Render
+namespace GameEngine.Graphics.Rendering
 {
     public interface IRenderSettings
     {

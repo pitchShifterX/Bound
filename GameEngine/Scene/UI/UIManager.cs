@@ -1,5 +1,6 @@
-using GameEngine.Graphics;
-using GameEngine.Render;
+using GameEngine.Graphics.Primitives;
+using GameEngine.Graphics.Rendering;
+using GameEngine.Graphics.Text;
 using GameEngine.Resources;
 
 namespace GameEngine.Scene.UI

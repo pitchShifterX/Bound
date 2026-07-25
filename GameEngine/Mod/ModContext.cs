@@ -1,7 +1,7 @@
 using GameEngine.Audio;
 using GameEngine.Event;
 using GameEngine.Event.Input;
-using GameEngine.Render;
+using GameEngine.Graphics.Rendering;
 using GameEngine.Resources;
 using GameEngine.Scene;
 using GameEngine.Settings;

@@ -1,6 +1,6 @@
 using GameEngine.SharedInterface;
 
-namespace GameEngine.Render
+namespace GameEngine.Graphics.Cameras
 {
     public interface ICameraController : IUpdatable
     {

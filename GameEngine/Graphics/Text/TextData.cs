@@ -1,6 +1,7 @@
+using GameEngine.Graphics.Primitives;
 using GameEngine.Resources;
 
-namespace GameEngine.Graphics
+namespace GameEngine.Graphics.Text
 {
     public class TextData
     {

@@ -1,5 +1,5 @@
 using GameEngine.Audio;
-using GameEngine.Render;
+using GameEngine.Graphics.Drawing;
 using GameEngine.Resources;
 using GameEngine.Settings;
 using GameEngine.Utilities;
@@ -7,7 +7,7 @@ using SDL2;
 
 namespace GameEngine.Scene
 {
-    public interface ISceneContext : IControlMusic, IDrawTexture
+    public interface ISceneContext : IControlMusic, IDrawPrimitive
     {
         public IntPtr Renderer { get; }
         public IModPath Paths { get; }
