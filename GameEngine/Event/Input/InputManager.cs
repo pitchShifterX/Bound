@@ -1,5 +1,3 @@
-using GameEngine.SharedInterface;
-
 namespace GameEngine.Event.Input
 {
     public class InputManager : IInputController
@@ -40,9 +38,17 @@ namespace GameEngine.Event.Input
                     _mouse.PositionY = mouseButton.PositionY;
 
                     if(mouseButton.IsPressed)
+                    {
                         _mouse.CurrentButtons.Add(mouseButton.Button);
+
+                        _mouse.DragStart[mouseButton.Button] =
+                            new MousePoint(mouseButton.PositionX, mouseButton.PositionY);
+                    }
                     else
+                    {
                         _mouse.CurrentButtons.Remove(mouseButton.Button);
+                        _mouse.DragStart.Remove(mouseButton.Button);
+                    }
                 break;
                 case MouseWheelEvent mouseWheel:
                     _mouse.ScrollX += mouseWheel.ScrollX;
@@ -82,6 +88,42 @@ namespace GameEngine.Event.Input
         public bool WasMouseButtonReleased(MouseButton button)
             => !_mouse.CurrentButtons.Contains(button)
             && _mouse.PreviousButtons.Contains(button);
+
+        public int GetMouseDragX(MouseButton button)
+        {
+            if(!_mouse.DragStart.TryGetValue(button, out var position))
+                return 0;
+            
+            return _mouse.PositionX - position.X;
+        }
+
+        public int GetMouseDragY(MouseButton button)
+        {
+            if(!_mouse.DragStart.TryGetValue(button, out var position))
+                return 0;
+
+            return _mouse.PositionY - position.Y;
+        }
+
+        public MousePoint? GetMouseDragStart(MouseButton button)
+        {
+            if (_mouse.DragStart.TryGetValue(button, out var position))
+                return position;
+
+            return null;
+        }
+
+        public bool IsMouseDragging(MouseButton button)
+        {
+            if (!IsMouseButtonPressed(button))
+                return false;
+
+            if (!_mouse.DragStart.TryGetValue(button, out var position))
+                return false;
+
+            return Math.Abs(_mouse.PositionX - position.X) >= _mouse.DragThreshold
+                || Math.Abs(_mouse.PositionY - position.Y) >= _mouse.DragThreshold;
+        }
 
         public int MousePositionX => _mouse.PositionX;
         public int MousePositionY => _mouse.PositionY;

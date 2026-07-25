@@ -5,6 +5,10 @@ namespace GameEngine.Event.Input
         public bool IsMouseButtonPressed(MouseButton button);
         public bool WasMouseButtonPressed(MouseButton button);
         public bool WasMouseButtonReleased(MouseButton button);
+        public int GetMouseDragX(MouseButton button);
+        public int GetMouseDragY(MouseButton button);
+        public MousePoint? GetMouseDragStart(MouseButton button);
+        public bool IsMouseDragging(MouseButton button);
         public int MousePositionX { get; }
         public int MousePositionY { get; }
         public int MouseDeltaX { get; }
