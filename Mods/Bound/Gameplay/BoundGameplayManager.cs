@@ -15,8 +15,6 @@ namespace Mods.Bound.Gameplay
 
         public override void Load()
         {
-            loadDefaultTiles();
-            
             MapContext.LoadMap("TestMap.lua");
 
             base.Load();
@@ -24,13 +22,9 @@ namespace Mods.Bound.Gameplay
 
         protected override void RegisterModContent()
         {
+            SceneContext.Load<Texture>("dirt", "textures/dirt.png");
             SceneContext.Load<Texture>("runner", "textures/runner.png");
             UnitRegistry.Register(new BounderPrefab());
-        }
-
-        private void loadDefaultTiles()
-        {
-            SceneContext.Load<Texture>("dirt", "textures/dirt.png");
         }
     }
 }
