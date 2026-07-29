@@ -1,5 +1,5 @@
 using GameEngine.Audio;
-using GameEngine.Graphics.Drawing;
+using GameEngine.Graphics.Rendering;
 using GameEngine.Resources;
 using GameEngine.Settings;
 using GameEngine.Utilities;
@@ -7,7 +7,7 @@ using SDL2;
 
 namespace GameEngine.Scene
 {
-    public interface ISceneContext : IControlMusic, IDrawPrimitive
+    public interface ISceneContext : IControlMusic, IRenderContext
     {
         public IntPtr Renderer { get; }
         public IModPath Paths { get; }
@@ -19,7 +19,6 @@ namespace GameEngine.Scene
         public void ReplaceScene(Func<IScene> factory);
         
         public void Load<T>(string id, string path) where T : Resource;
-        public T? GetById<T>(string id) where T : Resource;
         public void UnloadById<T>(string id) where T : Resource;
         public void UnloadAll();
 

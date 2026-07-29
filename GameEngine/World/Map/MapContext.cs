@@ -13,13 +13,14 @@ namespace GameEngine.World.Map
         private ITileCoordinateConverter? _tileGrid;
 
         public MapData? Data => _mapData;
+        public Tile[][]? Tiles => _mapData?.Tiles;
         public ITileCoordinateConverter? TileCoordinateConverter => _tileGrid;
 
-        public MapContext(string mapsDirectory, MapAPI api)
+        public MapContext(string mapsDirectory)
         {
             _mapsDirectory = mapsDirectory;
 
-            _loader = new MapLuaLoader(api);
+            _loader = new MapLuaLoader();
         }
 
         public void LoadMap(string path)

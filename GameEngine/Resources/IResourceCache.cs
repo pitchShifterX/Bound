@@ -9,7 +9,6 @@ namespace GameEngine.Resources
         where T : Resource
     {
         public void Load(T resource);
-        public T? GetById(string id);
         public void UnloadById(string id);
     }
 }

@@ -1,7 +1,7 @@
 using System.Numerics;
 using GameEngine.Utilities;
 
-namespace GameEngine.Graphics.Cameras
+namespace GameEngine.World.Rendering.Cameras
 {
     public class Camera : ICameraController, ICameraView
     {
@@ -31,8 +31,8 @@ namespace GameEngine.Graphics.Cameras
                 float height = ViewportHeight / Zoom;
 
                 return new(
-                    X: WorldPosition.X - width / 2,
-                    Y: WorldPosition.Y - height / 2,
+                    WorldPosition.X - width / 2,
+                    WorldPosition.Y - height / 2,
                     width,
                     height
                 );
@@ -43,7 +43,8 @@ namespace GameEngine.Graphics.Cameras
             int viewportWidth, 
             int viewportHeight, 
             int worldTileWidth, 
-            int worldTileHeight
+            int worldTileHeight,
+            Vector2? defaultPosition = null
         )
         {
             _viewportWidth = viewportWidth;
@@ -51,18 +52,20 @@ namespace GameEngine.Graphics.Cameras
             _worldPixelWidth = worldTileWidth * Constants.TileSize;
             _worldPixelHeight = worldTileHeight * Constants.TileSize;
 
-            // center camera on map
-            // will need to update this when map locations are integrated
-            // so users can define where camera starts
-            _position = new Vector2(_worldPixelWidth / 2f, _worldPixelHeight / 2f);
+            // Sets default position for world
+            // if not set, set position to center of world
+            _position = defaultPosition ?? new Vector2(
+                _worldPixelWidth / 2f, _worldPixelHeight / 2f
+            );
 
             clampPosition();
         }
 
         public Camera(
             Vector2<int> resolution,
-            Vector2<int> mapSize
-        ) : this(resolution.x, resolution.y, mapSize.x, mapSize.y) {}
+            Vector2<int> mapSize,
+            Vector2? defaultPosition = null
+        ) : this(resolution.x, resolution.y, mapSize.x, mapSize.y, defaultPosition) {}
 
         /// <summary>
         /// Should be called when resolution is changed.
@@ -103,6 +106,11 @@ namespace GameEngine.Graphics.Cameras
             }
         }
 
+        public bool IsVisible(Rectangle<float> bounds)
+        {
+            return VisibleWorldBounds.Intersects(bounds);
+        }
+
         public Vector2 ScreenPositionToWorldPosition(int screenX, int screenY)
         {
             var vector2 = new Vector2(screenX, screenY);
@@ -133,6 +141,22 @@ namespace GameEngine.Graphics.Cameras
             int screenY = centerY + (int)((worldY - _position.Y) * _zoom);
 
             return new(screenX, screenY);
+        }
+
+        public Rectangle<float> WorldToViewportRectangle(Rectangle<float> worldPosition)
+        {
+            var screenPosition = WorldPositionToScreenPosition(
+                worldPosition.X,
+                worldPosition.Y
+            );
+
+            return new Rectangle<float>
+            {
+                X = screenPosition.x,
+                Y = screenPosition.y,
+                Width = worldPosition.Width * Zoom,
+                Height = worldPosition.Height * Zoom
+            };
         }
 
         public void Update(float? delta)

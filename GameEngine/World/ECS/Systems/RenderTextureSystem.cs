@@ -1,10 +1,10 @@
-using GameEngine.Graphics.Cameras;
 using GameEngine.Resources;
 using GameEngine.Scene;
 using GameEngine.Utilities;
 using GameEngine.World.ECS.Components.Core;
 using GameEngine.World.ECS.Components.Graphics;
 using GameEngine.World.ECS.Components.Spatial;
+using GameEngine.World.Rendering.Cameras;
 using SDL2;
 
 namespace GameEngine.World.ECS.Systems

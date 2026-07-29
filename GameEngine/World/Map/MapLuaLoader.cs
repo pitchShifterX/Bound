@@ -11,34 +11,33 @@ namespace GameEngine.World.Map
     public class MapLuaLoader
     {
         private Script? _mapScript;
-        private MapAPI? _api;
-
-        public MapLuaLoader(MapAPI api)
-        {
-            _api = api;
-        }
 
         public MapData Load(string path)
         {
             if(!File.Exists(path))
                 throw new MapNotFoundException($"Map not found: {path}");
             
-            _mapScript = new Script();
+            try
+            {
+                _mapScript = new Script();
 
-            UserData.RegisterType<MapAPI>();
+                var dataChunk = _mapScript.LoadFile(path);
+                _mapScript.Call(dataChunk);
 
-            _mapScript.Globals["api"] = _api;
+                var mainFunction = _mapScript.Globals.Get("main");
+                if(mainFunction.Type != DataType.Function)
+                    throw new InvalidOperationException($"Map missing main()");
+                
+                var mapData = _mapScript.Call(mainFunction);
 
-            var dataChunk = _mapScript.LoadFile(path);
-            _mapScript.Call(dataChunk);
-
-            var mainFunction = _mapScript.Globals.Get("main");
-            if(mainFunction.Type != DataType.Function)
-                throw new InvalidOperationException($"Map missing main()");
-            
-            var mapData = _mapScript.Call(mainFunction);
-
-            return parseMapData(mapData.Table);
+                return parseMapData(mapData.Table);
+            }
+            catch (ScriptRuntimeException e)
+            {
+                Log.Error(e.DecoratedMessage);
+                
+                throw;
+            }
         }
 
         private MapData parseMapData(Table mapData)

@@ -15,10 +15,10 @@ namespace GameEngine.World.Map.Tiles
 
         public Rectangle<float> WorldBounds =>
             new(
-                X: 0,
-                Y: 0,
-                Width: PixelWidth,
-                Height: PixelHeight
+                0,
+                0,
+                PixelWidth,
+                PixelHeight
             );
 
         public TileGrid(int tileWidth, int tileHeight)
@@ -41,6 +41,28 @@ namespace GameEngine.World.Map.Tiles
         public Vector2<float> TileToWorldPosition(int tileX, int tileY)
         {
             return new(x: tileX * Constants.TileSize, y: tileY * Constants.TileSize);
+        }
+
+        public TileBounds GetVisibleTileBounds(Rectangle<float> worldBounds)
+        {
+            var min = WorldPositionToTile(
+                worldBounds.X,
+                worldBounds.Y
+            );
+
+            var max = WorldPositionToTile(
+                worldBounds.X + worldBounds.Width,
+                worldBounds.Y + worldBounds.Height
+            );
+
+            return new TileBounds
+            {
+                StartX = Math.Clamp(min.x, 0, _tileWidth - 1),
+                EndX = Math.Clamp(max.x, 0, _tileWidth - 1),
+
+                StartY = Math.Clamp(min.y, 0, _tileHeight - 1),
+                EndY = Math.Clamp(max.y, 0, _tileHeight - 1)
+            };
         }
     }
 }

@@ -1,7 +1,7 @@
 using System.Numerics;
 using GameEngine.Utilities;
 
-namespace GameEngine.Graphics.Cameras
+namespace GameEngine.World.Rendering.Cameras
 {
     public interface ICameraView
     {
@@ -13,8 +13,11 @@ namespace GameEngine.Graphics.Cameras
         
         public Rectangle<float> VisibleWorldBounds { get; }
 
+        public bool IsVisible(Rectangle<float> bounds);
+
         public Vector2 ScreenPositionToWorldPosition(int screenX, int screenY);
         public Vector2 ScreenPositionToWorldPosition(Vector2 screenPosition);
         public Vector2<int> WorldPositionToScreenPosition(float worldX, float worldY);
+        public Rectangle<float> WorldToViewportRectangle(Rectangle<float> worldPosition);
     }
 }

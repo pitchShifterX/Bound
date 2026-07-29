@@ -34,5 +34,12 @@ namespace GameEngine.World.Map.Tiles
         /// <param name="tileY"></param>
         /// <returns></returns>
         public Vector2<float> TileToWorldPosition(int tileX, int tileY);
+
+        /// <summary>
+        /// Get the visible tile bounds in the world.
+        /// </summary>
+        /// <param name="worldBounds"></param>
+        /// <returns></returns>
+        public TileBounds GetVisibleTileBounds(Rectangle<float> worldBounds);
     }
 }
