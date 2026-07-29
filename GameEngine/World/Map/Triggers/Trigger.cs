@@ -1,31 +1,32 @@
+using MoonSharp.Interpreter;
+
 namespace GameEngine.World.Map.Triggers
 {
     public class Trigger
     {
         public required string Name { get; set; }
         public bool IsPreserved { get; set; }
+
+        [MoonSharpHidden]
         public bool HasExecuted { get; set; }
 
-        public List<Func<bool>> Conditions { get; set; } = [];
-        public List<Action> Actions { get; set; } = [];
+        public List<ITriggerCondition> Conditions { get; } = [];
+        public List<ITriggerAction> Actions { get; } = [];
 
-        public bool Evaluate()
+        public void Update(float? delta, IGameplayContext context)
         {
-            if(!IsPreserved && HasExecuted) return false;
+            if (!IsPreserved && HasExecuted)
+            return;
 
-            foreach(var condition in Conditions)
+            foreach (var condition in Conditions)
             {
-                if(!condition()) return false;
+                if (!condition.Evaluate(context))
+                    return;
             }
 
-            return true;
-        }
-
-        public void Execute()
-        {
-            foreach(var action in Actions)
+            foreach (var action in Actions)
             {
-                action();
+                action.Execute(context);
             }
 
             HasExecuted = true;

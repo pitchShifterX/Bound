@@ -13,16 +13,13 @@ namespace GameEngine.World.Map.Triggers
             Description = description;
         }
 
-        public void Execute()
+        public void Update(float? delta, IGameplayContext context)
         {
             if(!IsEnabled) return;
 
             foreach(var trigger in Triggers)
             {
-                if(trigger.Evaluate())
-                {
-                    trigger.Execute();
-                }
+                trigger.Update(delta, context);
             }
         }
     }

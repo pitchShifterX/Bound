@@ -15,6 +15,7 @@ namespace GameEngine.World.Map
         public void Initialize()
         {
             initializeLocations();
+            initializeTriggerGroups();
         }
 
         private void initializeLocations()
@@ -29,5 +30,19 @@ namespace GameEngine.World.Map
                 _context?.Location.Create(location);
             }
         }
+
+        private void initializeTriggerGroups()
+        {
+            var triggerGroups = _context?.MapContext?.Data?.TriggerGroups;
+            if(triggerGroups == null) return;
+
+            foreach(var group in triggerGroups)
+            {
+                Log.Info($"Init trigger group: {group.Name}");
+
+                _context?.TriggerEngine.AddTriggerGroup(group);
+            }
+        }
+
     }
 }

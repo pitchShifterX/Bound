@@ -1,4 +1,5 @@
 using GameEngine.World.Map.Tiles;
+using GameEngine.World.Map.Triggers;
 
 namespace GameEngine.World.Map
 {
@@ -8,6 +9,7 @@ namespace GameEngine.World.Map
     public class MapContext : IMapContext
     {
         private string _mapsDirectory { get; init; }
+        private TriggerLuaBinder? _triggers;
         private MapLuaLoader? _loader;
         private MapData? _mapData;
         private ITileCoordinateConverter? _tileGrid;
@@ -16,11 +18,12 @@ namespace GameEngine.World.Map
         public Tile[][]? Tiles => _mapData?.Tiles;
         public ITileCoordinateConverter? TileCoordinateConverter => _tileGrid;
 
-        public MapContext(string mapsDirectory)
+        public MapContext(string mapsDirectory, TriggerRegistry triggers)
         {
             _mapsDirectory = mapsDirectory;
+            _triggers = new TriggerLuaBinder(triggers);
 
-            _loader = new MapLuaLoader();
+            _loader = new MapLuaLoader(_triggers);
         }
 
         public void LoadMap(string path)

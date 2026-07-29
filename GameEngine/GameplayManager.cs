@@ -7,6 +7,8 @@ using GameEngine.World.ECS.Systems;
 using GameEngine.World.Input;
 using GameEngine.World.Map;
 using GameEngine.World.Map.Tiles;
+using GameEngine.World.Map.Triggers.Actions;
+using GameEngine.World.Map.Triggers.Conditions;
 
 namespace GameEngine
 {
@@ -66,6 +68,34 @@ namespace GameEngine
         /// <summary>
         /// Register mod prefabs and other content that will be used by map files.
         /// </summary>
-        protected abstract void RegisterModContent();
+        protected virtual void RegisterModContent()
+        {
+            Registries.Triggers.RegisterCondition(
+                "Always",
+                args => new AlwaysCondition()
+            );
+
+            Registries.Triggers.RegisterCondition(
+                "ElapsedTime",
+                args => new ElapsedTimeCondition(
+                    args.Float(0)
+                )
+            );
+
+            Registries.Triggers.RegisterAction(
+                "SetTriggerGroupStatus",
+                args => new SetTriggerGroupStatusAction(
+                    args.String(0),
+                    args.Bool(1)
+                )
+            );
+
+            Registries.Triggers.RegisterAction(
+                "WriteToConsole",
+                args => new WriteToConsoleAction(
+                    args.String(0)
+                )
+            );
+        }
     }
 }

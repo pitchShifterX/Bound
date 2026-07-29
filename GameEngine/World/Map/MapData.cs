@@ -1,4 +1,5 @@
 using GameEngine.World.Map.Tiles;
+using GameEngine.World.Map.Triggers;
 
 namespace GameEngine.World.Map
 {
@@ -6,6 +7,7 @@ namespace GameEngine.World.Map
     {
         public MapMetadata? Metadata { get; set; }
         public Tile[][]? Tiles { get; set; }
+        public List<TriggerGroup>? TriggerGroups { get; set; }
 
         public override string ToString()
         {

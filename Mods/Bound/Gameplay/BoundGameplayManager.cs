@@ -25,6 +25,8 @@ namespace Mods.Bound.Gameplay
 
         protected override void RegisterModContent()
         {
+            base.RegisterModContent();
+            
             Registries.UnitPrefab.Register(new BounderPrefab());
         }
     }

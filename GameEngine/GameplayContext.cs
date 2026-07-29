@@ -4,8 +4,10 @@ using GameEngine.World.ECS;
 using GameEngine.World.Input;
 using GameEngine.World.Map;
 using GameEngine.World.Map.Locations;
+using GameEngine.World.Map.Triggers;
 using GameEngine.World.Rendering;
 using GameEngine.World.Rendering.Cameras;
+using GameEngine.World.Time;
 using GameEngine.World.Unit;
 
 namespace GameEngine
@@ -38,6 +40,11 @@ namespace GameEngine
         public MapInitializer? _mapInitializer { get; set; }
 
         /// <summary>
+        /// Get the elapsed time since the map loaded.
+        /// </summary>
+        public IClock Time { get; set; }
+
+        /// <summary>
         /// Core service for managing entities and components. This is often 
         /// passed around to services/systems for manipulating components on
         /// entities.
@@ -61,6 +68,11 @@ namespace GameEngine
         public CameraContext? Camera { get; set; }
 
         /// <summary>
+        /// Engine for evaluating and executing triggers.
+        /// </summary>
+        public TriggerEngine TriggerEngine { get; init; }
+
+        /// <summary>
         /// Service for managing the creation and destruction of units.
         /// </summary>
         public UnitService Unit { get; init; }
@@ -77,11 +89,14 @@ namespace GameEngine
             _sceneContext = scene;
             _registries = registries;
 
+            TriggerEngine = new TriggerEngine(this);
             Unit = new UnitService(ECS, _registries.UnitPrefab);
             Location = new LocationService(ECS);
-            MapContext = new MapContext(_sceneContext.Paths.Maps);
+            MapContext = new MapContext(_sceneContext.Paths.Maps, _registries.Triggers);
 
             _mapInitializer = new MapInitializer(this);
+
+            Time = new WorldClock();
         }
 
         public void Load()
@@ -90,6 +105,8 @@ namespace GameEngine
                 throw new System.Exception("Could not start game; map data missing!");
 
             _mapInitializer?.Initialize();
+
+            Time = new WorldClock();
                 
             var camera = new Camera(
                 _sceneContext.Settings.WindowSize,
@@ -116,7 +133,9 @@ namespace GameEngine
 
         public void Update(float? delta)
         {
+            Time.Update(delta);
             Camera?.Controller.Update(delta);
+            TriggerEngine.Update(delta);
         }
 
         public void Render()

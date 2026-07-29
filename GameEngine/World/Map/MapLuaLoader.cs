@@ -3,6 +3,9 @@ using GameEngine.Graphics.Primitives;
 using GameEngine.Utilities;
 using GameEngine.World.Map.Locations;
 using GameEngine.World.Map.Tiles;
+using GameEngine.World.Map.Triggers;
+using GameEngine.World.Map.Triggers.Actions;
+using GameEngine.World.Map.Triggers.Conditions;
 using GameEngine.World.Player;
 using MoonSharp.Interpreter;
 
@@ -11,6 +14,12 @@ namespace GameEngine.World.Map
     public class MapLuaLoader
     {
         private Script? _mapScript;
+        private TriggerLuaBinder _triggers;
+
+        public MapLuaLoader(TriggerLuaBinder triggers)
+        {
+            _triggers = triggers;
+        }
 
         public MapData Load(string path)
         {
@@ -19,7 +28,10 @@ namespace GameEngine.World.Map
             
             try
             {
-                _mapScript = new Script();
+                var modules = CoreModules.Preset_HardSandbox | CoreModules.ErrorHandling;
+                _mapScript = new Script(modules);
+
+                _triggers.Bind(_mapScript);
 
                 var dataChunk = _mapScript.LoadFile(path);
                 _mapScript.Call(dataChunk);
@@ -44,11 +56,13 @@ namespace GameEngine.World.Map
         {
             var metadata = parseMetadata(mapData.Get("metadata").Table);
             var tiles = parseTiles(mapData.Get("tiles"), metadata.Width!.Value, metadata.Height!.Value);
+            var triggerGroups = parseTriggerGroups(mapData.Get("triggerGroups").Table);
 
             return new MapData
             {
                 Metadata = metadata,
-                Tiles = tiles
+                Tiles = tiles,
+                TriggerGroups = triggerGroups
             };
         }
 
@@ -106,6 +120,98 @@ namespace GameEngine.World.Map
 
             return locationList;
         }
+
+                private List<TriggerGroup> parseTriggerGroups(Table? triggerGroups)
+        {
+            var groupList = new List<TriggerGroup>();
+ 
+            if(triggerGroups == null)
+                return groupList;
+ 
+            foreach(var pairing in triggerGroups.Pairs)
+            {
+                var groupTable = pairing.Value.Table;
+                if(groupTable == null) continue;
+ 
+                var group = new TriggerGroup(
+                    groupTable.Get("name").String,
+                    groupTable.Get("description").String
+                )
+                {
+                    IsEnabled = groupTable.Get("enabled").Type != DataType.Boolean
+                        || groupTable.Get("enabled").Boolean
+                };
+ 
+                group.Triggers.AddRange(parseTriggers(groupTable.Get("triggers").Table));
+ 
+                groupList.Add(group);
+            }
+ 
+            return groupList;
+        }
+ 
+        private List<Trigger> parseTriggers(Table? triggers)
+        {
+            var triggerList = new List<Trigger>();
+ 
+            if(triggers == null)
+                return triggerList;
+ 
+            foreach(var pairing in triggers.Pairs)
+            {
+                var triggerTable = pairing.Value.Table;
+                if(triggerTable == null) continue;
+ 
+                var trigger = new Trigger
+                {
+                    Name = triggerTable.Get("name").String,
+                    IsPreserved = triggerTable.Get("preserved").Type == DataType.Boolean
+                        && triggerTable.Get("preserved").Boolean
+                };
+ 
+                trigger.Conditions.AddRange(parseConditions(triggerTable.Get("conditions").Table));
+                trigger.Actions.AddRange(parseActions(triggerTable.Get("actions").Table));
+ 
+                triggerList.Add(trigger);
+            }
+ 
+            return triggerList;
+        }
+ 
+        private List<ITriggerCondition> parseConditions(Table? conditions)
+        {
+            var conditionList = new List<ITriggerCondition>();
+ 
+            if(conditions == null)
+                return conditionList;
+ 
+            foreach(var pairing in conditions.Pairs)
+            {
+                var condition = pairing.Value.ToObject<ITriggerCondition>();
+                if(condition != null)
+                    conditionList.Add(condition);
+            }
+ 
+            return conditionList;
+        }
+ 
+        private List<ITriggerAction> parseActions(Table? actions)
+        {
+            var actionList = new List<ITriggerAction>();
+ 
+            if(actions == null)
+                return actionList;
+ 
+            foreach(var pairing in actions.Pairs)
+            {
+                var action = pairing.Value.ToObject<ITriggerAction>();
+                if(action != null)
+                    actionList.Add(action);
+            }
+ 
+            return actionList;
+        }
+
 
         private Rectangle<int> parseRectangle(Table rect)
         {

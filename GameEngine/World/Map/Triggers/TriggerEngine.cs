@@ -1,26 +1,35 @@
 using GameEngine.SharedInterface;
-using GameEngine.World.ECS;
-using GameEngine.World.Unit;
 
 namespace GameEngine.World.Map.Triggers
 {
     public class TriggerEngine : IUpdatable
     {
         private Dictionary<string, TriggerGroup> _triggerGroups = [];
-        private ECSService _ecs;
-        private UnitPrefabRegistry _unitRegistry;
+        private IGameplayContext _context;
 
-        public TriggerEngine(ECSService service, UnitPrefabRegistry unitRegistry)
+        public TriggerEngine(IGameplayContext context)
         {
-            _ecs = service;
-            _unitRegistry = unitRegistry;
+            _context = context;
+        }
+
+        public void AddTriggerGroup(TriggerGroup group)
+        {
+            _triggerGroups[group.Name] = group;
+        }
+
+        public TriggerGroup? GetTriggerGroupByName(string name)
+        {
+            if(!_triggerGroups.TryGetValue(name, out var triggerGroup))
+                return null;
+            
+            return triggerGroup;
         }
 
         public void Update(float? delta)
         {
             foreach(var triggerGroup in _triggerGroups.Values)
             {
-                triggerGroup.Execute();
+                triggerGroup.Update(delta, _context);
             }
         }
     }
