@@ -21,5 +21,10 @@ namespace GameEngine.World.Map.Triggers.Actions
 
             return TriggerActionResult.Running;
         }
+
+        public void Reset()
+        {
+            _elapsed = 0;
+        }
     }
 }

@@ -28,7 +28,17 @@ namespace GameEngine.World.Map.Triggers
 
             if (_currentAction >= Actions.Count)
             {
-                HasExecuted = true;
+                if(IsPreserved)
+                {
+                    _currentAction = 0;
+
+                    ResetActions();
+                }
+                else
+                {
+                    HasExecuted = true;
+                }
+
                 return;
             }
 
@@ -37,6 +47,14 @@ namespace GameEngine.World.Map.Triggers
             if (result == TriggerActionResult.Completed)
             {
                 _currentAction++;
+            }
+        }
+
+        private void ResetActions()
+        {
+            foreach(var action in Actions)
+            {
+                action.Reset();
             }
         }
     }
