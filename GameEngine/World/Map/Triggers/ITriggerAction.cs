@@ -2,6 +2,6 @@ namespace GameEngine.World.Map.Triggers
 {
     public interface ITriggerAction
     {
-        public void Execute(IGameplayContext context);
+        public TriggerActionResult Execute(IGameplayContext context, float? delta);
     }
 }

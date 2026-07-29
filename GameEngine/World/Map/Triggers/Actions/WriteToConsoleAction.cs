@@ -9,9 +9,11 @@ namespace GameEngine.World.Map.Triggers.Actions
             _text = text;
         }
 
-        public void Execute(IGameplayContext context)
+        public TriggerActionResult Execute(IGameplayContext context, float? delta)
         {
             Console.WriteLine(_text);
+
+            return TriggerActionResult.Completed;
         }
     }
 }

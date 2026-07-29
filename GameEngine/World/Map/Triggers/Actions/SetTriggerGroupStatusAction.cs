@@ -11,7 +11,7 @@ namespace GameEngine.World.Map.Triggers.Actions
             _status = status;
         }
 
-        public void Execute(IGameplayContext context)
+        public TriggerActionResult Execute(IGameplayContext context, float? delta)
         {
             var triggerGroup = context.TriggerEngine.GetTriggerGroupByName(_triggerGroupId);
 
@@ -19,6 +19,8 @@ namespace GameEngine.World.Map.Triggers.Actions
             {
                 triggerGroup.IsEnabled = _status;
             }
+
+            return TriggerActionResult.Completed;
         }
     }
 }

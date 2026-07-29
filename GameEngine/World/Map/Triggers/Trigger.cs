@@ -4,6 +4,8 @@ namespace GameEngine.World.Map.Triggers
 {
     public class Trigger
     {
+        private int _currentAction;
+
         public required string Name { get; set; }
         public bool IsPreserved { get; set; }
 
@@ -16,7 +18,7 @@ namespace GameEngine.World.Map.Triggers
         public void Update(float? delta, IGameplayContext context)
         {
             if (!IsPreserved && HasExecuted)
-            return;
+                return;
 
             foreach (var condition in Conditions)
             {
@@ -24,12 +26,18 @@ namespace GameEngine.World.Map.Triggers
                     return;
             }
 
-            foreach (var action in Actions)
+            if (_currentAction >= Actions.Count)
             {
-                action.Execute(context);
+                HasExecuted = true;
+                return;
             }
 
-            HasExecuted = true;
+            var result = Actions[_currentAction].Execute(context, delta);
+
+            if (result == TriggerActionResult.Completed)
+            {
+                _currentAction++;
+            }
         }
     }
 }

@@ -96,6 +96,13 @@ namespace GameEngine
                     args.String(0)
                 )
             );
+            
+            Registries.Triggers.RegisterAction(
+                "Wait",
+                args => new WaitAction(
+                    args.Float(0)
+                )
+            );
         }
     }
 }
