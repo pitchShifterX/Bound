@@ -54,8 +54,64 @@ function main()
                 }
             }
         },
-        tiles = tiles
+        tiles = tiles,
+        triggerGroups = {
+            start = {
+                name = "Map Initialization",
+                description = "After 5 seconds, change welcome trigger group status.",
+                enabled = true,
+                triggers = {
+                    init = {
+                        name = "Init",
+                        preserved = false,
+                        conditions = {
+                            ElapsedTime(5),
+                        },
+                        actions = {
+                            SetTriggerGroupStatus("Welcome", true),
+                            SetTriggerGroupStatus("Init", false)
+                        }
+                    }
+                }
+            },
+            welcome = {
+                name = "Welcome",
+                description = "Displays a welcome message.",
+                enabled = false,
+                triggers = {
+                    welcome = {
+                        name = "Welcome Message",
+                        preserved = false,
+                        conditions = {
+                            Always(),
+                        },
+                        actions = {
+                            WriteToConsole("Howdy! This is pitch."),
+                            Wait(5),
+                            WriteToConsole("A new message"),
+                            SetTriggerGroupStatus("test", true),
+                            SetTriggerGroupStatus("Welcome", false)
+                        }
+                    }
+                }
+            },
+            test = {
+                name = "test",
+                enabled = false,
+                triggers = {
+                    test = {
+                        name = "test message",
+                        preserved = true,
+                        conditions = {
+                            Always(),
+                        },
+                        actions = {
+                            WriteToConsole("repeat this message every 3 seconds"),
+                            Wait(3)
+                        }
+                    }
+                }
+            }
+        }
     }
 end
-
-api:SpawnUnit("Bounder", "one", 500, 500);
