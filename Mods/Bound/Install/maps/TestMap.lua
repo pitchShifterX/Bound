@@ -88,26 +88,7 @@ function main()
                         actions = {
                             WriteToConsole("Howdy! This is pitch."),
                             Wait(5),
-                            WriteToConsole("A new message"),
-                            SetTriggerGroupStatus("test", true),
-                            SetTriggerGroupStatus("Welcome", false)
-                        }
-                    }
-                }
-            },
-            test = {
-                name = "test",
-                enabled = false,
-                triggers = {
-                    test = {
-                        name = "test message",
-                        preserved = true,
-                        conditions = {
-                            Always(),
-                        },
-                        actions = {
-                            WriteToConsole("repeat this message every 3 seconds"),
-                            Wait(3)
+                            CreateUnitAtLocation("Bounder", "one", "start_area")
                         }
                     }
                 }

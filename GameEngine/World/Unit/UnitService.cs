@@ -1,7 +1,9 @@
 using GameEngine.Utilities;
 using GameEngine.World.ECS;
+using GameEngine.World.ECS.Components.Core;
 using GameEngine.World.ECS.Components.Gameplay;
 using GameEngine.World.ECS.Entities;
+using GameEngine.World.Map.Locations;
 
 namespace GameEngine.World.Unit
 {
@@ -9,11 +11,13 @@ namespace GameEngine.World.Unit
     {
         private ECSService _ecs;
         private UnitPrefabRegistry _registry;
+        private LocationService _location;
 
-        public UnitService(ECSService service, UnitPrefabRegistry registry)
+        public UnitService(ECSService service, UnitPrefabRegistry registry, LocationService location)
         {
             _ecs = service;
             _registry = registry;
+            _location = location;
         }
 
         public WorldEntityHandle? Create(
@@ -34,6 +38,15 @@ namespace GameEngine.World.Unit
             var entity = _ecs.CreateEntity();
             prefab.CreatePrefab(entity.Id, _ecs);
 
+            var location = _location.GetWorldBoundsByLocationName(locationId);
+
+            if(location == null)
+            {
+                Log.Warn($"Could not create unit. Location not found: {locationId}");
+
+                return null;
+            }
+
             _ecs.AddComponent(
                 entity.Id, 
                 new PlayerOwnerComponent(playerId)
@@ -41,8 +54,13 @@ namespace GameEngine.World.Unit
 
             _ecs.AddComponent(
                 entity.Id,
-                new LocationComponent(locationId)
+                new TransformComponent
+                {
+                    Position = location.Value.Center
+                }
             );
+
+            Log.Info($"Unit {prefabName} created [{location.Value.Center.x}, {location.Value.Center.y}] with id {entity.Id}");
 
             return entity;
         }

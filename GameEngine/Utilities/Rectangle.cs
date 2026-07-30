@@ -9,6 +9,12 @@ namespace GameEngine.Utilities
         public T Width { get; set; }
         public T Height { get; set; }
 
+        public Vector2<T> Center => new()
+        {
+            x = X + Width / T.CreateChecked(2),
+            y = Y + Height / T.CreateChecked(2)
+        };
+
         public Rectangle(
             T x,
             T y,

@@ -90,8 +90,8 @@ namespace GameEngine
             _registries = registries;
 
             TriggerEngine = new TriggerEngine(this);
-            Unit = new UnitService(ECS, _registries.UnitPrefab);
             Location = new LocationService(ECS);
+            Unit = new UnitService(ECS, _registries.UnitPrefab, Location);
             MapContext = new MapContext(_sceneContext.Paths.Maps, _registries.Triggers);
 
             _mapInitializer = new MapInitializer(this);

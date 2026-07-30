@@ -16,6 +16,8 @@ namespace GameEngine.World.Rendering
         private ICameraView _camera { get; init; }
 
         public TileRenderer Tiles { get; set; }
+
+        public RenderTextureSystem RenderTextureSystem { get; init; }
         public BorderRenderSystem BorderRenderSystem { get; set; }
 
         public RenderManager(
@@ -36,6 +38,8 @@ namespace GameEngine.World.Rendering
                 _camera
             );
 
+            RenderTextureSystem = new RenderTextureSystem();
+
             BorderRenderSystem = new BorderRenderSystem(
                 _ecs,
                 _draw,
@@ -46,6 +50,8 @@ namespace GameEngine.World.Rendering
         public void Render()
         {
             Tiles.Render();
+
+            RenderTextureSystem.DrawTextures(_ecs, _draw, _camera);
 
             BorderRenderSystem.Render();
         }

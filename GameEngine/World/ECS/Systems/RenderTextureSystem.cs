@@ -1,3 +1,4 @@
+using GameEngine.Graphics.Rendering;
 using GameEngine.Resources;
 using GameEngine.Scene;
 using GameEngine.Utilities;
@@ -11,7 +12,7 @@ namespace GameEngine.World.ECS.Systems
 {
     public class RenderTextureSystem
     {
-        public void DrawTextures(ECSService service, ISceneContext sceneContext, ICameraView camera)
+        public void DrawTextures(ECSService service, IRenderContext sceneContext, ICameraView camera)
         {
             var storedEntities = service.GetEntitiesWith<SpriteComponent, TransformComponent>();
 
@@ -28,6 +29,12 @@ namespace GameEngine.World.ECS.Systems
                 var worldPosition = camera.WorldPositionToScreenPosition(position.x, position.y);
                 var textureSize = (int)(Constants.TileSize * camera.Zoom);
 
+                var originX = spriteComponent.Origin.x * camera.Zoom;
+                var originY = spriteComponent.Origin.y * camera.Zoom;
+
+                var absoluteX = (int)(worldPosition.x - originX);
+                var absoluteY = (int)(worldPosition.y - originY);
+
                 if(texture == null) continue;
 
                 var srcRect = new SDL.SDL_Rect
@@ -41,7 +48,7 @@ namespace GameEngine.World.ECS.Systems
                 sceneContext.DrawTexture(
                     texture,
                     srcRect,
-                    new SDL2.SDL.SDL_Rect { x = worldPosition.x, y = worldPosition.y, w = textureSize, h = textureSize }
+                    new SDL.SDL_Rect { x = absoluteX, y = absoluteY, w = textureSize, h = textureSize }
                 );
             }
         }

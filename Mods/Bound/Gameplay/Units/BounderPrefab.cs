@@ -15,7 +15,8 @@ namespace Mods.Bound.Gameplay.Unit
             service.AddComponent(entityId, new SpriteComponent
             {
                 TextureId = "runner" ,
-                SourceRectangle = new Rectangle<int>(0, 0, 48, 48)
+                SourceRectangle = new Rectangle<int>(0, 0, 48, 48),
+                Size = new(32, 32)
             });
 
             service.AddComponent(entityId, new TransformComponent {});
