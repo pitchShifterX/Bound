@@ -32,19 +32,20 @@ class Program
         mod.Start();
     }
 
-    static string? ParseModArg(string[] args)
+    static string ParseModArg(string[] args)
     {
         for (int i = 0; i < args.Length; i++)
         {
             if (args[i] == "--mod" || args[i] == "-m")
             {
                 if (i + 1 < args.Length) return args[i + 1];
-                return null;
+                    return "Bound";
             }
             
             if (args[i].StartsWith("--mod="))
                 return args[i].Substring("--mod=".Length);
         }
-        return null;
+        
+        return "Bound";
     }
 }
