@@ -1,14 +1,13 @@
-using System.Numerics;
 using GameEngine.Utilities;
 
 namespace GameEngine.World.Rendering.Cameras
 {
     public class Camera : ICameraController, ICameraView
     {
-        private Vector2 _position;
+        private Vector2<float> _position;
         private float _zoom = 2.0f;
         private float _movementSpeed = 300f;
-        private Vector2 _movementDirection = Vector2.Zero;
+        private Vector2<float> _movementDirection = Vector2<float>.Zero;
 
         private int _viewportWidth;
         private int _viewportHeight;
@@ -19,7 +18,7 @@ namespace GameEngine.World.Rendering.Cameras
         public int ViewportWidth => _viewportWidth;
         public int ViewportHeight => _viewportHeight;
 
-        public Vector2 WorldPosition => _position;
+        public Vector2<float> WorldPosition => _position;
         public float Zoom => _zoom;
         public float MovementSpeed => _movementSpeed;
 
@@ -31,8 +30,8 @@ namespace GameEngine.World.Rendering.Cameras
                 float height = ViewportHeight / Zoom;
 
                 return new(
-                    WorldPosition.X - width / 2,
-                    WorldPosition.Y - height / 2,
+                    WorldPosition.x - width / 2,
+                    WorldPosition.y - height / 2,
                     width,
                     height
                 );
@@ -44,7 +43,7 @@ namespace GameEngine.World.Rendering.Cameras
             int viewportHeight, 
             int worldTileWidth, 
             int worldTileHeight,
-            Vector2? defaultPosition = null
+            Vector2<float>? defaultPosition = null
         )
         {
             _viewportWidth = viewportWidth;
@@ -54,7 +53,7 @@ namespace GameEngine.World.Rendering.Cameras
 
             // Sets default position for world
             // if not set, set position to center of world
-            _position = defaultPosition ?? new Vector2(
+            _position = defaultPosition ?? new Vector2<float>(
                 _worldPixelWidth / 2f, _worldPixelHeight / 2f
             );
 
@@ -64,7 +63,7 @@ namespace GameEngine.World.Rendering.Cameras
         public Camera(
             Vector2<int> resolution,
             Vector2<int> mapSize,
-            Vector2? defaultPosition = null
+            Vector2<float>? defaultPosition = null
         ) : this(resolution.x, resolution.y, mapSize.x, mapSize.y, defaultPosition) {}
 
         /// <summary>
@@ -92,16 +91,16 @@ namespace GameEngine.World.Rendering.Cameras
             switch(direction)
             {
                 case Direction.Up:
-                    _movementDirection.Y = -1;
+                    _movementDirection.y = -1;
                 break;
                 case Direction.Down:
-                    _movementDirection.Y = 1;
+                    _movementDirection.y = 1;
                 break;
                 case Direction.Left:
-                    _movementDirection.X = -1;
+                    _movementDirection.x = -1;
                 break;
                 case Direction.Right:
-                    _movementDirection.X = 1;
+                    _movementDirection.x = 1;
                 break;
             }
         }
@@ -111,25 +110,25 @@ namespace GameEngine.World.Rendering.Cameras
             return VisibleWorldBounds.Intersects(bounds);
         }
 
-        public Vector2 ScreenPositionToWorldPosition(int screenX, int screenY)
+        public Vector2<float> ScreenPositionToWorldPosition(int screenX, int screenY)
         {
-            var vector2 = new Vector2(screenX, screenY);
+            var vector2 = new Vector2<float>(screenX, screenY);
 
             return ScreenPositionToWorldPosition(vector2);
         }
 
-        public Vector2 ScreenPositionToWorldPosition(Vector2 screenPosition)
+        public Vector2<float> ScreenPositionToWorldPosition(Vector2<float> screenPosition)
         {
             var centerX = _viewportWidth / 2f;
             var centerY = _viewportHeight / 2f;
 
-            var offsetX = screenPosition.X - centerX;
-            var offsetY = screenPosition.Y - centerY;
+            var offsetX = screenPosition.x - centerX;
+            var offsetY = screenPosition.y - centerY;
 
-            var worldX = _position.X + (offsetX / _zoom);
-            var worldY = _position.Y + (offsetY / _zoom);
+            var worldX = _position.x + (offsetX / _zoom);
+            var worldY = _position.y + (offsetY / _zoom);
 
-            return new Vector2(worldX, worldY);
+            return new Vector2<float>(worldX, worldY);
         }
 
         public Vector2<int> WorldPositionToScreenPosition(float worldX, float worldY)
@@ -137,8 +136,8 @@ namespace GameEngine.World.Rendering.Cameras
             int centerX = _viewportWidth / 2;
             int centerY = _viewportHeight / 2;
 
-            int screenX = centerX + (int)((worldX - _position.X) * _zoom);
-            int screenY = centerY + (int)((worldY - _position.Y) * _zoom);
+            int screenX = centerX + (int)((worldX - _position.x) * _zoom);
+            int screenY = centerY + (int)((worldY - _position.y) * _zoom);
 
             return new(screenX, screenY);
         }
@@ -163,14 +162,14 @@ namespace GameEngine.World.Rendering.Cameras
         {
             if(delta == null) return;
 
-            if(_movementDirection.X != 0 || _movementDirection.Y != 0)
+            if(_movementDirection.x != 0 || _movementDirection.y != 0)
             {
                 float moveDistance = MovementSpeed * (float)delta;
 
-                move(_movementDirection.X * moveDistance, _movementDirection.Y * moveDistance);
+                move(_movementDirection.x * moveDistance, _movementDirection.y * moveDistance);
             }
 
-            _movementDirection = Vector2.Zero;
+            _movementDirection = Vector2<float>.Zero;
         }
 
         private void clampPosition()
@@ -185,20 +184,20 @@ namespace GameEngine.World.Rendering.Cameras
             var maxY = _worldPixelHeight - (visibleHeight / 2f);
 
             if(minX > maxX)
-                _position.X = _worldPixelWidth / 2f;
+                _position.x = _worldPixelWidth / 2f;
             else
-                _position.X = Math.Clamp(_position.X, minX, maxX);
+                _position.x = Math.Clamp(_position.x, minX, maxX);
 
             if(minY > maxY)
-                _position.Y = _worldPixelHeight / 2f;
+                _position.y = _worldPixelHeight / 2f;
             else
-                _position.Y = Math.Clamp(_position.Y, minY, maxY);
+                _position.y = Math.Clamp(_position.y, minY, maxY);
         }
 
         private void move(float deltaX, float deltaY)
         {
-            _position.X += deltaX;
-            _position.Y += deltaY;
+            _position.x += deltaX;
+            _position.y += deltaY;
 
             clampPosition();
         }

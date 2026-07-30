@@ -43,5 +43,16 @@ namespace GameEngine.Utilities
                 position.y >= Y &&
                 position.y < Y + Height;
         }
+
+        public Rectangle<TTo> To<TTo>()
+            where TTo : INumber<TTo>
+        {
+            return new Rectangle<TTo>(
+                TTo.CreateChecked(X),
+                TTo.CreateChecked(Y),
+                TTo.CreateChecked(Width),
+                TTo.CreateChecked(Height)
+            );
+        }
     }
 }

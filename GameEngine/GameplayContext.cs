@@ -63,6 +63,11 @@ namespace GameEngine
         public InputService? Input { get; set; }
 
         /// <summary>
+        /// Service for selecting units.
+        /// </summary>
+        public SelectionService? Selection { get; set; }
+
+        /// <summary>
         /// Context for controlling and viewing the camera.
         /// </summary>
         public CameraContext? Camera { get; set; }
@@ -114,13 +119,15 @@ namespace GameEngine
             );
 
             Camera = new CameraContext(camera);
+            Selection = new SelectionService(ECS, camera);
             Input = new InputService(this);
 
             _renderManager = new RenderManager(
                 MapContext,
                 ECS,
                 _sceneContext,
-                Camera.View
+                Camera.View,
+                Selection
             );
         }
 

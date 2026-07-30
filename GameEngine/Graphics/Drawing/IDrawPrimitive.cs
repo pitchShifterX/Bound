@@ -1,6 +1,6 @@
 namespace GameEngine.Graphics.Drawing
 {
-    public interface IDrawPrimitive : IDrawRectangle, IDrawTexture
+    public interface IDrawPrimitive : IDrawRectangle, IDrawEllipse, IDrawTexture
     {
         
     }

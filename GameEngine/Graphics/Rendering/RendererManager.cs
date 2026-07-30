@@ -53,6 +53,38 @@ namespace GameEngine.Graphics.Rendering
             DrawTexture(texture.Handle, source, destination);
         }
 
+        public void DrawEllipse(Vector2<int> center, float radiusX, float radiusY, Color color)
+        {
+            const int segments = 64;
+
+            var points = new SDL.SDL_Point[segments + 1];
+
+            for (int i = 0; i <= segments; i++)
+            {
+                float angle = MathF.Tau * i / segments;
+
+                points[i] = new SDL.SDL_Point
+                {
+                    x = center.x + (int)(MathF.Cos(angle) * radiusX),
+                    y = center.y + (int)(MathF.Sin(angle) * radiusY)
+                };
+            }
+
+            SDL.SDL_SetRenderDrawColor(
+                Renderer,
+                color.R,
+                color.G,
+                color.B,
+                color.A
+            );
+
+            SDL.SDL_RenderDrawLines(
+                Renderer,
+                points,
+                points.Length
+            );
+        }
+
         public void DrawRectangle(Rectangle<float> rectangle, Color color, bool filled = false)
         {
             var rect = new SDL.SDL_Rect

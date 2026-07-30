@@ -2,6 +2,7 @@ using GameEngine.Graphics.Rendering;
 using GameEngine.SharedInterface;
 using GameEngine.World.ECS;
 using GameEngine.World.ECS.Systems;
+using GameEngine.World.Input;
 using GameEngine.World.Map;
 using GameEngine.World.Rendering.Cameras;
 using GameEngine.World.Rendering.Tiles;
@@ -14,29 +15,37 @@ namespace GameEngine.World.Rendering
         private ECSService _ecs { get; init; }
         private IRenderContext _draw { get; init; }
         private ICameraView _camera { get; init; }
+        private SelectionService _selection { get; init; }
 
         public TileRenderer Tiles { get; set; }
 
         public RenderTextureSystem RenderTextureSystem { get; init; }
         public BorderRenderSystem BorderRenderSystem { get; set; }
+        public SelectionCircleRenderSystem SelectionCircleRenderSystem { get; set; }
+        public SelectionBoxRenderSystem SelectionBoxRenderSystem { get; set; }
 
         public RenderManager(
             IMapView map,
             ECSService ecs,
             IRenderContext draw,
-            ICameraView camera
+            ICameraView camera,
+            SelectionService selection
         )
         {
             _map = map;
             _ecs = ecs;
             _draw = draw;
             _camera = camera;
+            _selection = selection;
 
             Tiles = new TileRenderer(
                 _map,
                 _draw,
                 _camera
             );
+
+            SelectionCircleRenderSystem = new SelectionCircleRenderSystem();
+            SelectionBoxRenderSystem = new SelectionBoxRenderSystem();
 
             RenderTextureSystem = new RenderTextureSystem();
 
@@ -47,13 +56,18 @@ namespace GameEngine.World.Rendering
             );
         }
         
+        // update this later to render world vs ui
         public void Render()
         {
             Tiles.Render();
 
+            SelectionCircleRenderSystem.DrawCircle(_ecs, _draw, _camera);
+
             RenderTextureSystem.DrawTextures(_ecs, _draw, _camera);
 
             BorderRenderSystem.Render();
+
+            SelectionBoxRenderSystem.Draw(_selection, _draw);
         }
     }
 }

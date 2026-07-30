@@ -52,6 +52,41 @@ namespace GameEngine.World.ECS
             }
         }
 
+        public IEnumerable<int> GetEntitiesWith<T1, T2, T3>() 
+            where T1 : struct
+            where T2 : struct
+            where T3 : struct
+        {
+            var s1 = GetStorage<T1>();
+            var s2 = GetStorage<T2>();
+            var s3 = GetStorage<T3>();
+
+            if (s1.Count <= s2.Count && s1.Count <= s3.Count)
+            {
+                foreach (var id in s1.Keys)
+                {
+                    if (s2.ContainsKey(id) && s3.ContainsKey(id))
+                        yield return id;
+                }
+            }
+            else if (s2.Count <= s1.Count && s2.Count <= s3.Count)
+            {
+                foreach (var id in s2.Keys)
+                {
+                    if (s1.ContainsKey(id) && s3.ContainsKey(id))
+                        yield return id;
+                }
+            }
+            else
+            {
+                foreach (var id in s3.Keys)
+                {
+                    if (s1.ContainsKey(id) && s2.ContainsKey(id))
+                        yield return id;
+                }
+            }
+        }
+
         public Dictionary<int, T> GetStorage<T>() where T : struct
         {
             return getComponentCollection<T>().Storage;
@@ -82,6 +117,11 @@ namespace GameEngine.World.ECS
         public void AddComponent<T>(int entityId, T component) where T : struct
         {
             getComponentCollection<T>().Storage[entityId] = component;
+        }
+
+        public void RemoveComponent<T>(int entityId) where T : struct
+        {
+            getComponentCollection<T>().Storage.Remove(entityId);
         }
 
         public ref T GetComponent<T>(int entityId) where T : struct

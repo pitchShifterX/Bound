@@ -1,9 +1,8 @@
 using GameEngine.SharedInterface;
+using GameEngine.Utilities;
 
 namespace GameEngine.Event.Input
 {
-    public record struct MousePoint(int X, int Y);
-
     public class MouseState : IFrameLifecycle
     {
         public int PositionX { get; set; }
@@ -18,7 +17,7 @@ namespace GameEngine.Event.Input
         public HashSet<MouseButton> CurrentButtons { get; } = [];
         public HashSet<MouseButton> PreviousButtons { get; } = [];
 
-        public Dictionary<MouseButton, MousePoint> DragStart = [];
+        public Dictionary<MouseButton, Vector2<int>> DragStart = [];
         public readonly int DragThreshold = 5;
 
         public void BeginFrame()

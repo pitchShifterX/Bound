@@ -35,12 +35,12 @@ namespace GameEngine.World.Map.Tiles
             tileX = Math.Clamp(tileX, 0, _tileWidth - 1);
             tileY = Math.Clamp(tileY, 0, _tileHeight - 1);
 
-            return new(x: tileX, y: tileY);
+            return new(tileX, tileY);
         }
 
         public Vector2<float> TileToWorldPosition(int tileX, int tileY)
         {
-            return new(x: tileX * Constants.TileSize, y: tileY * Constants.TileSize);
+            return new(tileX * Constants.TileSize, tileY * Constants.TileSize);
         }
 
         public TileBounds GetVisibleTileBounds(Rectangle<float> worldBounds)

@@ -133,6 +133,11 @@ namespace GameEngine.Scene
             DrawTexture(texture.Handle, source, destination);
         }
 
+        public void DrawEllipse(Vector2<int> center, float radiusX, float radiusY, Color color)
+        {
+            _modContext.RendererManager?.DrawEllipse(center, radiusX, radiusY, color);
+        }
+
         public void DrawRectangle(Rectangle<float> rectangle, Color color, bool filled = false)
         {
             _modContext.RendererManager?.DrawRectangle(rectangle, color, filled);

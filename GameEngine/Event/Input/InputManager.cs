@@ -1,3 +1,5 @@
+using GameEngine.Utilities;
+
 namespace GameEngine.Event.Input
 {
     public class InputManager : IInputController
@@ -42,7 +44,9 @@ namespace GameEngine.Event.Input
                         _mouse.CurrentButtons.Add(mouseButton.Button);
 
                         _mouse.DragStart[mouseButton.Button] =
-                            new MousePoint(mouseButton.PositionX, mouseButton.PositionY);
+                            new Vector2<int>(
+                                mouseButton.PositionX, mouseButton.PositionY
+                            );
                     }
                     else
                     {
@@ -94,7 +98,7 @@ namespace GameEngine.Event.Input
             if(!_mouse.DragStart.TryGetValue(button, out var position))
                 return 0;
             
-            return _mouse.PositionX - position.X;
+            return _mouse.PositionX - position.x;
         }
 
         public int GetMouseDragY(MouseButton button)
@@ -102,10 +106,10 @@ namespace GameEngine.Event.Input
             if(!_mouse.DragStart.TryGetValue(button, out var position))
                 return 0;
 
-            return _mouse.PositionY - position.Y;
+            return _mouse.PositionY - position.y;
         }
 
-        public MousePoint? GetMouseDragStart(MouseButton button)
+        public Vector2<int>? GetMouseDragStart(MouseButton button)
         {
             if (_mouse.DragStart.TryGetValue(button, out var position))
                 return position;
@@ -121,8 +125,8 @@ namespace GameEngine.Event.Input
             if (!_mouse.DragStart.TryGetValue(button, out var position))
                 return false;
 
-            return Math.Abs(_mouse.PositionX - position.X) >= _mouse.DragThreshold
-                || Math.Abs(_mouse.PositionY - position.Y) >= _mouse.DragThreshold;
+            return Math.Abs(_mouse.PositionX - position.x) >= _mouse.DragThreshold
+                || Math.Abs(_mouse.PositionY - position.y) >= _mouse.DragThreshold;
         }
 
         public int MousePositionX => _mouse.PositionX;

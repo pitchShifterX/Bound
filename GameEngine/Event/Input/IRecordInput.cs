@@ -1,3 +1,5 @@
+using GameEngine.Utilities;
+
 namespace GameEngine.Event.Input
 {
     public interface IRecordInput
@@ -7,7 +9,7 @@ namespace GameEngine.Event.Input
         public bool WasMouseButtonReleased(MouseButton button);
         public int GetMouseDragX(MouseButton button);
         public int GetMouseDragY(MouseButton button);
-        public MousePoint? GetMouseDragStart(MouseButton button);
+        public Vector2<int>? GetMouseDragStart(MouseButton button);
         public bool IsMouseDragging(MouseButton button);
         public int MousePositionX { get; }
         public int MousePositionY { get; }
