@@ -19,6 +19,6 @@ namespace GameEngine
         public TriggerEngine TriggerEngine { get; }
         public UnitService Unit { get; }
         public LocationService Location { get; }
-        public SelectionService Selection { get; }
+        public SelectionService? Selection { get; }
     }
 }
