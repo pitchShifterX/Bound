@@ -95,5 +95,15 @@ namespace GameEngine.World.Map.Locations
             
             return _ecs.GetComponent<Rectangle2DComponent>(entityId).Value;
         }
+
+        public bool Contains(string locationId, Vector2<float> position)
+        {
+            var bounds = GetWorldBoundsByLocationName(locationId);
+
+            if(bounds == null)
+                return false;
+            
+            return bounds.Value.Contains(position);
+        }
     }
 }

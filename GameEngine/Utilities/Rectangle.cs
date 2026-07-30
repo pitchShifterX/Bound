@@ -35,5 +35,13 @@ namespace GameEngine.Utilities
                Y < other.Y + other.Height &&
                Y + Height > other.Y;
         }
+
+        public readonly bool Contains(Vector2<T> position)
+        {
+            return position.x >= X &&
+                position.x < X + Width &&
+                position.y >= Y &&
+                position.y < Y + Height;
+        }
     }
 }

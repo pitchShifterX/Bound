@@ -92,6 +92,15 @@ namespace GameEngine
             );
 
             Registries.Triggers.RegisterAction(
+                "KillAllUnitsAtLocation",
+                args => new KillAllUnitsAtLocation(
+                    args.String(0),
+                    args.String(1),
+                    args.String(2)
+                )
+            );
+
+            Registries.Triggers.RegisterAction(
                 "SetTriggerGroupStatus",
                 args => new SetTriggerGroupStatusAction(
                     args.String(0),
