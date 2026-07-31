@@ -13,7 +13,7 @@ namespace GameEngine
 {
     public interface IGameplayContext : ILoadable, IUpdatable, IRenderable, IProcessInput
     {
-        public IClock Time { get; }
+        public IClock? Time { get; }
         public ECSService ECS { get; }
         public IMapContext? MapContext { get; }
         public CameraContext? Camera { get; }

@@ -43,7 +43,7 @@ namespace GameEngine
         /// <summary>
         /// Get the elapsed time since the map loaded.
         /// </summary>
-        public IClock Time { get; set; }
+        public IClock? Time { get; set; }
 
         /// <summary>
         /// Core service for managing entities and components. This is often 
@@ -107,8 +107,6 @@ namespace GameEngine
             MapContext = new MapContext(_sceneContext.Paths.Maps, _registries.Triggers);
 
             _mapInitializer = new MapInitializer(this);
-
-            Time = new WorldClock();
         }
 
         public void Load()
@@ -150,7 +148,7 @@ namespace GameEngine
 
         public void Update(float? delta)
         {
-            Time.Update(delta);
+            Time?.Update(delta);
             Camera?.Controller.Update(delta);
             TriggerEngine.Update(delta);
         }
