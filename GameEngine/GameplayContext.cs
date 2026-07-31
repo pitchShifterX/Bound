@@ -118,6 +118,9 @@ namespace GameEngine
 
             _mapInitializer?.Initialize();
 
+            if(Player == null)
+                throw new System.Exception("Player service null. Check map for issues.");
+
             Time = new WorldClock();
                 
             var camera = new Camera(
