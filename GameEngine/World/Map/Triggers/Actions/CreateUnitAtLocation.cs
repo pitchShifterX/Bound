@@ -3,10 +3,10 @@ namespace GameEngine.World.Map.Triggers.Actions
     public class CreateUnitAtLocation : ITriggerAction
     {
         private string _unitName;
-        private string _playerId;
+        private int _playerId;
         private string _locationId;
 
-        public CreateUnitAtLocation(string unitName, string playerId, string locationId)
+        public CreateUnitAtLocation(string unitName, int playerId, string locationId)
         {
             _unitName = unitName;
             _playerId = playerId;

@@ -3,12 +3,12 @@ namespace GameEngine.World.Map.Triggers.Actions
     public class KillAllUnitsAtLocation : ITriggerAction
     {
         private string _unitName;
-        private string _playerId;
+        private int _playerId;
         private string _locationId;
 
         public KillAllUnitsAtLocation(
             string unitName,
-            string playerId,
+            int playerId,
             string locationId
         )
         {

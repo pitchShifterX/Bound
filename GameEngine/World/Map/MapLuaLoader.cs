@@ -93,7 +93,8 @@ namespace GameEngine.World.Map
 
                 playerList.Add(new PlayerData
                 {
-                    Id = pairing.Key.String,
+                    Name = pairing.Key.String,
+                    Id = (int)playerTable.Get("id").Number,
                     Color = playerTable.Get("color").String,
                     IsHuman = playerTable.Get("human").Boolean
                 });

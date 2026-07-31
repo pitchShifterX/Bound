@@ -20,14 +20,17 @@ function main()
             height = 64,
             players = {
                 one = {
+                    id = 0,
                     color = "red",
                     human = true,
                 },
                 two = {
+                    id = 1,
                     color = "white",
                     human = false,
                 },
                 three = {
+                    id = 2,
                     color = "yellow",
                     human = false,
                 }
@@ -45,8 +48,8 @@ function main()
                 {
                     name = "red_loc",
                     tiles = {
-                        x = 0,
-                        y = 0,
+                        x = 15,
+                        y = 15,
                         w = 1,
                         h = 1
                     },
@@ -87,8 +90,9 @@ function main()
                         },
                         actions = {
                             WriteToConsole("Howdy! This is pitch."),
-                            Wait(5),
-                            CreateUnitAtLocation("Bounder", "one", "start_area")
+                            Wait(2),
+                            CreateUnitAtLocation("Bounder", 0, "start_area"),
+                            CreateUnitAtLocation("Bounder", 1, "red_loc"),
                         }
                     }
                 }

@@ -2,9 +2,9 @@ namespace GameEngine.World.ECS.Components.Gameplay
 {
     public struct PlayerOwnerComponent
     {
-        public string PlayerOwnerId;
+        public int PlayerOwnerId;
 
-        public PlayerOwnerComponent(string playerId)
+        public PlayerOwnerComponent(int playerId)
         {
             PlayerOwnerId = playerId;
         }

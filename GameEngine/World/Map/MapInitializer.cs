@@ -14,8 +14,28 @@ namespace GameEngine.World.Map
 
         public void Initialize()
         {
+            initializePlayers();
             initializeLocations();
             initializeTriggerGroups();
+        }
+
+        private void initializePlayers()
+        {
+            var playerService = _context?.Player;
+            var players = _context?.MapContext?.Data?.Metadata?.Players;
+            if(playerService == null || players == null) return;
+
+            foreach(var player in players)
+            {
+                playerService.RegisterPlayer(player);
+            }
+
+            var firstHumanSlot = players.First(x => x.IsHuman);
+            
+            playerService.SetLocalPlayer(firstHumanSlot.Id);
+
+            //come back and adjust map lua
+            Console.WriteLine($"Welcome {playerService.CurrentPlayer.Id} with color {playerService.CurrentPlayer.Color}");
         }
 
         private void initializeLocations()

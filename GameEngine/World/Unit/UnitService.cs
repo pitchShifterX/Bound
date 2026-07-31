@@ -22,7 +22,7 @@ namespace GameEngine.World.Unit
 
         public WorldEntityHandle? Create(
             string prefabName,
-            string playerId,
+            int playerId,
             string locationId
         )
         {
@@ -72,7 +72,7 @@ namespace GameEngine.World.Unit
 
         public IEnumerable<int>? GetUnitsAtLocation(
             string unitName,
-            string playerId,
+            int playerId,
             string locationId
         )
         {
@@ -110,7 +110,7 @@ namespace GameEngine.World.Unit
 
         public void KillAllUnitsAtLocation(
             string prefabName,
-            string playerId,
+            int playerId,
             string locationId
         )
         {

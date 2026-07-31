@@ -86,7 +86,7 @@ namespace GameEngine
                 "CreateUnitAtLocation",
                 args => new CreateUnitAtLocation(
                     args.String(0),
-                    args.String(1),
+                    args.Int(1),
                     args.String(2)
                 )
             );
@@ -95,7 +95,7 @@ namespace GameEngine
                 "KillAllUnitsAtLocation",
                 args => new KillAllUnitsAtLocation(
                     args.String(0),
-                    args.String(1),
+                    args.Int(1),
                     args.String(2)
                 )
             );

@@ -4,6 +4,7 @@ using GameEngine.World.Input;
 using GameEngine.World.Map;
 using GameEngine.World.Map.Locations;
 using GameEngine.World.Map.Triggers;
+using GameEngine.World.Player;
 using GameEngine.World.Rendering.Cameras;
 using GameEngine.World.Time;
 using GameEngine.World.Unit;
@@ -20,5 +21,6 @@ namespace GameEngine
         public UnitService Unit { get; }
         public LocationService Location { get; }
         public SelectionService? Selection { get; }
+        public PlayerService? Player { get; }
     }
 }

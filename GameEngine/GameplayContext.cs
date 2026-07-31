@@ -5,6 +5,7 @@ using GameEngine.World.Input;
 using GameEngine.World.Map;
 using GameEngine.World.Map.Locations;
 using GameEngine.World.Map.Triggers;
+using GameEngine.World.Player;
 using GameEngine.World.Rendering;
 using GameEngine.World.Rendering.Cameras;
 using GameEngine.World.Time;
@@ -78,6 +79,11 @@ namespace GameEngine
         public TriggerEngine TriggerEngine { get; init; }
 
         /// <summary>
+        /// Service for managing players (and computers).
+        /// </summary>
+        public PlayerService? Player { get; set; }
+
+        /// <summary>
         /// Service for managing the creation and destruction of units.
         /// </summary>
         public UnitService Unit { get; init; }
@@ -94,6 +100,7 @@ namespace GameEngine
             _sceneContext = scene;
             _registries = registries;
 
+            Player = new PlayerService();
             TriggerEngine = new TriggerEngine(this);
             Location = new LocationService(ECS);
             Unit = new UnitService(ECS, _registries.UnitPrefab, Location);
@@ -119,7 +126,7 @@ namespace GameEngine
             );
 
             Camera = new CameraContext(camera);
-            Selection = new SelectionService(ECS, camera);
+            Selection = new SelectionService(Player, ECS, camera);
             Input = new InputService(this);
 
             _renderManager = new RenderManager(

@@ -6,6 +6,7 @@ using GameEngine.World.ECS.Components;
 using GameEngine.World.ECS.Components.Core;
 using GameEngine.World.ECS.Components.Gameplay;
 using GameEngine.World.ECS.Components.Graphics;
+using GameEngine.World.Player;
 using GameEngine.World.Rendering.Cameras;
 using GameEngine.World.Unit;
 
@@ -13,10 +14,9 @@ namespace GameEngine.World.Input
 {
     public class SelectionService
     {
+        private PlayerService _player;
         private ECSService _ecs;
         private ICameraView _camera;
-
-        private const string _playerId = "one"; // update with player service later
 
         private const float _singleSelectionRadiusSquared = 16f * 16f;
 
@@ -25,8 +25,9 @@ namespace GameEngine.World.Input
         public Vector2<int> DragStartPosition { get; private set; }
         public Vector2<int> DragCurrentPosition { get; private set; }
 
-        public SelectionService(ECSService ecs, ICameraView camera)
+        public SelectionService(PlayerService player, ECSService ecs, ICameraView camera)
         {
+            _player = player;
             _ecs = ecs;
             _camera = camera;
         }
@@ -94,15 +95,15 @@ namespace GameEngine.World.Input
 
             int? closestUnit = null;
             float closestDistance = float.MaxValue;
+            bool closestIsCurrentPlayer = false;
 
-            var entities = _ecs.GetEntitiesWith<UnitComponent,TransformComponent,PlayerOwnerComponent>();
+            var entities = _ecs.GetEntitiesWith<UnitComponent, TransformComponent, PlayerOwnerComponent>();
 
             foreach(var entity in entities)
             {
                 ref var player = ref _ecs.GetComponent<PlayerOwnerComponent>(entity);
 
-                if(player.PlayerOwnerId != _playerId)
-                    continue;
+                bool isCurrentPlayer = player.PlayerOwnerId == _player.CurrentPlayer.Id;
 
                 ref var transform = ref _ecs.GetComponent<TransformComponent>(entity);
 
@@ -116,13 +117,14 @@ namespace GameEngine.World.Input
                 {
                     closestUnit = entity;
                     closestDistance = distance;
+                    closestIsCurrentPlayer = isCurrentPlayer;
                 }
 
             }
 
             if(closestUnit.HasValue)
             {
-                addSelection(closestUnit.Value);
+                addSelection(closestUnit.Value, closestIsCurrentPlayer);
             }
         }
 
@@ -132,11 +134,13 @@ namespace GameEngine.World.Input
 
             foreach(var entity in entities)
             {
+                bool isCurrentPlayer = false;
+
                 ref var player =
                     ref _ecs.GetComponent<PlayerOwnerComponent>(entity);
 
-                if(player.PlayerOwnerId != _playerId)
-                    continue;
+                if(player.PlayerOwnerId == _player.CurrentPlayer.Id)
+                    isCurrentPlayer = true;
 
                 ref var transform =
                     ref _ecs.GetComponent<TransformComponent>(entity);
@@ -148,12 +152,12 @@ namespace GameEngine.World.Input
 
                 if(SelectionRectangle.Contains(screenPosition))
                 {
-                    addSelection(entity);
+                    addSelection(entity, isCurrentPlayer);
                 }
             }
         }
 
-        private void addSelection(int entity)
+        private void addSelection(int entity, bool currentPlayer)
         {
             ref var settings = ref _ecs.GetComponent<SelectionCircleSettingsComponent>(entity);
 
@@ -161,7 +165,7 @@ namespace GameEngine.World.Input
                 entity,
                 new SelectedUnitByPlayerComponent
                 {
-                    PlayerId = _playerId
+                    PlayerId = _player.CurrentPlayer.Id
                 }
             );
 
@@ -171,7 +175,7 @@ namespace GameEngine.World.Input
                 {
                     Radius = settings.Radius,
                     Offset = settings.Offset,
-                    Color = Color.Green
+                    Color = currentPlayer ? Color.Green : Color.Red
                 }
             );
         }
