@@ -111,32 +111,13 @@ namespace GameEngine
 
         public void Load()
         {
-            if(MapContext?.Data == null || MapContext.Data.Metadata == null)
-                throw new System.Exception("Could not start game; map data missing!");
+            validate();
 
-            _mapInitializer?.Initialize();
+            initializeMap();
 
-            if(Player == null)
-                throw new System.Exception("Player service null. Check map for issues.");
+            initializeRuntime();
 
-            Time = new WorldClock();
-                
-            var camera = new Camera(
-                _sceneContext.Settings.WindowSize,
-                MapContext.Data.Metadata.GetSize()!.Value
-            );
-
-            Camera = new CameraContext(camera);
-            Selection = new SelectionService(Player, ECS, camera);
-            Input = new InputService(this);
-
-            _renderManager = new RenderManager(
-                MapContext,
-                ECS,
-                _sceneContext,
-                Camera.View,
-                Selection
-            );
+            initializeRendering();
         }
 
         public void Unload(){}
@@ -156,6 +137,45 @@ namespace GameEngine
         public void Render()
         {
             _renderManager?.Render();
+        }
+
+        private void validate()
+        {
+            if(MapContext?.Data == null || MapContext.Data.Metadata == null)
+                throw new System.Exception("Could not start game; map data missing!");
+            
+            if(Player == null)
+                throw new System.Exception("Player service null. Check map for issues.");
+        }
+
+        private void initializeMap()
+        {
+            _mapInitializer?.Initialize();
+        }
+
+        private void initializeRuntime()
+        {
+            Time = new WorldClock();
+                
+            var camera = new Camera(
+                _sceneContext.Settings.WindowSize,
+                MapContext!.Data!.Metadata!.GetSize()!.Value
+            );
+
+            Camera = new CameraContext(camera);
+            Selection = new SelectionService(Player!, ECS, camera);
+            Input = new InputService(this);
+        }
+
+        private void initializeRendering()
+        {
+            _renderManager = new RenderManager(
+                MapContext!,
+                ECS,
+                _sceneContext,
+                Camera!.View,
+                Selection!
+            );
         }
     }
 }
