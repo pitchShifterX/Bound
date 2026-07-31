@@ -17,16 +17,23 @@ namespace Mods.Bound.Gameplay.Unit
             {
                 TextureId = "runner" ,
                 SourceRectangle = new Rectangle<int>(0, 0, 48, 48),
-                Size = new(32, 32)
+                Size = new(32, 32),
+                Origin = new(16, 32)
             });
 
             service.AddComponent(entityId, new SelectionCircleSettingsComponent
             {
                 Radius = 12,
-                Offset = new Vector2<float>(0, 12)
+                Offset = new Vector2<float>(0, -8)
+            });
+
+            service.AddComponent(entityId, new MovementSpeedComponent
+            {
+                Speed = 75
             });
 
             service.AddComponent(entityId, new TransformComponent {});
+            service.AddComponent(entityId, new MovementIntentComponent());
         }
     }
 }

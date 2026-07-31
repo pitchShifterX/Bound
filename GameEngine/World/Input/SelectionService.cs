@@ -8,7 +8,6 @@ using GameEngine.World.ECS.Components.Gameplay;
 using GameEngine.World.ECS.Components.Graphics;
 using GameEngine.World.Player;
 using GameEngine.World.Rendering.Cameras;
-using GameEngine.World.Unit;
 
 namespace GameEngine.World.Input
 {
@@ -19,11 +18,15 @@ namespace GameEngine.World.Input
         private ICameraView _camera;
 
         private const float _singleSelectionRadiusSquared = 16f * 16f;
+        
+        private List<int> _selectedEntities = [];
 
         public bool IsDragging { get; private set; }
 
         public Vector2<int> DragStartPosition { get; private set; }
         public Vector2<int> DragCurrentPosition { get; private set; }
+
+        public IReadOnlyList<int> SelectedEntities => _selectedEntities;
 
         public SelectionService(PlayerService player, ECSService ecs, ICameraView camera)
         {
@@ -86,6 +89,17 @@ namespace GameEngine.World.Input
             selectUnitsInRectangle();
         }
 
+        public IEnumerable<int> GetControllableEntities()
+        {
+            foreach (var entity in _selectedEntities)
+            {
+                ref var owner = ref _ecs.GetComponent<PlayerOwnerComponent>(entity);
+
+                if (owner.PlayerOwnerId == _player.CurrentPlayer.Id)
+                    yield return entity;
+            }
+        }
+
         private void selectSingleUnit(Vector2<int> screenPosition)
         {
             var worldPosition = _camera.ScreenPositionToWorldPosition(
@@ -106,9 +120,12 @@ namespace GameEngine.World.Input
                 bool isCurrentPlayer = player.PlayerOwnerId == _player.CurrentPlayer.Id;
 
                 ref var transform = ref _ecs.GetComponent<TransformComponent>(entity);
+                ref var circleOffset = ref _ecs.GetComponent<SelectionCircleSettingsComponent>(entity);
+
+                var selectionCenter = transform.Position + circleOffset.Offset;
 
                 float distance = Vector2<float>.DistanceSquared(
-                    transform.Position,
+                    selectionCenter,
                     worldPosition
                 );
 
@@ -134,13 +151,11 @@ namespace GameEngine.World.Input
 
             foreach(var entity in entities)
             {
-                bool isCurrentPlayer = false;
-
                 ref var player =
                     ref _ecs.GetComponent<PlayerOwnerComponent>(entity);
 
-                if(player.PlayerOwnerId == _player.CurrentPlayer.Id)
-                    isCurrentPlayer = true;
+                if(player.PlayerOwnerId != _player.CurrentPlayer.Id)
+                    continue;
 
                 ref var transform =
                     ref _ecs.GetComponent<TransformComponent>(entity);
@@ -152,7 +167,7 @@ namespace GameEngine.World.Input
 
                 if(SelectionRectangle.Contains(screenPosition))
                 {
-                    addSelection(entity, isCurrentPlayer);
+                    addSelection(entity, true);
                 }
             }
         }
@@ -178,6 +193,8 @@ namespace GameEngine.World.Input
                     Color = currentPlayer ? Color.Green : Color.Red
                 }
             );
+
+            _selectedEntities.Add(entity);
         }
 
         private void clearSelection()
@@ -186,6 +203,8 @@ namespace GameEngine.World.Input
 
             foreach(var entity in entities)
             {
+                _selectedEntities.Remove(entity);
+                
                 _ecs.RemoveComponent<SelectedUnitByPlayerComponent>(entity);
                 _ecs.RemoveComponent<SelectionCircleComponent>(entity);
             }

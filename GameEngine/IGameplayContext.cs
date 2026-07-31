@@ -1,6 +1,7 @@
 using GameEngine.SharedInterface;
 using GameEngine.World.ECS;
 using GameEngine.World.Input;
+using GameEngine.World.Input.Commands;
 using GameEngine.World.Map;
 using GameEngine.World.Map.Locations;
 using GameEngine.World.Map.Triggers;
@@ -22,5 +23,6 @@ namespace GameEngine
         public LocationService Location { get; }
         public SelectionService? Selection { get; }
         public PlayerService? Player { get; }
+        public CommandService Commands { get; }
     }
 }

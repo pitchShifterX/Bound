@@ -119,6 +119,14 @@ namespace GameEngine.World.ECS
             getComponentCollection<T>().Storage[entityId] = component;
         }
 
+        public bool HasComponent<T>(int entityId) where T : struct
+        {
+            if(!_componentCollections.TryGetValue(typeof(T), out var collection))
+                return false;
+
+            return ((ComponentCollection<T>)collection).Storage.ContainsKey(entityId);
+        }
+
         public void RemoveComponent<T>(int entityId) where T : struct
         {
             getComponentCollection<T>().Storage.Remove(entityId);

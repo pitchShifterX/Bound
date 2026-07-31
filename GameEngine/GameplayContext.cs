@@ -2,6 +2,7 @@ using GameEngine.Event.Input;
 using GameEngine.Scene;
 using GameEngine.World.ECS;
 using GameEngine.World.Input;
+using GameEngine.World.Input.Commands;
 using GameEngine.World.Map;
 using GameEngine.World.Map.Locations;
 using GameEngine.World.Map.Triggers;
@@ -59,6 +60,11 @@ namespace GameEngine
         public IMapContext? MapContext { get; set; }
 
         /// <summary>
+        /// Manages multiple gameplay systems that process components.
+        /// </summary>
+        public GameplaySystems GameplaySystems { get; set; }
+
+        /// <summary>
         /// Service for managing inputs (camera, ui, etc).
         /// </summary>
         public InputService? Input { get; set; }
@@ -95,6 +101,11 @@ namespace GameEngine
         /// </summary>
         public LocationService Location { get; init; }
 
+        /// <summary>
+        /// Commands are mouse-issued orders. Gamepad will not use this.
+        /// </summary>
+        public CommandService Commands { get; init; }
+
         public GameplayContext(ISceneContext scene, GameRegistries registries)
         {
             _sceneContext = scene;
@@ -103,8 +114,11 @@ namespace GameEngine
             Player = new PlayerService();
             TriggerEngine = new TriggerEngine(this);
             Location = new LocationService(ECS);
+            GameplaySystems = new GameplaySystems(ECS);
             Unit = new UnitService(ECS, _registries.UnitPrefab, Location);
             MapContext = new MapContext(_sceneContext.Paths.Maps, _registries.Triggers);
+
+            Commands = new CommandService(ECS);
 
             _mapInitializer = new MapInitializer(this);
         }
@@ -131,6 +145,7 @@ namespace GameEngine
         {
             Time?.Update(delta);
             Camera?.Controller.Update(delta);
+            GameplaySystems.Update(delta);
             TriggerEngine.Update(delta);
         }
 
