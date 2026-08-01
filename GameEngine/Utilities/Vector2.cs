@@ -41,10 +41,12 @@ namespace GameEngine.Utilities
 
         public static Vector2<T> Normalize(Vector2<T> vector)
         {
-            var length = Length(vector);
+            var lengthSquared = LengthSquared(vector);
 
-            if (length == 0)
+            if (lengthSquared == T.Zero)
                 return Zero;
+
+            var length = Math.Sqrt(double.CreateChecked(lengthSquared));
 
             return new Vector2<T>(
                 T.CreateChecked(double.CreateChecked(vector.x) / length),
