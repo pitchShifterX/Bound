@@ -43,7 +43,12 @@ namespace GameEngine.World.Player
 
         public IPlayer GetPlayer(int id)
         {
-            return _registeredPlayers[id];
+            if(!_registeredPlayers.TryGetValue(id, out var player))
+            {
+                throw new InvalidOperationException($"Player id {id} not registered.");
+            }
+
+            return player;
         }
     }
 }
