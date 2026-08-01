@@ -124,9 +124,9 @@ namespace GameEngine.World.Unit
 
                 if(entityHandle == null)
                 {
-                    Log.Warn($"Could not get entity handle for entity id {unit} using {prefabName}");
+                    Log.Warn($"Could not get entity handle for entity id {unit} using {prefabName}. Unable to destroy entity.");
 
-                    return;
+                    continue;
                 }
 
                 _ecs.DestroyEntity(entityHandle.Value);
