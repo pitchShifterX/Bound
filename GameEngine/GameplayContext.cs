@@ -179,7 +179,7 @@ namespace GameEngine
 
             Camera = new CameraContext(camera);
             Selection = new SelectionService(Player!, ECS, camera);
-            Input = new InputService(this);
+            Input = new InputService(this, Camera.Controller);
         }
 
         private void initializeRendering()

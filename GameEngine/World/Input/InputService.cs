@@ -1,4 +1,5 @@
 using GameEngine.Event.Input;
+using GameEngine.World.Rendering.Cameras;
 
 namespace GameEngine.World.Input
 {
@@ -10,11 +11,11 @@ namespace GameEngine.World.Input
         private MouseInputController _mouse;
         private GamepadInputController _gamepad;
 
-        public InputService(IGameplayContext context)
+        public InputService(IGameplayContext context, ICameraController camera)
         {
             _context = context;
 
-            _camera = new CameraInputController(_context.Camera!.Controller);
+            _camera = new CameraInputController(camera);
             _mouse = new MouseInputController(_context);
             _gamepad = new GamepadInputController(_context);
         }
