@@ -70,7 +70,7 @@ namespace GameEngine.World.Unit
             return entity;
         }
 
-        public IEnumerable<int>? GetUnitsAtLocation(
+        public IEnumerable<int> GetUnitsAtLocation(
             string unitName,
             int playerId,
             string locationId
@@ -84,7 +84,7 @@ namespace GameEngine.World.Unit
             {
                 Log.Warn($"Cannot get units {unitName} for player {playerId}. Location {locationId} not found.");
 
-                return null;
+                return [];
             }
 
             foreach(var entity in entities)
