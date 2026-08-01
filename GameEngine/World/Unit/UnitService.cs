@@ -35,9 +35,6 @@ namespace GameEngine.World.Unit
                 return null;
             }
 
-            var entity = _ecs.CreateEntity();
-            prefab.CreatePrefab(entity.Id, _ecs);
-
             var location = _location.GetWorldBoundsByLocationName(locationId);
 
             if(location == null)
@@ -46,6 +43,9 @@ namespace GameEngine.World.Unit
 
                 return null;
             }
+
+            var entity = _ecs.CreateEntity();
+            prefab.CreatePrefab(entity.Id, _ecs);
 
             _ecs.AddComponent(
                 entity.Id,
