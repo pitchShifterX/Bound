@@ -120,23 +120,65 @@ conditions = {
 },
 ```
 
-# Actions
+## PlayerBringsUnitToLocation
 
-## WriteToConsole
-
-Prints a message to the engine console. Useful for debugging.
+Returns true if player brings any unit of specified name to location.
 
 ### Parameters
 
 | Property | Type | Description |
 |----------|------|-------------|
-| args[0] | string | Text to print. |
+| args[0] | int | Player id |
+| args[1] | string | Unit name |
+| args[2] | string | Location name |
+
+### Example
+
+```lua
+conditions = {
+    PlayerBringsUnitToLocation(0, "Bounder", "end_level_one")
+},
+```
+
+# Actions
+
+## CreateUnitAtLocation
+
+Creates a unit for a specified player at location.
+
+### Parameters
+
+| Property | Type | Description |
+|----------|------|-------------|
+| args[0] | string | Unit name |
+| args[1] | int | Player id |
+| args[2] | string | Location name |
 
 ### Example
 
 ```lua
 actions = {
-    WriteToConsole("Hello!"),
+    CreateUnitAtLocation("Bounder", 0, "start")
+},
+```
+
+## KillAllUnitsAtLocation
+
+Kills all specified unit type for player at location.
+
+### Parameters
+
+| Property | Type | Description |
+|----------|------|-------------|
+| args[0] | string | Unit name |
+| args[1] | int | Player id |
+| args[2] | string | Location name |
+
+### Example
+
+```lua
+actions = {
+    KillAllUnitsAtLocation("Bounder", 0, "start")
 },
 ```
 
@@ -174,5 +216,23 @@ Wait between actions for a specified amount of seconds.
 ```lua
 actions = {
     Wait(5),
+},
+```
+
+## WriteToConsole
+
+Prints a message to the engine console. Useful for debugging.
+
+### Parameters
+
+| Property | Type | Description |
+|----------|------|-------------|
+| args[0] | string | Text to print. |
+
+### Example
+
+```lua
+actions = {
+    WriteToConsole("Hello!"),
 },
 ```
