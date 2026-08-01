@@ -76,6 +76,15 @@ namespace GameEngine
             );
 
             Registries.Triggers.RegisterCondition(
+                "PlayerBringsUnitToLocation",
+                args => new PlayerBringsUnitToLocationCondition(
+                    args.Int(0),
+                    args.String(1),
+                    args.String(2)
+                )
+            );
+
+            Registries.Triggers.RegisterCondition(
                 "ElapsedTime",
                 args => new ElapsedTimeCondition(
                     args.Float(0)
@@ -84,7 +93,7 @@ namespace GameEngine
 
             Registries.Triggers.RegisterAction(
                 "CreateUnitAtLocation",
-                args => new CreateUnitAtLocation(
+                args => new CreateUnitAtLocationAction(
                     args.String(0),
                     args.Int(1),
                     args.String(2)
@@ -93,7 +102,7 @@ namespace GameEngine
 
             Registries.Triggers.RegisterAction(
                 "KillAllUnitsAtLocation",
-                args => new KillAllUnitsAtLocation(
+                args => new KillAllUnitsAtLocationAction(
                     args.String(0),
                     args.Int(1),
                     args.String(2)

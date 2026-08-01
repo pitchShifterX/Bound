@@ -1,3 +1,5 @@
+using GameEngine.Utilities;
+
 namespace GameEngine.World.Map.Triggers.Actions
 {
     public class WriteToConsoleAction : ITriggerAction
@@ -11,7 +13,7 @@ namespace GameEngine.World.Map.Triggers.Actions
 
         public TriggerActionResult Execute(IGameplayContext context, float? delta)
         {
-            Console.WriteLine(_text);
+            Log.Info(_text);
 
             return TriggerActionResult.Completed;
         }

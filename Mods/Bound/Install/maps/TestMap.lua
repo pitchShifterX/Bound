@@ -54,6 +54,16 @@ function main()
                         h = 1
                     },
                     color = "red"
+                },
+                {
+                    name = "kill_unit",
+                    tiles = {
+                        x = 20,
+                        y = 15,
+                        w = 2,
+                        h = 3
+                    },
+                    color = "blue"
                 }
             }
         },
@@ -93,8 +103,28 @@ function main()
                             Wait(2),
                             CreateUnitAtLocation("Bounder", 0, "start_area"),
                             CreateUnitAtLocation("Bounder", 1, "red_loc"),
+                            SetTriggerGroupStatus("Brings", true),
+                            SetTriggerGroupStatus("Welcome", false),
                         }
                     }
+                }
+            },
+            brings = {
+                name = "Brings",
+                description = "When player unit enters location, kill computer player's unit.",
+                enabled = false,
+                triggers = {
+                    {
+                        name = "Bring it",
+                        preserved = false,
+                        conditions = {
+                            PlayerBringsUnitToLocation(0, "Bounder", "kill_unit")
+                        },
+                        actions = {
+                            WriteToConsole("Killed unit"),
+                            KillAllUnitsAtLocation("Bounder", 1, "red_loc")
+                        }
+                    },
                 }
             }
         }
