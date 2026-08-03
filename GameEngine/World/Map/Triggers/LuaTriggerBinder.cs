@@ -2,11 +2,11 @@ using MoonSharp.Interpreter;
 
 namespace GameEngine.World.Map.Triggers
 {
-    public class TriggerLuaBinder
+    public class LuaTriggerBinder
     {
         private TriggerRegistry _registry;
 
-        public TriggerLuaBinder(TriggerRegistry registry)
+        public LuaTriggerBinder(TriggerRegistry registry)
         {
             _registry = registry;
         }

@@ -1,3 +1,4 @@
+using GameEngine.World.Map.Parser.Lua;
 using GameEngine.World.Map.Tiles;
 using GameEngine.World.Map.Triggers;
 
@@ -9,8 +10,8 @@ namespace GameEngine.World.Map
     public class MapContext : IMapContext
     {
         private string _mapsDirectory { get; init; }
-        private TriggerLuaBinder? _triggers;
-        private MapLuaLoader? _loader;
+        private LuaTriggerBinder? _triggers;
+        private LuaMapLoader? _loader;
         private MapData? _mapData;
         private ITileCoordinateConverter? _tileGrid;
 
@@ -21,9 +22,9 @@ namespace GameEngine.World.Map
         public MapContext(string mapsDirectory, TriggerRegistry triggers)
         {
             _mapsDirectory = mapsDirectory;
-            _triggers = new TriggerLuaBinder(triggers);
+            _triggers = new LuaTriggerBinder(triggers);
 
-            _loader = new MapLuaLoader(_triggers);
+            _loader = new LuaMapLoader(_triggers);
         }
 
         public void LoadMap(string path)
