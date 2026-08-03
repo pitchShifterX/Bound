@@ -39,14 +39,6 @@ namespace GameEngine.World.Map.Triggers
                     action.Key
                 );
             }
-
-            foreach(var t in script.Globals.Pairs)
-            {
-                var name = t.Key.String;
-                var val = t.Value;
-
-                Console.WriteLine($"{name} -> {val}");
-            }
         }
     }
 }
