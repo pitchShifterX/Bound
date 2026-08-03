@@ -2,6 +2,7 @@ namespace GameEngine.World.Map.Tiles
 {
     public class Tile
     {
-        public string? TextureId { get; set; }
+        public required string TilesetId { get; init; }
+        public required int TileIndex { get; init; }
     }
 }

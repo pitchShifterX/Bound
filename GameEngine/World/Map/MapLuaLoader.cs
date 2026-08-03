@@ -4,8 +4,6 @@ using GameEngine.Utilities;
 using GameEngine.World.Map.Locations;
 using GameEngine.World.Map.Tiles;
 using GameEngine.World.Map.Triggers;
-using GameEngine.World.Map.Triggers.Actions;
-using GameEngine.World.Map.Triggers.Conditions;
 using GameEngine.World.Player;
 using MoonSharp.Interpreter;
 
@@ -55,14 +53,16 @@ namespace GameEngine.World.Map
         private MapData parseMapData(Table mapData)
         {
             var metadata = parseMetadata(mapData.Get("metadata").Table);
-            var tiles = parseTiles(mapData.Get("tiles"), metadata.Width!.Value, metadata.Height!.Value);
+            var tilesets = parseTilesets(mapData.Get("tilesets").Table);
+            var tiles = parseTiles(mapData.Get("tiles").Table, metadata.Width!.Value, metadata.Height!.Value);
             var triggerGroups = parseTriggerGroups(mapData.Get("triggerGroups").Table);
 
             return new MapData
             {
                 Metadata = metadata,
                 Tiles = tiles,
-                TriggerGroups = triggerGroups
+                TriggerGroups = triggerGroups,
+                Tilesets = tilesets
             };
         }
 
@@ -122,7 +122,7 @@ namespace GameEngine.World.Map
             return locationList;
         }
 
-                private List<TriggerGroup> parseTriggerGroups(Table? triggerGroups)
+        private List<TriggerGroup> parseTriggerGroups(Table? triggerGroups)
         {
             var groupList = new List<TriggerGroup>();
  
@@ -225,47 +225,59 @@ namespace GameEngine.World.Map
             };
         }
 
-        private Tile[][] parseTiles(DynValue tilesData, int width, int height)
+        private List<string> parseTilesets(Table tilesets)
+        {
+            var requestedTilesets = new List<string>();
+
+            foreach(var pair in tilesets.Pairs)
+            {
+                requestedTilesets.Add(pair.Value.String);
+            }
+
+            return requestedTilesets;
+        }
+
+        private Tile[][] parseTiles(
+            Table tilesData, 
+            int width, 
+            int height
+        )
         {
             var tiles = new Tile[width][];
+
             for (int x = 0; x < width; x++)
             {
                 tiles[x] = new Tile[height];
-                for (int y = 0; y < height; y++)
-                {
-                    tiles[x][y] = new Tile();
-                }
             }
-
-            if (tilesData.Type == DataType.Table)
-            {
-                var tileTable = tilesData.Table;
                 
-                foreach (var pair in tileTable.Pairs)
+            foreach (var pair in tilesData.Pairs)
+            {
+                try
                 {
-                    try
-                    {
-                        string key = pair.Key.String;
-                        string[] coords = key.Split(',');
-                        
-                        if (coords.Length != 2) continue;
-                        if (!int.TryParse(coords[0], out int x)) continue;
-                        if (!int.TryParse(coords[1], out int y)) continue;
-                        
-                        if (x < 0 || x >= width || y < 0 || y >= height) continue;
+                    string key = pair.Key.String;
+                    string[] coords = key.Split(',');
+                    
+                    if (coords.Length != 2) continue;
+                    if (!int.TryParse(coords[0], out int x)) continue;
+                    if (!int.TryParse(coords[1], out int y)) continue;
+                    
+                    if (x < 0 || x >= width || y < 0 || y >= height) continue;
 
-                        var tileEntry = pair.Value.Table;
-                        if (tileEntry == null) continue;
+                    var tileEntry = pair.Value.Table;
+                    if (tileEntry == null) continue;
 
-                        tiles[x][y] = new Tile
-                        {
-                            TextureId = "dirt"
-                        };
-                    }
-                    catch (System.Exception e)
+                    var tilesetValue = tileEntry.Get("tileset");
+                    var tileIndexValue = tileEntry.Get("tileIndex");
+
+                    tiles[x][y] = new Tile
                     {
-                        Log.Error($"Error parsing tile: {e.Message}");
-                    }
+                        TilesetId = tilesetValue.String,
+                        TileIndex = (int)tileIndexValue.Number
+                    };
+                }
+                catch (System.Exception e)
+                {
+                    Log.Error($"Error parsing tile: {e.Message}");
                 }
             }
 

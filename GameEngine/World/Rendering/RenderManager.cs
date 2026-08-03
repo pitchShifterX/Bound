@@ -4,6 +4,7 @@ using GameEngine.World.ECS;
 using GameEngine.World.ECS.Systems;
 using GameEngine.World.Input;
 using GameEngine.World.Map;
+using GameEngine.World.Map.Tiles;
 using GameEngine.World.Rendering.Cameras;
 using GameEngine.World.Rendering.Tiles;
 
@@ -16,6 +17,7 @@ namespace GameEngine.World.Rendering
         private IRenderContext _draw { get; init; }
         private ICameraView _camera { get; init; }
         private SelectionService _selection { get; init; }
+        private TilesetRegistry _tilesetRegistry { get; init; }
 
         public TileRenderer Tiles { get; set; }
 
@@ -29,7 +31,8 @@ namespace GameEngine.World.Rendering
             ECSService ecs,
             IRenderContext draw,
             ICameraView camera,
-            SelectionService selection
+            SelectionService selection,
+            TilesetRegistry tilesets
         )
         {
             _map = map;
@@ -37,11 +40,13 @@ namespace GameEngine.World.Rendering
             _draw = draw;
             _camera = camera;
             _selection = selection;
+            _tilesetRegistry = tilesets;
 
             Tiles = new TileRenderer(
                 _map,
                 _draw,
-                _camera
+                _camera,
+                _tilesetRegistry
             );
 
             SelectionCircleRenderSystem = new SelectionCircleRenderSystem();

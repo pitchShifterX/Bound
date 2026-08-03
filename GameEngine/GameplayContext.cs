@@ -1,5 +1,6 @@
 using GameEngine.Event.Input;
 using GameEngine.Scene;
+using GameEngine.World.Assets;
 using GameEngine.World.ECS;
 using GameEngine.World.Input;
 using GameEngine.World.Input.Commands;
@@ -28,7 +29,7 @@ namespace GameEngine
         /// the trigger system. Mods can extend this list by adding to the 
         /// Registries property in GameplayManager.
         /// </summary>
-        private GameRegistries _registries { get; init; }
+        public GameRegistries _registries { get; init; }
 
         /// <summary>
         /// Manages the order of rendering.
@@ -58,6 +59,14 @@ namespace GameEngine
         /// map file.
         /// </summary>
         public IMapContext? MapContext { get; set; }
+
+        /// <summary>
+        /// Loads assets requested by the map. Pre-defined tilesets are 
+        /// registered in GameplayManager -> GameRegistries. Similarly, 
+        /// unit prefabs will have their textures loaded if the map uses 
+        /// the unit.
+        /// </summary>
+        public AssetLoader AssetLoader { get; set; }
 
         /// <summary>
         /// Manages multiple gameplay systems that process components.
@@ -117,6 +126,7 @@ namespace GameEngine
             GameplaySystems = new GameplaySystems(ECS);
             Unit = new UnitService(ECS, _registries.UnitPrefab, Location);
             MapContext = new MapContext(_sceneContext.Paths.Maps, _registries.Triggers);
+            AssetLoader = new AssetLoader(_sceneContext, _registries);
 
             Commands = new CommandService(ECS);
 
@@ -165,6 +175,11 @@ namespace GameEngine
 
         private void initializeMap()
         {
+            if(MapContext?.Data == null)
+                throw new System.Exception("Could not initialize map.");
+
+            AssetLoader.Initialize(MapContext.Data);
+            
             _mapInitializer?.Initialize();
         }
 
@@ -184,12 +199,14 @@ namespace GameEngine
 
         private void initializeRendering()
         {
+            // should refactor
             _renderManager = new RenderManager(
                 MapContext!,
                 ECS,
                 _sceneContext,
                 Camera!.View,
-                Selection!
+                Selection!,
+                _registries.Tilesets
             );
         }
     }

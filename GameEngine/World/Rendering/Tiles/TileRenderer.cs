@@ -1,5 +1,6 @@
 using GameEngine.Graphics.Rendering;
 using GameEngine.Resources;
+using GameEngine.Utilities.Extensions;
 using GameEngine.World.Map;
 using GameEngine.World.Map.Tiles;
 using GameEngine.World.Rendering.Cameras;
@@ -11,18 +12,21 @@ namespace GameEngine.World.Rendering.Tiles
         private IMapView _map;
         private IRenderContext _renderer;
         private ICameraView _camera;
+        private TilesetRegistry _registry;
 
         private Dictionary<string, IntPtr> _textureCache = [];
 
         public TileRenderer(
             IMapView map,
             IRenderContext renderer,
-            ICameraView camera
+            ICameraView camera,
+            TilesetRegistry registry
         )
         {
             _map = map;
             _renderer = renderer;
             _camera = camera;
+            _registry = registry;
         }
 
         public void Render()
@@ -56,7 +60,9 @@ namespace GameEngine.World.Rendering.Tiles
 
         private void drawTile(Tile tile, int x, int y)
         {
-            if(tile.TextureId == null) return;
+            if(tile.TilesetId == null) return;
+
+            var tileset = _registry.GetTilesetById(tile.TilesetId);
 
             var worldX = x * Constants.TileSize;
             var worldY = y * Constants.TileSize;
@@ -64,16 +70,18 @@ namespace GameEngine.World.Rendering.Tiles
             var screenPos = _camera.WorldPositionToScreenPosition(worldX, worldY);
             var tileZoom = (int)(Constants.TileSize * _camera.Zoom);
 
-            if(!_textureCache.TryGetValue(tile.TextureId, out var handle))
+            if(!_textureCache.TryGetValue(tileset.Id, out var handle))
             {
-                handle = _renderer.GetById<Texture>(tile.TextureId)!.Handle;
+                handle = _renderer.GetById<Texture>(tileset.Id)!.Handle;
 
-                _textureCache[tile.TextureId] = handle;
+                _textureCache[tileset.Id] = handle;
             }
+
+            var source = tileset.GetSourceRectangle(tile.TileIndex).ToSDLRect();
 
             _renderer.DrawTexture(
                 handle,
-                null,
+                source,
                 new SDL2.SDL.SDL_Rect
                 {
                     x = screenPos.x,

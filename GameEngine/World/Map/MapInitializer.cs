@@ -1,5 +1,4 @@
 using GameEngine.SharedInterface;
-using GameEngine.Utilities;
 
 namespace GameEngine.World.Map
 {
@@ -33,9 +32,6 @@ namespace GameEngine.World.Map
             var firstHumanSlot = players.First(x => x.IsHuman);
             
             playerService.SetLocalPlayer(firstHumanSlot.Id);
-
-            //come back and adjust map lua
-            Console.WriteLine($"Welcome {playerService.CurrentPlayer.Id} with color {playerService.CurrentPlayer.Color}");
         }
 
         private void initializeLocations()
@@ -45,8 +41,6 @@ namespace GameEngine.World.Map
 
             foreach(var location in mapLocations)
             {
-                Log.Info($"Init location: {location.Name}");
-                
                 _context?.Location.Create(location);
             }
         }
@@ -58,8 +52,6 @@ namespace GameEngine.World.Map
 
             foreach(var group in triggerGroups)
             {
-                Log.Info($"Init trigger group: {group.Name}");
-
                 _context?.TriggerEngine.AddTriggerGroup(group);
             }
         }

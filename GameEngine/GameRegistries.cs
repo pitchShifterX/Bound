@@ -1,3 +1,4 @@
+using GameEngine.World.Map.Tiles;
 using GameEngine.World.Map.Triggers;
 using GameEngine.World.Unit;
 
@@ -11,6 +12,16 @@ namespace GameEngine
         /// </summary>
         public UnitPrefabRegistry UnitPrefab { get; init; } = new();
 
+        /// <summary>
+        /// Mods register custom trigger conditions and actions here. 
+        /// Pre-defined conditions and actions are accessible to mods 
+        /// by default.
+        /// </summary>
         public TriggerRegistry Triggers { get; init; } = new();
+
+        /// <summary>
+        /// Mods register tilesets that can be referenced by map files.
+        /// </summary>
+        public TilesetRegistry Tilesets { get; init; } = new();
     }
 }

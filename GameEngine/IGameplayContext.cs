@@ -1,4 +1,5 @@
 using GameEngine.SharedInterface;
+using GameEngine.World.Assets;
 using GameEngine.World.ECS;
 using GameEngine.World.Input;
 using GameEngine.World.Input.Commands;
@@ -17,6 +18,7 @@ namespace GameEngine
         public IClock? Time { get; }
         public ECSService ECS { get; }
         public IMapContext? MapContext { get; }
+        public AssetLoader AssetLoader { get; }
         public CameraContext? Camera { get; }
         public TriggerEngine TriggerEngine { get; }
         public UnitService Unit { get; }

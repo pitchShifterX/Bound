@@ -8,6 +8,7 @@ namespace GameEngine.World.Map
         public MapMetadata? Metadata { get; set; }
         public Tile[][]? Tiles { get; set; }
         public List<TriggerGroup>? TriggerGroups { get; set; }
+        public List<string>? Tilesets { get; set; }
 
         public override string ToString()
         {

@@ -6,10 +6,56 @@ function main()
             local key = x .. "," .. y
             
             tiles[key] = {
-                texture = "dirt"
+                tileset = "water",
+                tileIndex = 1
             }
         end
     end
+
+    tiles["10,10"] = {
+        tileset = "dirt",
+        tileIndex = 0
+    }
+
+    tiles["10,11"] = {
+        tileset = "dirt",
+        tileIndex = 1
+    }
+
+    tiles["10,12"] = {
+        tileset = "dirt",
+        tileIndex = 2
+    }
+
+    tiles["11,10"] = {
+        tileset = "dirt",
+        tileIndex = 3
+    }
+
+    tiles["11,11"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["11,12"] = {
+        tileset = "dirt",
+        tileIndex = 5
+    }
+
+    tiles["12,10"] = {
+        tileset = "dirt",
+        tileIndex = 6
+    }
+
+    tiles["12,11"] = {
+        tileset = "dirt",
+        tileIndex = 7
+    }
+
+    tiles["12,12"] = {
+        tileset = "dirt",
+        tileIndex = 8
+    }
 
     return {
         metadata = {
@@ -66,6 +112,10 @@ function main()
                     color = "blue"
                 }
             }
+        },
+        tilesets = {
+            "water",
+            "dirt",
         },
         tiles = tiles,
         triggerGroups = {
