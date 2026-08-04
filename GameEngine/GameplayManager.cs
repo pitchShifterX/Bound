@@ -12,7 +12,7 @@ using GameEngine.World.Map.Triggers.Conditions;
 
 namespace GameEngine
 {
-    public abstract class GameplayManager : ILoadable, IUpdatable, IRenderable
+    public abstract class GameplayManager : IUpdatable, IRenderable
     {
         /// <summary>
         /// Maintains resources and provides API for interacting with 
@@ -40,15 +40,7 @@ namespace GameEngine
             GameplayContext = new GameplayContext(SceneContext, Registries);
         }
 
-        public virtual void Load()
-        {
-            GameplayContext?.Load();
-        }
-
-        public virtual void Unload()
-        {
-            GameplayContext?.Unload();
-        }
+        public abstract void Start();
 
         public virtual void ProcessInput(IRecordInput input)
         {

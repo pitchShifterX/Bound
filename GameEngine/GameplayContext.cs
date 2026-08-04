@@ -1,6 +1,7 @@
 using GameEngine.Event.Input;
 using GameEngine.Scene;
 using GameEngine.World.Assets;
+using GameEngine.World.Bootstrap;
 using GameEngine.World.ECS;
 using GameEngine.World.Input;
 using GameEngine.World.Input.Commands;
@@ -10,6 +11,7 @@ using GameEngine.World.Map.Triggers;
 using GameEngine.World.Player;
 using GameEngine.World.Rendering;
 using GameEngine.World.Rendering.Cameras;
+using GameEngine.World.Runtime;
 using GameEngine.World.Time;
 using GameEngine.World.Unit;
 
@@ -37,15 +39,14 @@ namespace GameEngine
         private RenderManager? _renderManager { get; set; }
 
         /// <summary>
-        /// Reads map data from map context and initializes the entities, 
-        /// ranging from units to locations.
+        /// Sets up our gameplay by loading and validating content.
         /// </summary>
-        public MapInitializer? _mapInitializer { get; set; }
+        private IGameplayBootstrap _bootstrap;
 
         /// <summary>
-        /// Get the elapsed time since the map loaded.
+        /// Initializes and updates gameplay systems.
         /// </summary>
-        public IClock? Time { get; set; }
+        private IGameplayRuntime _runtime;
 
         /// <summary>
         /// Core service for managing entities and components. This is often 
@@ -55,40 +56,6 @@ namespace GameEngine
         public ECSService ECS { get; init; } = new();
 
         /// <summary>
-        /// Context for map data. This is purely for reading data from the 
-        /// map file.
-        /// </summary>
-        public IMapContext? MapContext { get; set; }
-
-        /// <summary>
-        /// Loads assets requested by the map. Pre-defined tilesets are 
-        /// registered in GameplayManager -> GameRegistries. Similarly, 
-        /// unit prefabs will have their textures loaded if the map uses 
-        /// the unit.
-        /// </summary>
-        public AssetLoader AssetLoader { get; set; }
-
-        /// <summary>
-        /// Manages multiple gameplay systems that process components.
-        /// </summary>
-        public GameplaySystems GameplaySystems { get; set; }
-
-        /// <summary>
-        /// Service for managing inputs (camera, ui, etc).
-        /// </summary>
-        public InputService? Input { get; set; }
-
-        /// <summary>
-        /// Service for selecting units.
-        /// </summary>
-        public SelectionService? Selection { get; set; }
-
-        /// <summary>
-        /// Context for controlling and viewing the camera.
-        /// </summary>
-        public CameraContext? Camera { get; set; }
-
-        /// <summary>
         /// Engine for evaluating and executing triggers.
         /// </summary>
         public TriggerEngine TriggerEngine { get; init; }
@@ -96,7 +63,7 @@ namespace GameEngine
         /// <summary>
         /// Service for managing players (and computers).
         /// </summary>
-        public PlayerService? Player { get; set; }
+        public PlayerService Player { get; set; }
 
         /// <summary>
         /// Service for managing the creation and destruction of units.
@@ -115,6 +82,11 @@ namespace GameEngine
         /// </summary>
         public CommandService Commands { get; init; }
 
+        /// <summary>
+        /// Service utility for time management.
+        /// </summary>
+        public TimeService Time { get; init; }
+
         public GameplayContext(ISceneContext scene, GameRegistries registries)
         {
             _sceneContext = scene;
@@ -123,40 +95,53 @@ namespace GameEngine
             Player = new PlayerService();
             TriggerEngine = new TriggerEngine(this);
             Location = new LocationService(ECS);
-            GameplaySystems = new GameplaySystems(ECS);
             Unit = new UnitService(ECS, _registries.UnitPrefab, Location);
-            MapContext = new MapContext(_sceneContext.Paths.Maps, _registries.Triggers);
-            AssetLoader = new AssetLoader(_sceneContext, _registries);
-
             Commands = new CommandService(ECS);
+            Time = new TimeService();
 
-            _mapInitializer = new MapInitializer(this);
+            _bootstrap = new GameplayBootstrap(
+                _sceneContext,
+                _registries,
+                ECS,
+                Player,
+                Location,
+                TriggerEngine
+            );
+
+            _runtime = new GameplayRuntime(
+                _registries,
+                Player,
+                TriggerEngine,
+                Time,
+                ECS
+            );
         }
 
-        public void Load()
+        public void LoadMap(string fileName)
         {
-            validate();
+            _bootstrap.LoadMap(fileName);
+            _bootstrap.Validate();
+            _bootstrap.Initialize();
 
-            initializeMap();
-
-            initializeRuntime();
+            _runtime.Initialize(
+                _sceneContext,
+                _bootstrap.MapContext,
+                Player,
+                Commands,
+                ECS
+            );
 
             initializeRendering();
         }
 
-        public void Unload(){}
-
         public void Process(IRecordInput input)
         {
-            Input?.Process(input);
+            _runtime?.Input?.Process(input);
         }
 
         public void Update(float? delta)
         {
-            Time?.Update(delta);
-            Camera?.Controller.Update(delta);
-            GameplaySystems.Update(delta);
-            TriggerEngine.Update(delta);
+            _runtime?.Update(delta);
         }
 
         public void Render()
@@ -164,48 +149,15 @@ namespace GameEngine
             _renderManager?.Render();
         }
 
-        private void validate()
-        {
-            if(MapContext?.Data == null || MapContext.Data.Metadata == null)
-                throw new System.Exception("Could not start game; map data missing!");
-            
-            if(Player == null)
-                throw new System.Exception("Player service null. Check map for issues.");
-        }
-
-        private void initializeMap()
-        {
-            if(MapContext?.Data == null)
-                throw new System.Exception("Could not initialize map.");
-
-            AssetLoader.Initialize(MapContext.Data);
-            
-            _mapInitializer?.Initialize();
-        }
-
-        private void initializeRuntime()
-        {
-            Time = new WorldClock();
-                
-            var camera = new Camera(
-                _sceneContext.Settings.WindowSize,
-                MapContext!.Data!.Metadata!.GetSize()!.Value
-            );
-
-            Camera = new CameraContext(camera);
-            Selection = new SelectionService(Player!, ECS, camera);
-            Input = new InputService(this, Camera.Controller);
-        }
-
         private void initializeRendering()
         {
             // should refactor
             _renderManager = new RenderManager(
-                MapContext!,
+                _bootstrap.MapContext,
                 ECS,
                 _sceneContext,
-                Camera!.View,
-                Selection!,
+                _runtime.Camera!.View,
+                _runtime.Selection!,
                 _registries.Tilesets
             );
         }

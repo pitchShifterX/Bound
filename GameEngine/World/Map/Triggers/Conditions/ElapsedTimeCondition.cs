@@ -11,7 +11,7 @@ namespace GameEngine.World.Map.Triggers.Conditions
 
         public bool Evaluate(IGameplayContext context)
         {
-            return context.Time.ElapsedSeconds >= _seconds;
+            return context.Time.World.ElapsedSeconds >= _seconds;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Mods.Bound.Scenes
         public override void Load()
         {
             _gameplay = new BoundGameplayManager(Context);
-            _gameplay.Load();
+            _gameplay.Start();
         }
 
         public override void ProcessInput(IRecordInput input)

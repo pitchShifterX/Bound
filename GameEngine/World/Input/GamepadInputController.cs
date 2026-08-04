@@ -4,11 +4,8 @@ namespace GameEngine.World.Input
 {
     public class GamepadInputController : IProcessInput
     {
-        private IGameplayContext _context;
-
-        public GamepadInputController(IGameplayContext context)
+        public GamepadInputController()
         {
-            _context = context;
         }
 
         public void Process(IRecordInput input)

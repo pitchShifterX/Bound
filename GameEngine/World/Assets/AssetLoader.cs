@@ -33,7 +33,6 @@ namespace GameEngine.World.Assets
 
             foreach(var requestedTileset in requestedTilesets)
             {
-                Log.Info($"Loading {requestedTileset}");
                 var tileset = tilesetRegistry.GetTilesetById(requestedTileset);
 
                 _sceneContext.Load<Texture>(tileset.Id, tileset.TexturePath);

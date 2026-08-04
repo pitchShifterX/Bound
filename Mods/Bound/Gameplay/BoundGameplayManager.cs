@@ -14,19 +14,16 @@ namespace Mods.Bound.Gameplay
             
         }
 
-        public override void Load()
+        public override void Start()
         {
-            // SceneContext.Load<Texture>("dirt", "textures/dirt.png");
-            SceneContext.Load<Texture>("runner", "textures/runner.png");
-
-            GameplayContext?.MapContext?.LoadMap("TestMap.lua");
-
-            base.Load();
+            GameplayContext?.LoadMap("TestMap.lua");
         }
 
         protected override void RegisterModContent()
         {
             base.RegisterModContent();
+
+            SceneContext.Load<Texture>("runner", "textures/runner.png");
             
             Registries.UnitPrefab.Register(new BounderPrefab());
 
