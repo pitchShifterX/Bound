@@ -55,17 +55,17 @@ namespace GameEngine.World.ECS.Systems
 
         public void DrawBorder(ECSService service, ISceneContext sceneContext, ICameraView camera)
         {
-            var storedEntities = service.GetEntitiesWith<BorderRenderComponent, Rectangle2DComponent>();
+            var storedEntities = service.GetEntitiesWith<BorderRenderComponent, Bounds2DComponent>();
 
             foreach(var entityId in storedEntities)
             {
                 ref var borderComponent = ref service.GetComponent<BorderRenderComponent>(entityId);
-                ref var rectComponent = ref service.GetComponent<Rectangle2DComponent>(entityId);
+                ref var rectComponent = ref service.GetComponent<Bounds2DComponent>(entityId);
 
-                var screenPosition = camera.WorldPositionToScreenPosition(rectComponent.Value.X, rectComponent.Value.Y);
+                var screenPosition = camera.WorldPositionToScreenPosition(rectComponent.LocalBounds.X, rectComponent.LocalBounds.Y);
                 
-                int scaledWidth = (int)(rectComponent.Value.Width * camera.Zoom);
-                int scaledHeight = (int)(rectComponent.Value.Height * camera.Zoom);
+                int scaledWidth = (int)(rectComponent.LocalBounds.Width * camera.Zoom);
+                int scaledHeight = (int)(rectComponent.LocalBounds.Height * camera.Zoom);
 
                 var adjustedRect = new Rectangle<float>
                 {

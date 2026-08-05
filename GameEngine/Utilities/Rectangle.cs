@@ -2,7 +2,8 @@ using System.Numerics;
 
 namespace GameEngine.Utilities
 {
-    public struct Rectangle<T> where T : INumber<T>
+    public struct Rectangle<T> : IEquatable<Rectangle<T>>
+         where T : INumber<T>
     {
         public T X { get; set; }
         public T Y { get; set; }
@@ -53,6 +54,40 @@ namespace GameEngine.Utilities
                 TTo.CreateChecked(Width),
                 TTo.CreateChecked(Height)
             );
+        }
+
+        public readonly bool Equals(Rectangle<T> other)
+        {
+            return X == other.X &&
+                Y == other.Y &&
+                Width == other.Width &&
+                Height == other.Height;
+        }
+
+        public override readonly bool Equals(object? obj)
+        {
+            return obj is Rectangle<T> other && Equals(other);
+        }
+
+        public static bool operator ==(
+            Rectangle<T> left,
+            Rectangle<T> right
+        )
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(
+            Rectangle<T> left,
+            Rectangle<T> right
+        )
+        {
+            return !left.Equals(right);
+        }
+
+        public override readonly int GetHashCode()
+        {
+            return HashCode.Combine(X, Y, Width, Height);
         }
     }
 }

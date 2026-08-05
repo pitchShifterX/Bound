@@ -6,6 +6,7 @@ using GameEngine.World.Map;
 using GameEngine.World.Map.Triggers;
 using GameEngine.World.Player;
 using GameEngine.World.Rendering.Cameras;
+using GameEngine.World.Spatial;
 using GameEngine.World.Time;
 
 namespace GameEngine.World.Runtime
@@ -38,6 +39,12 @@ namespace GameEngine.World.Runtime
         /// </summary>
         public InputService? Input { get; private set; }
 
+        /// <summary>
+        /// Divvy up the map into a bigger grid for efficient 
+        /// calculations.
+        /// </summary>
+        public SpatialHashGrid SpatialHashGrid { get; }
+
         public GameplayRuntime(
             GameRegistries registries, 
             PlayerService player, 
@@ -52,7 +59,9 @@ namespace GameEngine.World.Runtime
             _time = time;
             _ecs = ecs;
 
-            _systems = new GameplaySystems(_ecs);
+            SpatialHashGrid = new SpatialHashGrid();
+
+            _systems = new GameplaySystems(_ecs, SpatialHashGrid);
         }
 
         public void Initialize(

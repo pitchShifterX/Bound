@@ -1,5 +1,6 @@
 using GameEngine.Utilities;
 using GameEngine.World.ECS;
+using GameEngine.World.ECS.Components.Core;
 using GameEngine.World.ECS.Components.Graphics;
 using GameEngine.World.ECS.Components.Spatial;
 
@@ -51,9 +52,9 @@ namespace GameEngine.World.Map.Locations
             float worldWidth = location.Tiles.Width * Constants.TileSize;
             float worldHeight = location.Tiles.Height * Constants.TileSize;
 
-            _ecs.AddComponent(locationEntity.Id, new Rectangle2DComponent
+            _ecs.AddComponent(locationEntity.Id, new Bounds2DComponent
             {
-                Value = new Rectangle<float>
+                LocalBounds = new Rectangle<float>
                 {
                     X = worldX,
                     Y = worldY,
@@ -93,7 +94,7 @@ namespace GameEngine.World.Map.Locations
             if(!_locationEntities.TryGetValue(name, out var entityId))
                 return null;
             
-            return _ecs.GetComponent<Rectangle2DComponent>(entityId).Value;
+            return _ecs.GetComponent<Bounds2DComponent>(entityId).LocalBounds;
         }
 
         public bool Contains(string locationId, Vector2<float> position)
