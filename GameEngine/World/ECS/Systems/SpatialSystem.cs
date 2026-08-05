@@ -58,7 +58,6 @@ namespace GameEngine.World.ECS.Systems
                     );
                 }
 
-
                 _previousBounds[entity] = worldBounds;
             }
         }
