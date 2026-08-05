@@ -1,3 +1,4 @@
+using GameEngine.Utilities;
 using GameEngine.World.Map.Parser.Lua;
 using GameEngine.World.Map.Tiles;
 using GameEngine.World.Map.Triggers;
@@ -45,6 +46,25 @@ namespace GameEngine.World.Map
                 _mapData.Metadata.Width.Value, 
                 _mapData.Metadata.Height.Value
             );
+        }
+
+        public IEnumerable<Tile> GetTiles(Rectangle<float> bounds)
+        {
+            if(Tiles == null) yield break;
+
+            int minX = (int)(bounds.X / Constants.TileSize);
+            int maxX = (int)((bounds.X + bounds.Width) / Constants.TileSize);
+
+            int minY = (int)(bounds.Y / Constants.TileSize);
+            int maxY = (int)((bounds.Y + bounds.Height) / Constants.TileSize);
+
+            for(int x = minX; x <= maxX; x++)
+            {
+                for(int y = minY; y <= maxY; y++)
+                {
+                    yield return Tiles[x][y];
+                }
+            }
         }
     }
 }

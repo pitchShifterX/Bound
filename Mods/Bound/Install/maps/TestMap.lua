@@ -57,6 +57,26 @@ function main()
         tileIndex = 8
     }
 
+    tiles["13,10"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["13,11"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["14,10"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["14,11"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
     return {
         metadata = {
             title = "Test Map",

@@ -3,6 +3,7 @@ using GameEngine.World.ECS;
 using GameEngine.World.Input;
 using GameEngine.World.Input.Commands;
 using GameEngine.World.Map;
+using GameEngine.World.Map.Tiles;
 using GameEngine.World.Map.Triggers;
 using GameEngine.World.Player;
 using GameEngine.World.Rendering.Cameras;
@@ -22,7 +23,7 @@ namespace GameEngine.World.Runtime
         /// <summary>
         /// Manages multiple gameplay systems that process components.
         /// </summary>
-        private readonly GameplaySystems _systems;
+        private GameplaySystems? _systems;
 
         /// <summary>
         /// Context for controlling and viewing the camera.
@@ -38,6 +39,11 @@ namespace GameEngine.World.Runtime
         /// Service for managing inputs (camera, ui, etc).
         /// </summary>
         public InputService? Input { get; private set; }
+
+        /// <summary>
+        /// Service for getting tile properties.
+        /// </summary>
+        public TerrainService? Terrain { get; private set; }
 
         /// <summary>
         /// Divvy up the map into a bigger grid for efficient 
@@ -61,7 +67,6 @@ namespace GameEngine.World.Runtime
 
             SpatialHashGrid = new SpatialHashGrid();
 
-            _systems = new GameplaySystems(_ecs, SpatialHashGrid);
         }
 
         public void Initialize(
@@ -82,13 +87,16 @@ namespace GameEngine.World.Runtime
             Camera = new CameraContext(camera);
             Selection = new SelectionService(player, ecs, camera);
             Input = new InputService(Selection, Camera, commands);
+            Terrain = new TerrainService(map, _registries.Tilesets);
+
+            _systems = new GameplaySystems(_ecs, SpatialHashGrid, Terrain);
         }
 
         public void Update(float? delta)
         {
             _time.World.Update(delta);
             Camera?.Controller.Update(delta);
-            _systems.Update(delta);
+            _systems?.Update(delta);
             _trigger.Update(delta);
         }
     }

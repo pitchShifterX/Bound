@@ -32,7 +32,19 @@ namespace Mods.Bound.Gameplay
                 Id = "dirt",
                 TexturePath = "textures/dirt.png",
                 Columns = 3,
-                Rows = 3
+                Rows = 3,
+                TileDefinitions =
+                [
+                    new(){ IsWalkable = true },
+                    new(){ IsWalkable = true },
+                    new(){ IsWalkable = true },
+                    new(){ IsWalkable = true },
+                    new(){ IsWalkable = true },
+                    new(){ IsWalkable = true },
+                    new(){ IsWalkable = true },
+                    new(){ IsWalkable = true },
+                    new(){ IsWalkable = true },
+                ]
             });
 
             Registries.Tilesets.Register(new TilesetDefinition
@@ -40,7 +52,19 @@ namespace Mods.Bound.Gameplay
                 Id = "water",
                 TexturePath = "textures/water.png",
                 Columns = 3,
-                Rows = 3
+                Rows = 3,
+                TileDefinitions =
+                [
+                    new(){ IsWalkable = false },
+                    new(){ IsWalkable = false },
+                    new(){ IsWalkable = false },
+                    new(){ IsWalkable = false },
+                    new(){ IsWalkable = false },
+                    new(){ IsWalkable = false },
+                    new(){ IsWalkable = false },
+                    new(){ IsWalkable = false },
+                    new(){ IsWalkable = false },
+                ]
             });
         }
     }

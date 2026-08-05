@@ -3,19 +3,22 @@ using GameEngine.Utilities;
 using GameEngine.World.ECS.Components;
 using GameEngine.World.ECS.Components.Core;
 using GameEngine.World.ECS.Components.Spatial;
+using GameEngine.World.Map.Tiles;
 using GameEngine.World.Spatial;
 
 namespace GameEngine.World.ECS.Systems
 {
     public class MovementSystem : IUpdatable
     {
-        private ECSService _ecs;
-        private SpatialHashGrid _grid;
+        private readonly ECSService _ecs;
+        private readonly SpatialHashGrid _grid;
+        private readonly TerrainService _terrain;
 
-        public MovementSystem(ECSService ecs, SpatialHashGrid grid)
+        public MovementSystem(ECSService ecs, SpatialHashGrid grid, TerrainService terrain)
         {
             _ecs = ecs;
             _grid = grid;
+            _terrain = terrain;
         }
 
         public void Update(float? delta)
@@ -58,6 +61,9 @@ namespace GameEngine.World.ECS.Systems
                 bounds.LocalBounds,
                 collision.Offset
             );
+
+            if(!_terrain.IsWalkable(proposedBounds))
+                return false;
 
             foreach (var other in _grid.Query(proposedBounds))
             {

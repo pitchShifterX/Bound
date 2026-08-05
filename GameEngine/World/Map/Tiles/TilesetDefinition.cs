@@ -10,7 +10,7 @@ namespace GameEngine.World.Map.Tiles
         public int Columns { get; init; }
         public int Rows { get; init; }
 
-        public TileDefinition[] TileDefinitions = [];
+        public TileDefinition[] TileDefinitions { get; init; } = [];
 
         public Rectangle<int> GetSourceRectangle(int tileIndex)
         {
