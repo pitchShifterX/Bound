@@ -77,6 +77,136 @@ function main()
         tileIndex = 4
     }
 
+    tiles["15,10"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["15,11"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["16,10"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["16,11"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["17,10"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["17,11"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["18,10"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["18,11"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["19,10"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["19,11"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["20,10"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["20,11"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["21,10"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["21,11"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["20,12"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["20,13"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["21,12"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["21,13"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["20,14"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["20,15"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["21,14"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["21,15"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["20,16"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["20,17"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["21,16"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
+    tiles["21,17"] = {
+        tileset = "dirt",
+        tileIndex = 4
+    }
+
     return {
         metadata = {
             title = "Test Map",
