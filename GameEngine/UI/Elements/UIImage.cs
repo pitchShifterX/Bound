@@ -33,7 +33,7 @@ namespace GameEngine.UI.Elements
 
         public override bool Process(UIInput input)
         {
-            return true;
+            return false;
         }
 
         public override void Render()
