@@ -93,10 +93,10 @@ namespace GameEngine.UI.Elements
             var height = Rectangle.Height;
 
             if(WidthMode == UISizeMode.Fill)
-                width = parentBounds.Width;
+                width = MathF.Max(parentBounds.Width - Rectangle.X, 0);
 
             if(HeightMode == UISizeMode.Fill)
-                height = parentBounds.Height;
+                height = MathF.Max(parentBounds.Height - Rectangle.Y, 0);
 
             Bounds = new Rectangle<float>
             {
