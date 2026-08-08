@@ -1,6 +1,6 @@
 using GameEngine.Mod;
 using GameEngine.Resources;
-using Mods.Bound.Scenes;
+using Mods.Bound.Scenes.MainMenu;
 
 namespace Mods.Bound
 {
@@ -15,7 +15,6 @@ namespace Mods.Bound
         {
             base.Initialize();
 
-            var menuImagePath = Context.Paths?.GetAssetPath("images/menu.png");
             var fontPath = Context.Paths?.GetAssetPath("fonts/Inter24Regular.ttf");
 
             Context.ResourceManager?.Load<Font>("default", fontPath!);

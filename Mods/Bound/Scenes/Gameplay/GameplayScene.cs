@@ -5,13 +5,12 @@ using GameEngine.Mod;
 using GameEngine.Resources;
 using GameEngine.Scene;
 using GameEngine.SharedInterface;
-using GameEngine.Utilities;
 using Mods.Bound.Gameplay;
-using SDL2;
+using Mods.Bound.Scenes.MainMenu;
 
-namespace Mods.Bound.Scenes
+namespace Mods.Bound.Scenes.Gameplay
 {
-    public class GameplayScene(IModContext modContext)
+    public partial class GameplayScene(IModContext modContext)
         : Scene(modContext)
     {
         private GameplayManager? _gameplay;

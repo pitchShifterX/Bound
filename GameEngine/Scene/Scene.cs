@@ -1,11 +1,17 @@
 using GameEngine.Event.Input;
 using GameEngine.Mod;
+using GameEngine.UI;
+using GameEngine.UI.Themes;
 
 namespace GameEngine.Scene
 {
     public abstract class Scene : IScene
     {
         public ISceneContext Context { get; init; }
+
+        public virtual IUITheme UITheme { get; init; } = new DefaultUITheme();
+
+        public UIManager UI { get; init; }
         
         /// <summary>
         /// <para>
@@ -25,10 +31,12 @@ namespace GameEngine.Scene
         {
             ModContext = modContext;
             Context = new SceneContext(ModContext);
+            UI = new UIManager(Context, UITheme);
         }
 
         public virtual void Initialize() => Load();
         public abstract void Load();
+        public abstract void BuildUI();
         public virtual void Unload() => Context.UnloadAll();
         public abstract void ProcessInput(IRecordInput input);
         public abstract void Update(float? delta);

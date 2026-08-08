@@ -55,7 +55,10 @@ namespace GameEngine.Scene
                 }
 
                 _stack.Push(newScene);
+
                 newScene.Initialize();
+                newScene.BuildUI();
+                newScene.UI.Layout();
                 
                 return;
             }
@@ -72,7 +75,10 @@ namespace GameEngine.Scene
                     pausable.Pause();
                 
                 _stack.Push(newScene);
+                
                 newScene.Initialize();
+                newScene.BuildUI();
+                newScene.UI.Layout();
 
                 return;
             }

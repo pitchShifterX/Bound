@@ -61,5 +61,14 @@ namespace GameEngine.Utilities
 
             return (dx * dx) + (dy * dy);
         }
+
+        public Vector2<TNew> To<TNew>()
+            where TNew : System.Numerics.INumber<TNew>
+        {
+            return new Vector2<TNew>(
+                TNew.CreateChecked(x),
+                TNew.CreateChecked(y)
+            );
+        }
     }
 }

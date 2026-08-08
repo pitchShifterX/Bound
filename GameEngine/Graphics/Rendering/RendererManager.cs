@@ -143,6 +143,8 @@ namespace GameEngine.Graphics.Rendering
 
         public void Present()
         {
+            SDL.SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
+
             SDL.SDL_RenderPresent(Renderer);
         }
 
