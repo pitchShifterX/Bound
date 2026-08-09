@@ -1,5 +1,6 @@
 using GameEngine.Graphics.Primitives;
 using GameEngine.UI.Elements;
+using GameEngine.UI.Properties;
 using GameEngine.Utilities;
 using Mods.Bound.Scenes.Gameplay;
 
@@ -25,38 +26,39 @@ namespace Mods.Bound.Scenes.MainMenu
 
         private UIButton playTestMapButton()
         {
-            var rootCenter = UI.Root.Center;
-
-            var testMapBtnRect = new Rectangle<float>
+            return new UIButton(
+                new Fixed(300),
+                new Fixed(50),
+                "Play Test Map",
+                () => Context.ReplaceScene(() => new GameplayScene(ModContext))
+            )
             {
-                X = rootCenter.x - 150,
-                Y = rootCenter.y * 1.3f,
-                Width = 300,
-                Height = 50
-            };
-
-            return new UIButton(testMapBtnRect, () => Context.ReplaceScene(() => new GameplayScene(ModContext)))
-            {
-                Label = "Play Test Map",
-                BorderColor = Color.Green
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new UISpacing()
+                {
+                    Top = 300
+                },
+                LabelColor = Color.White
             };
         }
 
         private UIButton quitButton()
         {
-            var rootCenter = UI.Root.Center;
-
-            var quitBtnRect = new Rectangle<float>
+            return new UIButton(
+                new Fixed(300),
+                new Fixed(50),
+                "Quit",
+                () => Context.QuitMod()
+            )
             {
-                X = rootCenter.x - 150,
-                Y = rootCenter.y * 1.5f,
-                Width = 300,
-                Height = 50
-            };
-
-            return new UIButton(quitBtnRect, () => Context.QuitMod())
-            {
-                Label = "Quit",
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new UISpacing()
+                {
+                    Top = 450
+                },
+                LabelColor = Color.White,
                 BorderColor = Color.Red
             };
         }

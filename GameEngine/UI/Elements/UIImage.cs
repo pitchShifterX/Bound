@@ -8,27 +8,9 @@ namespace GameEngine.UI.Elements
     {
         private readonly Texture _resource;
 
-        public UIImage(Texture texture) :
-            base(new Rectangle<float>
-            {
-                X = 0,
-                Y = 0,
-                Width = 0,
-                Height = 0
-            })
+        public UIImage(Texture texture)
         {
             _resource = texture;
-
-            WidthMode = UISizeMode.Fill;
-            HeightMode = UISizeMode.Fill;
-        }
-
-        public UIImage(Rectangle<float> rect, Texture texture) : 
-            base(rect)
-        {
-            _resource = texture;
-
-            Rectangle = rect;
         }
 
         public override bool Process(UIInput input)

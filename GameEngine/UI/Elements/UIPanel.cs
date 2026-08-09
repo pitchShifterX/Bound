@@ -1,15 +1,19 @@
 using GameEngine.Graphics.Primitives;
 using GameEngine.UI.Input;
-using GameEngine.Utilities;
+using GameEngine.UI.Properties;
 
 namespace GameEngine.UI.Elements
 {
     public class UIPanel : UIElement
     {
-        public UIPanel(Rectangle<float> rect) :
-            base(rect)
+        public Color BorderColor { get; set; } = Color.White;
+
+        public UIPanel(){}
+
+        public UIPanel(UISize width, UISize height) :
+            base(width, height)
         {
-            Rectangle = rect;
+            
         }
 
         public override bool Process(UIInput input)
@@ -34,7 +38,6 @@ namespace GameEngine.UI.Elements
 
         public override void Render()
         {
-            Context?.Render.DrawRectangle(Rectangle, Color.White);
             foreach(var child in Children)
                 child.Render();
         }

@@ -1,27 +1,29 @@
 using GameEngine.Graphics.Primitives;
 using GameEngine.Resources;
 using GameEngine.UI.Input;
-using GameEngine.Utilities;
+using GameEngine.UI.Properties;
 
 namespace GameEngine.UI.Elements
 {
     public class UIButton : UIElement
     {
-        public Action? Action { get; init; }
+        public Action? Action { get; private set; }
 
         public bool IsHovered { get; private set; }
         public bool IsPressed { get; private set; }
 
-        public string? Label { get; set; }
         public Font? Font { get; set; }
         public Color? LabelColor { get; set; }
         public Color? BorderColor { get; set; }
 
-        public UIButton(Rectangle<float> rect, Action? action) : 
-            base(rect)
+        public UIButton(UISize width, UISize height, string? label, Action? action) :
+            base(width, height)
         {
-            Rectangle = rect;
-            Action = action;
+            if(label != null)
+                SetLabel(label);
+            
+            if(action != null)
+                SetAction(action);
         }
 
         protected override void OnContextAssigned()
@@ -29,6 +31,22 @@ namespace GameEngine.UI.Elements
             Font ??= Context!.Scene.GetById<Font>(Context!.Theme.FontResource);
             LabelColor ??= Context!.Theme.Buttons.LabelColor;
             BorderColor ??= Context!.Theme.Buttons.BorderColor;
+        }
+
+        public void SetLabel(string label)
+        {
+            AddChild(new UIText(label)
+            {
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            });
+        }
+
+        public UIButton SetAction(Action action)
+        {
+            Action = action;
+
+            return this;
         }
 
         public override bool Process(UIInput input)
@@ -67,21 +85,7 @@ namespace GameEngine.UI.Elements
 
             Context.Render.DrawRectangle(Bounds, BorderColor!.Value);
 
-            if(Label == null || Font == null) return;
-
-            var textSize = Font.CalculateSize(Label);
-
-            var textPosition = new Vector2<float>(
-                Center.x - textSize.x / 2f,
-                Center.y - textSize.y / 2f
-            );
-
-            Context.Render.DrawText(
-                Font,
-                Label,
-                LabelColor!.Value,
-                textPosition
-            );
+            base.Render();
         }
     }
 }

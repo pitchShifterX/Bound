@@ -3,6 +3,7 @@ using GameEngine.Scene;
 using GameEngine.SharedInterface;
 using GameEngine.UI.Elements;
 using GameEngine.UI.Input;
+using GameEngine.UI.Properties;
 using GameEngine.Utilities;
 using GameEngine.World.Input;
 
@@ -31,15 +32,11 @@ namespace GameEngine.UI
                 theme
             );
 
-            var panelRect = new Rectangle<float>
-            {
-                X = 0,
-                Y = 0,
-                Width = _virtualResolution.x,
-                Height = _virtualResolution.y
-            };
-
-            Root = new UIPanel(panelRect);
+            Root = new UIPanel(
+                new Fixed(_virtualResolution.x),
+                new Fixed(_virtualResolution.y)
+            );
+            
             Root.SetContext(Context);
         }
 
