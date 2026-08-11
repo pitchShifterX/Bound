@@ -9,7 +9,7 @@ namespace Mods.Bound.UIThemes
 
         public UIPanelTheme Panels => new UIPanelTheme
         {
-            BorderColor = new(17, 17, 17)
+            BorderColor = new(17, 17, 17, 50)
         };
 
         public UIButtonTheme Buttons => new UIButtonTheme

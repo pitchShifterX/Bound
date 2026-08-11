@@ -2,9 +2,7 @@ using GameEngine.Event.Input;
 using GameEngine.Mod;
 using GameEngine.Resources;
 using GameEngine.Scene;
-using GameEngine.UI;
 using Mods.Bound.Scenes.Gameplay;
-using Mods.Bound.UIThemes;
 
 namespace Mods.Bound.Scenes.MainMenu
 {
@@ -12,8 +10,6 @@ namespace Mods.Bound.Scenes.MainMenu
         : Scene(modContext)
     {
         private Texture? _menu;
-
-        public override IUITheme UITheme => new MenuTheme();
 
         public override void Load()
         {

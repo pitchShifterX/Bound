@@ -1,13 +1,16 @@
 using GameEngine.Graphics.Primitives;
+using GameEngine.UI;
 using GameEngine.UI.Elements;
 using GameEngine.UI.Properties;
-using GameEngine.Utilities;
 using Mods.Bound.Scenes.Gameplay;
+using Mods.Bound.UIThemes;
 
 namespace Mods.Bound.Scenes.MainMenu
 {
     public partial class MainMenuScene
     {
+        public override IUITheme UITheme => new MenuTheme();
+
         public override void BuildUI()
         {
             if(_menu != null)

@@ -1,11 +1,15 @@
 using GameEngine.Graphics.Primitives;
+using GameEngine.UI;
 using GameEngine.UI.Elements;
 using GameEngine.UI.Properties;
+using Mods.Bound.UIThemes;
 
 namespace Mods.Bound.Scenes.Gameplay
 {
     public partial class MapLobbyScene
     {
+        public override IUITheme UITheme => new MenuTheme();
+
         public override void BuildUI()
         {
             var header = buildHeader();
