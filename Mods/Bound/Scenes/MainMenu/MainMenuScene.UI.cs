@@ -29,8 +29,8 @@ namespace Mods.Bound.Scenes.MainMenu
             return new UIButton(
                 new Fixed(300),
                 new Fixed(50),
-                "Play Test Map",
-                () => Context.ReplaceScene(() => new GameplayScene(ModContext))
+                "Select Map",
+                () => Context.ReplaceScene(() => new MapLobbyScene(ModContext))
             )
             {
                 HorizontalAlignment = HorizontalAlignment.Center,
