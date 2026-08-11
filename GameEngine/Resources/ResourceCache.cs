@@ -2,7 +2,7 @@ using GameEngine.Utilities;
 
 namespace GameEngine.Resources
 {
-    public abstract class ResourceCache<T> : IResourceCache<T> 
+    public abstract class ResourceCache<T> : IResourceCache<T>
         where T : Resource
     {
         protected Dictionary<string, T> Resources { get; init; } = [];
@@ -24,10 +24,20 @@ namespace GameEngine.Resources
 
         public T? GetById(string id)
         {
-            if (!Resources.TryGetValue(id, out var resource))
+            if(!Resources.TryGetValue(id, out var resource))
             {
                 Log.Warn($"{typeof(T).Name} resource does not exist in resource cache: {id}");
 
+                return null;
+            }
+
+            return resource;
+        }
+
+        public T? TryGetById(string id)
+        {
+            if(!Resources.TryGetValue(id, out var resource))
+            {
                 return null;
             }
 
@@ -43,7 +53,7 @@ namespace GameEngine.Resources
                 return;
             }
 
-            Console.WriteLine($"{id} was unloaded.");
+            Log.Debug($"{id} was unloaded");
 
             resource.Dispose();
             Resources.Remove(id);
@@ -53,7 +63,8 @@ namespace GameEngine.Resources
         {
             foreach(var resource in Resources.Values)
             {
-                Console.WriteLine($"{resource.Id} was unloaded.");
+                Log.Debug($"{resource.Id} was unloaded.");
+                
                 resource.Dispose();
             }
 

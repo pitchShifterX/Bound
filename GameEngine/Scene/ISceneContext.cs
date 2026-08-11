@@ -17,6 +17,7 @@ namespace GameEngine.Scene
         public void ReplaceScene(Func<IScene> factory);
         
         public void Load<T>(string id, string path) where T : Resource;
+        public void LoadFont(string id, string path, int size);
         public void UnloadById<T>(string id) where T : Resource;
         public void UnloadAll();
 

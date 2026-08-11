@@ -38,6 +38,8 @@ namespace GameEngine.UI.Elements
 
         public override void Render()
         {
+            Context?.Render.DrawRectangle(Bounds, BorderColor);
+
             foreach(var child in Children)
                 child.Render();
         }

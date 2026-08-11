@@ -4,7 +4,9 @@ namespace GameEngine.Resources
     {
         public void Load<T>(string id, string path) where T : Resource;
         public void Load<T>(T resource) where T : Resource;
+        public ResourceCache<T> GetCache<T>() where T : Resource;
         public T? GetById<T>(string id) where T : Resource;
+        public T? TryGetById<T>(string id) where T : Resource;
         public void UnloadById<T>(string id) where T : Resource;
         public void UnloadAllFromCache<T>() where T : Resource;
         public void UnloadAllResourceCaches();

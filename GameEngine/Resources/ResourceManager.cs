@@ -36,12 +36,28 @@ namespace GameEngine.Resources
             ((ResourceCache<T>)cache).Load(resource);
         }
 
+        public ResourceCache<T> GetCache<T>() where T : Resource
+        {
+            if (!_caches.TryGetValue(typeof(T), out var cache))
+                throw new ResourceException($"Resource cache for {typeof(T).Name} not found");
+
+            return (ResourceCache<T>)cache;
+        }
+
         public T? GetById<T>(string id) where T : Resource
         {
             if(!_caches.TryGetValue(typeof(T), out var cache))
                 throw new ResourceException($"Could not find {typeof(T).Name} resource with id: {id}");
 
             return ((ResourceCache<T>)cache).GetById(id);
+        }
+
+        public T? TryGetById<T>(string id) where T : Resource
+        {
+            if(!_caches.TryGetValue(typeof(T), out var cache))
+                return null;
+                
+            return ((ResourceCache<T>)cache).TryGetById(id);
         }
 
         public void Unload<T>(Type type, string id) where T : Resource

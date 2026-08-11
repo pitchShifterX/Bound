@@ -10,6 +10,7 @@ namespace GameEngine.UI.Elements
     {
         public string Label { get; set; }
         public Font? Font { get; set; }
+        public int FontSize { get; set; } = 24;
         public Color? LabelColor { get; set; }
 
         public UIText(string label) :
@@ -27,6 +28,13 @@ namespace GameEngine.UI.Elements
         public UIText SetFont(Font font)
         {
             Font = font;
+
+            return this;
+        }
+
+        public UIText SetFontSize(int size)
+        {
+            FontSize = size;
 
             return this;
         }

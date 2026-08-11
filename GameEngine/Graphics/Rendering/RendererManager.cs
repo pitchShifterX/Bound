@@ -103,42 +103,15 @@ namespace GameEngine.Graphics.Rendering
                 SDL.SDL_RenderDrawRect(Renderer, ref rect);
         }
 
-        public void DrawDynamicText(Font font, string text, SDL.SDL_Color color, SDL.SDL_Rect destination)
+        public void DrawText(IntPtr textureHandle, ref SDL.SDL_Rect destination)
         {
-            if(font.Handle == IntPtr.Zero) return;
+            if (textureHandle == IntPtr.Zero) return;
 
-            var surface = SDL_ttf.TTF_RenderUTF8_Blended(font.Handle, text, color);
-            if (surface == IntPtr.Zero) return;
+            SDL.SDL_QueryTexture(textureHandle, out _, out _, out var width, out var height);
+            destination.w = width;
+            destination.h = height;
 
-            try
-            {
-                var texture = SDL.SDL_CreateTextureFromSurface(Renderer, surface);
-                if (texture == IntPtr.Zero) return;
-
-                var queryTexture = SDL.SDL_QueryTexture(
-                    texture,
-                    out _,
-                    out _,
-                    out var width,
-                    out var height
-                );
-
-                destination.w = width;
-                destination.h = height;
-
-                try
-                {
-                    DrawTexture(texture, null, destination);
-                }
-                finally
-                {
-                    SDL.SDL_DestroyTexture(texture);
-                }
-            }
-            finally
-            {
-                SDL.SDL_FreeSurface(surface);
-            }
+            SDL.SDL_RenderCopy(Renderer, textureHandle, IntPtr.Zero, ref destination);
         }
 
         public void Present()

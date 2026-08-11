@@ -72,13 +72,50 @@ namespace GameEngine.Scene
         }
 
         /// <summary>
+        /// Specialized font loader since ResourceManager is generic. This allows us to 
+        /// load a font with a specified size.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="path"></param>
+        /// <param name="size"></param>
+        public void LoadFont(string id, string path, int size)
+        {
+            var fullPath = _modContext?.Paths?.GetAssetPath(path);
+            var fontCache = (FontCache)_resourceManager.GetCache<Font>();
+
+            if(fullPath == null || fontCache == null) return;
+
+            fontCache.LoadWithSize(id, fullPath, size);
+            
+            _loadedResources.Add((typeof(Font), id));
+        }
+
+        /// <summary>
         /// Get a resource.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
         public T? GetById<T>(string id) where T : Resource
-            => _resourceManager.GetById<T>(id);
+        {
+            var cache = _resourceManager.GetCache<T>();
+
+            return cache.GetById(id);
+        }
+
+        /// <summary>
+        /// A safer, quieter way to get a resource. If you 
+        /// expect the resource to be there, use GetById. 
+        /// Otherwise, use this method for no logging or 
+        /// exceptions thrown.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public T? TryGetById<T>(string id) where T : Resource
+        {
+            return _resourceManager.TryGetById<T>(id);
+        }
 
         /// <summary>
         /// Unload a resource by id.
@@ -120,7 +157,37 @@ namespace GameEngine.Scene
 
         public void DrawText(Font font, string text, SDL.SDL_Color color, SDL.SDL_Rect destination)
         {
-            _modContext.RendererManager?.DrawDynamicText(font, text, color, destination);
+            if(_modContext.RendererManager == null) return;
+            if (font == null || font.Handle == IntPtr.Zero) return;
+            if (string.IsNullOrEmpty(text)) return;
+
+            // a unique key for the texture
+            var key = $"{font.Handle}:{color.r}:{color.g}:{color.b}:{color.a}:{text}";
+
+            var existingTexture = _resourceManager.TryGetById<Texture>(key);
+            if(existingTexture != null)
+            {
+                _modContext.RendererManager.DrawText(existingTexture.Handle, ref destination);
+
+                return;
+            }
+
+            var surface = SDL_ttf.TTF_RenderUTF8_Blended(font.Handle, text, color);
+            if (surface == IntPtr.Zero) return;
+
+            try
+            {
+                var textureCache = (TextureCache)_resourceManager.GetCache<Texture>();
+                var textureResource = textureCache.LoadFromSurface(key, surface);
+
+                _loadedResources.Add((typeof(Texture), key));
+
+                _modContext.RendererManager.DrawText(textureResource.Handle, ref destination);
+            }
+            finally
+            {
+                SDL.SDL_FreeSurface(surface);
+            }
         }
 
         public void DrawTexture(IntPtr texture, SDL.SDL_Rect? source, SDL.SDL_Rect destination)
