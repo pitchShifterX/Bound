@@ -3,9 +3,10 @@ using GameEngine.UI.Properties;
 
 namespace GameEngine.UI.Elements
 {
-    public abstract class AbstractContainerElement<T> : UIElement
+    public abstract class AbstractContainerElement<T> : UIElement<T>
         where T : AbstractContainerElement<T>
     {
+        public Color? BackgroundColor { get; set; }
         public Color? BorderColor { get; set; }
 
         public AbstractContainerElement(){}
@@ -19,21 +20,28 @@ namespace GameEngine.UI.Elements
         {
             Margin = spacing;
 
-            return (T)this;
+            return Self;
         }
 
         public T SetPadding(UISpacing spacing)
         {
             Padding = spacing;
 
-            return (T)this;
+            return Self;
+        }
+
+        public T SetBackgroundColor(Color color)
+        {
+            BackgroundColor = color;
+
+            return Self;
         }
 
         public T SetBorderColor(Color color)
         {
             BorderColor = color;
 
-            return (T)this;
+            return Self;
         }
     }
 }

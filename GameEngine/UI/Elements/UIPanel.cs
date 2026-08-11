@@ -1,4 +1,3 @@
-using GameEngine.Graphics.Primitives;
 using GameEngine.UI.Input;
 using GameEngine.UI.Properties;
 
@@ -37,7 +36,7 @@ namespace GameEngine.UI.Elements
         public override void Render()
         {
             if(BorderColor != null)
-                Context?.Render.DrawRectangle(Bounds, BorderColor.Value);
+                Context?.Render.DrawRectangle(Bounds, BackgroundColor, BorderColor.Value);
 
             foreach(var child in Children)
                 child.Render();

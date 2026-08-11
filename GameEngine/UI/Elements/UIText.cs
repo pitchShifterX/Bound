@@ -6,7 +6,7 @@ using GameEngine.Utilities;
 
 namespace GameEngine.UI.Elements
 {
-    public class UIText : UIElement
+    public class UIText : UIElement<UIText>
     {
         public string Label { get; set; }
         public Font? Font { get; set; }

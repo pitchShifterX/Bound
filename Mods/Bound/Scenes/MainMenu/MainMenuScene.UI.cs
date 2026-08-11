@@ -26,41 +26,24 @@ namespace Mods.Bound.Scenes.MainMenu
 
         private UIButton playTestMapButton()
         {
-            return new UIButton(
-                new Fixed(300),
-                new Fixed(50),
-                "Select Map",
-                () => Context.ReplaceScene(() => new MapLobbyScene(ModContext))
-            )
-            {
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new UISpacing()
-                {
-                    Top = 300
-                },
-                LabelColor = Color.White
-            };
+            return new UIButton(new Fixed(300), new Fixed(50))
+                .SetLabel("Select Map")
+                .SetAction(() => Context.ReplaceScene(() => new MapLobbyScene(ModContext)))
+                .SetMargin(new UISpacing(300, 0, 0, 0))
+                .SetAlignment(HorizontalAlignment.Center, VerticalAlignment.Center)
+                .SetBackgroundColor(Color.Transparent)
+                .SetBorderColor(Color.Green);
         }
 
         private UIButton quitButton()
         {
-            return new UIButton(
-                new Fixed(300),
-                new Fixed(50),
-                "Quit",
-                () => Context.QuitMod()
-            )
-            {
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new UISpacing()
-                {
-                    Top = 450
-                },
-                LabelColor = Color.White,
-                BorderColor = Color.Red
-            };
+            return new UIButton(new Fixed(300), new Fixed(50))
+                .SetLabel("Quit")
+                .SetAction(() => Context.QuitMod())
+                .SetMargin(new UISpacing(450, 0, 0, 0))
+                .SetAlignment(HorizontalAlignment.Center, VerticalAlignment.Center)
+                .SetBackgroundColor(Color.Transparent)
+                .SetBorderColor(Color.Red);
         }
     }
 }

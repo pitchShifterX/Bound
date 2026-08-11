@@ -151,11 +151,11 @@ namespace GameEngine.UI
             }
         }
 
-        public void DrawRectangle(Rectangle<float> rectangle, Color color, bool filled = false)
+        public void DrawRectangle(Rectangle<float> rectangle, Color? color = null, Color? border = null)
         {
             var position = UIToScreenRectangle(rectangle);
 
-            _engineRenderContext.DrawRectangle(position, color, filled);
+            _engineRenderContext.DrawRectangle(position, color, border);
         }
     }
 }

@@ -205,9 +205,9 @@ namespace GameEngine.Scene
             _modContext.RendererManager?.DrawEllipse(center, radiusX, radiusY, color);
         }
 
-        public void DrawRectangle(Rectangle<float> rectangle, Color color, bool filled = false)
+        public void DrawRectangle(Rectangle<float> rectangle, Color? color = null, Color? border = null)
         {
-            _modContext.RendererManager?.DrawRectangle(rectangle, color, filled);
+            _modContext.RendererManager?.DrawRectangle(rectangle, color, border);
         }
 
         public void PlayMusic(string id, int loop = -1)

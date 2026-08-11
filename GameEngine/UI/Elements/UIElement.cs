@@ -4,8 +4,11 @@ using GameEngine.Utilities;
 
 namespace GameEngine.UI.Elements
 {
-    public abstract class UIElement : IUIElement
+    public abstract class UIElement<T> : IUIElement
+        where T : UIElement<T>
     {
+        protected T Self => (T)this;
+
         /// <summary>
         /// The UI context passed down from parent element to child element. This 
         /// gives access to theme, rendering methods, etc.
@@ -152,6 +155,20 @@ namespace GameEngine.UI.Elements
             {
                 AddChild(element);
             }
+        }
+
+        /// <summary>
+        /// Simply sets the horizontal and vertical alignment.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public T SetAlignment(HorizontalAlignment x, VerticalAlignment y)
+        {
+            HorizontalAlignment = x;
+            VerticalAlignment = y;
+
+            return Self;
         }
 
         /// <summary>

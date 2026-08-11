@@ -5,7 +5,7 @@ using GameEngine.UI.Properties;
 
 namespace GameEngine.UI.Elements
 {
-    public class UIButton : UIElement
+    public class UIButton : AbstractContainerElement<UIButton>
     {
         public Action? Action { get; private set; }
 
@@ -14,9 +14,8 @@ namespace GameEngine.UI.Elements
 
         public Font? Font { get; set; }
         public Color? LabelColor { get; set; }
-        public Color? BorderColor { get; set; }
 
-        public UIButton(UISize width, UISize height, string? label, Action? action) :
+        public UIButton(UISize width, UISize height, string? label = null, Action? action = null) :
             base(width, height)
         {
             if(label != null)
@@ -29,17 +28,28 @@ namespace GameEngine.UI.Elements
         protected override void OnContextAssigned()
         {
             Font ??= Context!.Scene.GetById<Font>(Context!.Theme.FontResource);
+            
             LabelColor ??= Context!.Theme.Buttons.LabelColor;
+            BackgroundColor ??= Context!.Theme.Buttons.BackgroundColor;
             BorderColor ??= Context!.Theme.Buttons.BorderColor;
         }
 
-        public void SetLabel(string label)
+        public UIButton SetLabel(string label)
         {
             AddChild(new UIText(label)
             {
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             });
+
+            return this;
+        }
+
+        public UIButton SetLabelColor(Color color)
+        {
+            LabelColor = color;
+            
+            return this;
         }
 
         public UIButton SetAction(Action action)
@@ -83,7 +93,7 @@ namespace GameEngine.UI.Elements
         {
             if(Context?.Render == null) return;
 
-            Context.Render.DrawRectangle(Bounds, BorderColor!.Value);
+            Context.Render.DrawRectangle(Bounds, BackgroundColor!.Value, BorderColor!.Value);
 
             base.Render();
         }

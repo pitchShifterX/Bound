@@ -60,6 +60,7 @@ namespace GameEngine.World.ECS.Systems
 
                 _renderer.DrawRectangle(
                     screenRect,
+                    null,
                     border.BorderColor
                 );
             }

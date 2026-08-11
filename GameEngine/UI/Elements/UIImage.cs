@@ -4,7 +4,7 @@ using GameEngine.Utilities;
 
 namespace GameEngine.UI.Elements
 {
-    public class UIImage : UIElement
+    public class UIImage : UIElement<UIImage>
     {
         private readonly Texture _resource;
 
