@@ -20,6 +20,11 @@ namespace GameEngine.Graphics.Rendering
             }
 
             Renderer = SDL.SDL_CreateRenderer(_window, -1, flags);
+
+            SDL.SDL_SetRenderDrawBlendMode(
+                Renderer,
+                SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND
+            );
         }
 
         public void SetVsync(bool value)
@@ -85,7 +90,7 @@ namespace GameEngine.Graphics.Rendering
             );
         }
 
-        public void DrawRectangle(Rectangle<float> rectangle, Color color, bool filled = false)
+        public void DrawRectangle(Rectangle<float> rectangle, Color? color = null, Color? border = null)
         {
             var rect = new SDL.SDL_Rect
             {
@@ -95,12 +100,19 @@ namespace GameEngine.Graphics.Rendering
                 h = (int)rectangle.Height
             };
 
-            SDL.SDL_SetRenderDrawColor(Renderer, color.R, color.G, color.B, color.A);
+            if(color != null)
+            {
+                SDL.SDL_SetRenderDrawColor(Renderer, color.Value.R, color.Value.G, color.Value.B, color.Value.A);
 
-            if(filled)
                 SDL.SDL_RenderFillRect(Renderer, ref rect);
-            else
+            }
+            
+            if(border != null)
+            {
+                SDL.SDL_SetRenderDrawColor(Renderer, border.Value.R, border.Value.G, border.Value.B, border.Value.A);
+
                 SDL.SDL_RenderDrawRect(Renderer, ref rect);
+            }
         }
 
         public void DrawText(IntPtr textureHandle, ref SDL.SDL_Rect destination)
