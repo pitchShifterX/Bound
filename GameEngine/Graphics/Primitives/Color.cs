@@ -69,5 +69,6 @@ namespace GameEngine.Graphics.Primitives
         public static readonly Color Red    = new(255, 0, 0);
         public static readonly Color Green  = new(0, 255, 0);
         public static readonly Color Blue   = new(0, 0, 255);
+        public static readonly Color Transparent = new (0, 0, 0, 0);
     }
 }
