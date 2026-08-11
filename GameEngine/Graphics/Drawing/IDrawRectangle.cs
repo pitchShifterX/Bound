@@ -5,6 +5,6 @@ namespace GameEngine.Graphics.Drawing
 {
     public interface IDrawRectangle
     {
-        public void DrawRectangle(Rectangle<float> rectangle, Color color, bool filled = false);
+        public void DrawRectangle(Rectangle<float> rectangle, Color? color = null, Color? border = null);
     }
 }
