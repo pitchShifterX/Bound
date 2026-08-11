@@ -17,7 +17,7 @@ namespace GameEngine.UI
 
         public UIContext Context { get; private set; }
 
-        public IUIElement Root { get; private set; }
+        public AbstractContainerElement<UIPanel> Root { get; private set; }
 
         public UIManager(ISceneContext sceneContext, IUITheme theme)
         {

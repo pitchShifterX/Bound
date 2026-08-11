@@ -4,10 +4,8 @@ using GameEngine.UI.Properties;
 
 namespace GameEngine.UI.Elements
 {
-    public class UIPanel : UIElement
+    public class UIPanel : AbstractContainerElement<UIPanel>
     {
-        public Color BorderColor { get; set; } = Color.White;
-
         public UIPanel(){}
 
         public UIPanel(UISize width, UISize height) :
@@ -38,7 +36,8 @@ namespace GameEngine.UI.Elements
 
         public override void Render()
         {
-            Context?.Render.DrawRectangle(Bounds, BorderColor);
+            if(BorderColor != null)
+                Context?.Render.DrawRectangle(Bounds, BorderColor.Value);
 
             foreach(var child in Children)
                 child.Render();

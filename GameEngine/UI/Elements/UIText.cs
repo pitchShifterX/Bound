@@ -10,7 +10,6 @@ namespace GameEngine.UI.Elements
     {
         public string Label { get; set; }
         public Font? Font { get; set; }
-        public int FontSize { get; set; } = 24;
         public Color? LabelColor { get; set; }
 
         public UIText(string label) :
@@ -32,16 +31,23 @@ namespace GameEngine.UI.Elements
             return this;
         }
 
-        public UIText SetFontSize(int size)
+        public UIText SetColor(Color color)
         {
-            FontSize = size;
+            LabelColor = color;
 
             return this;
         }
 
-        public UIText SetColor(Color color)
+        public UIText SetMargin(UISpacing spacing)
         {
-            LabelColor = color;
+            Margin = spacing;
+
+            return this;
+        }
+
+        public UIText SetPadding(UISpacing spacing)
+        {
+            Padding = spacing;
 
             return this;
         }
