@@ -13,6 +13,12 @@ namespace GameEngine.UI.Elements
             
         }
 
+        protected override void OnContextAssigned()
+        {
+            BackgroundColor ??= Context!.Theme.Buttons.BackgroundColor;
+            BorderColor ??= Context!.Theme.Buttons.BorderColor;
+        }
+
         public override bool Process(UIInput input)
         {
             // process in reverse order (last element added in)
@@ -35,8 +41,7 @@ namespace GameEngine.UI.Elements
 
         public override void Render()
         {
-            if(BorderColor != null)
-                Context?.Render.DrawRectangle(Bounds, BackgroundColor, BorderColor.Value);
+            Context?.Render.DrawRectangle(Bounds, BackgroundColor, BorderColor!.Value);
 
             foreach(var child in Children)
                 child.Render();
