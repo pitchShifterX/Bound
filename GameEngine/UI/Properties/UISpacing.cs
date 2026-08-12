@@ -8,5 +8,10 @@ namespace GameEngine.UI.Properties
     )
     {
         public static UISpacing Zero => new();
+
+        public static UISpacing All(float x)
+        {
+            return new(x, x, x, x);
+        }
     }
 }
