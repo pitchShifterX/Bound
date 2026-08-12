@@ -12,7 +12,7 @@ namespace GameEngine.World.ECS.Systems
 
             var rect = selection.SelectionRectangle.To<float>();
 
-            renderContext.DrawRectangle(rect, Color.Green);
+            renderContext.DrawRectangle(rect, null, Color.Green);
         }
     }
 }
