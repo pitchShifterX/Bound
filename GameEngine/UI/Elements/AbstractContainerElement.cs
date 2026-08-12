@@ -10,7 +10,7 @@ namespace GameEngine.UI.Elements
         public Color? BorderColor { get; set; }
 
         public AbstractContainerElement(){}
-        public AbstractContainerElement(UISize width, UISize height) : 
+        public AbstractContainerElement(UISize? width, UISize? height) : 
             base(width, height)
         {
             

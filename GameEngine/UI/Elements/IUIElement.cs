@@ -81,6 +81,14 @@ namespace GameEngine.UI.Elements
         /// </summary>
         public void Layout();
 
+        public void Layout(Rectangle<float> bounds);
+
+        /// <summary>
+        /// Called by Layout() to continue building out layouts for 
+        /// child elements.
+        /// </summary>
+        public void LayoutChildren();
+
         /// <summary>
         /// Adds a child element to our element and sets its parent 
         /// node.
@@ -93,6 +101,8 @@ namespace GameEngine.UI.Elements
         /// </summary>
         /// <param name="elements"></param>
         public void AddChildren(IEnumerable<IUIElement> elements);
+
+        public Vector2<float> GetLayoutDesiredSize();
 
         /// <summary>
         /// Processes inputs. If the element returns true on this, 
@@ -109,5 +119,11 @@ namespace GameEngine.UI.Elements
         /// </summary>
         /// <returns></returns>
         public Rectangle<float> GetContentBounds();
+
+        /// <summary>
+        /// Simply sets the layout bounds.
+        /// </summary>
+        /// <param name="bounds"></param>
+        public void SetLayoutBounds(Rectangle<float> bounds);
     }
 }

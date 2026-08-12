@@ -17,7 +17,7 @@ namespace GameEngine.UI
 
         public UIContext Context { get; private set; }
 
-        public AbstractContainerElement<UIPanel> Root { get; private set; }
+        public AbstractContainerElement<UIFlexBox> Root { get; private set; }
 
         public UIManager(ISceneContext sceneContext, IUITheme theme)
         {
@@ -32,17 +32,23 @@ namespace GameEngine.UI
                 theme
             );
 
-            Root = new UIPanel(
+            Root = new UIFlexBox(
                 new Fixed(_virtualResolution.x),
                 new Fixed(_virtualResolution.y)
-            );
+            ).SetDirection(FlexDirection.Column);
             
             Root.SetContext(Context);
         }
 
         public void Layout()
         {
-            Root.Layout();
+            Root.Layout(new Rectangle<float>
+            {
+                X = 0,
+                Y = 0,
+                Width = _virtualResolution.x,
+                Height = _virtualResolution.y
+            });
         }
 
         public void Process(IRecordInput input)

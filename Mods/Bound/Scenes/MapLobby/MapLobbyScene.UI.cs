@@ -15,8 +15,15 @@ namespace Mods.Bound.Scenes.Gameplay
             var header = buildHeader();
             var body = buildBody();
 
-            UI.Root.AddChild(header);
-            UI.Root.AddChild(body);
+            var layout = new UIFlexBox(new Fill(), new Fill())
+                .SetDirection(FlexDirection.Column);
+
+            layout.AddChild(header);
+            layout.AddChild(body);
+
+            UI.Root.AddChild(layout);
+
+            UI.Root.SetBorderColor(Color.White);
             UI.Root.SetPadding(new(0, 100, 0, 100));
         }
 
@@ -43,23 +50,37 @@ namespace Mods.Bound.Scenes.Gameplay
 
         private IUIElement buildBody()
         {
-            var bodyPanel = new UIPanel(new Fill(), new Fill())
-                // .SetBorderColor(Color.Green)
-                .SetPadding(new UISpacing(150, 0, 150, 0));
+            var body = new UIFlexBox(new Fill(), new Fill())
+                .SetBorderColor(Color.Green)
+                .SetGap(50);
             
             var mapPanel = new UIPanel(new Fixed(500), new Fill())
-                .SetBorderColor(new Color(255, 255, 255, 50))
-                .SetBackgroundColor(new Color(17, 17, 17, 255));
+                .SetBorderColor(Color.Red);
             
             var rightPanel = new UIPanel(new Fill(), new Fill())
-                .SetBorderColor(new Color(255, 255, 255, 50))
-                .SetBackgroundColor(new Color(17, 17, 17, 255))
-                .SetMargin(new UISpacing(0, 0, 0, 600));
+                .SetBorderColor(Color.Blue);
             
-            bodyPanel.AddChild(mapPanel);
-            bodyPanel.AddChild(rightPanel);
+            body.AddChild(mapPanel);
+            body.AddChild(rightPanel);
 
-            return bodyPanel;
+            return body;
+            // var bodyPanel = new UIPanel(new Fill(), new Fill())
+            //     // .SetBorderColor(Color.Green)
+            //     .SetPadding(new UISpacing(150, 0, 150, 0));
+            
+            // var mapPanel = new UIPanel(new Fixed(500), new Fill())
+            //     .SetBorderColor(new Color(255, 255, 255, 50))
+            //     .SetBackgroundColor(new Color(17, 17, 17, 255));
+            
+            // var rightPanel = new UIPanel(new Fill(), new Fill())
+            //     .SetBorderColor(new Color(255, 255, 255, 50))
+            //     .SetBackgroundColor(new Color(17, 17, 17, 255))
+            //     .SetMargin(new UISpacing(0, 0, 0, 600));
+            
+            // bodyPanel.AddChild(mapPanel);
+            // bodyPanel.AddChild(rightPanel);
+
+            // return bodyPanel;
         }
     }
 }

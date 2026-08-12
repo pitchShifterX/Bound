@@ -13,18 +13,23 @@ namespace Mods.Bound.Scenes.MainMenu
 
         public override void BuildUI()
         {
-            if(_menu != null)
-            {
-                var menuImage = new UIImage(_menu);
-                
-                UI.Root.AddChild(menuImage);
-            }
+            if(_menu == null) return;
+            
+            var menuImage = new UIImage(_menu, new Fill(), new Fill());
 
-            var play = playTestMapButton();
-            var quit = quitButton();
+            var buttons = new UIFlexBox(new Fill(), new Fill())
+                .SetDirection(FlexDirection.Column)
+                .SetAlignItems(FlexAlign.Center)
+                .SetJustifyContent(FlexJustify.Center)
+                .SetPadding(new UISpacing(500, 0, 0, 0))
+                .SetGap(20);
 
-            UI.Root.AddChild(play);
-            UI.Root.AddChild(quit);
+            buttons.AddChild(playTestMapButton());
+            buttons.AddChild(quitButton());
+
+            menuImage.AddChild(buttons);
+
+            UI.Root.AddChild(menuImage);
         }
 
         private UIButton playTestMapButton()
@@ -32,7 +37,7 @@ namespace Mods.Bound.Scenes.MainMenu
             return new UIButton(new Fixed(300), new Fixed(50))
                 .SetLabel("Select Map")
                 .SetAction(() => Context.ReplaceScene(() => new MapLobbyScene(ModContext)))
-                .SetMargin(new UISpacing(300, 0, 0, 0))
+                .SetMargin(new UISpacing(0, 0, 0, 0))
                 .SetAlignment(HorizontalAlignment.Center, VerticalAlignment.Center)
                 .SetBackgroundColor(Color.Transparent)
                 .SetBorderColor(Color.Green);
@@ -43,7 +48,7 @@ namespace Mods.Bound.Scenes.MainMenu
             return new UIButton(new Fixed(300), new Fixed(50))
                 .SetLabel("Quit")
                 .SetAction(() => Context.QuitMod())
-                .SetMargin(new UISpacing(450, 0, 0, 0))
+                .SetMargin(new UISpacing(0, 0, 0, 0))
                 .SetAlignment(HorizontalAlignment.Center, VerticalAlignment.Center)
                 .SetBackgroundColor(Color.Transparent)
                 .SetBorderColor(Color.Red);

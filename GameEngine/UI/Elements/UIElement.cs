@@ -126,6 +126,22 @@ namespace GameEngine.UI.Elements
         {
             CalculateBounds();
 
+            LayoutChildren();
+        }
+
+        public virtual void Layout(Rectangle<float> bounds)
+        {
+            Bounds = bounds;
+
+            LayoutChildren();
+        }
+
+        /// <summary>
+        /// Called by Layout() to continue building out layouts for 
+        /// child elements.
+        /// </summary>
+        public virtual void LayoutChildren()
+        {
             foreach(var child in Children)
                 child.Layout();
         }
@@ -224,6 +240,24 @@ namespace GameEngine.UI.Elements
                     0
                 )
             };
+        }
+
+        /// <summary>
+        /// Simply sets the layout bounds.
+        /// </summary>
+        /// <param name="bounds"></param>
+        public virtual void SetLayoutBounds(Rectangle<float> bounds)
+        {
+            Bounds = bounds;
+        }
+
+        /// <summary>
+        /// Gets the desired size of this element for use by parent layout
+        /// containers such as UIFlexBox.
+        /// </summary>
+        public Vector2<float> GetLayoutDesiredSize()
+        {
+            return GetDesiredSize() ?? new Vector2<float>(0, 0);
         }
 
         /// <summary>
