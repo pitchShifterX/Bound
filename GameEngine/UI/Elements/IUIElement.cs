@@ -125,5 +125,11 @@ namespace GameEngine.UI.Elements
         /// </summary>
         /// <param name="bounds"></param>
         public void SetLayoutBounds(Rectangle<float> bounds);
+
+        /// <summary>
+        /// Call this method for the current element and child 
+        /// elements to unsubscribe from events.
+        /// </summary>
+        public void Unsubscribe();
     }
 }

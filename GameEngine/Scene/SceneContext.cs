@@ -1,3 +1,4 @@
+using GameEngine.Event;
 using GameEngine.Graphics.Primitives;
 using GameEngine.Mod;
 using GameEngine.Resources;
@@ -17,11 +18,22 @@ namespace GameEngine.Scene
         public ISettingsController SettingsManager => _modContext.SettingsManager!;
         public Settings.Settings Settings => _modContext.SettingsManager!.Settings;
 
+        public UIEventBus UIEvents { get; init; }
+
         /// <summary>
         /// Resources loaded by this scene. These 
         /// resources will be automatically unloaded.
         /// </summary>
         private readonly HashSet<(Type Type, string Id)> _loadedResources = [];
+
+        /// <summary>
+        /// Collection of text texture references. This is used for duplicate 
+        /// Font, Text, and Color that match an existing texture. So if you have 
+        /// two "Hello" UI text elements of white color and the same font, we 
+        /// just reference the existing texture. And when we delete one element, 
+        /// we don't want to destroy the texture unless there are 0 references.
+        /// </summary>
+        private readonly Dictionary<string, int> _textTextureReferences = [];
 
         /// <summary>
         /// Context for safely accessing and using 
@@ -31,6 +43,8 @@ namespace GameEngine.Scene
         public SceneContext(IModContext modContext)
         {
             _modContext = modContext;
+
+            UIEvents = new();
         }
 
         /// <summary>
@@ -153,6 +167,44 @@ namespace GameEngine.Scene
             }
 
             _loadedResources.Clear();
+
+            _textTextureReferences.Clear();
+
+            UIEvents.Unload();
+        }
+
+        public void GetTextTexture(Font font, string text, SDL.SDL_Color color)
+        {
+            var key = getTextTextureKey(font, text, color);
+
+            if(_textTextureReferences.TryGetValue(key, out var references))
+            {
+                _textTextureReferences[key] = references + 1;
+                return;
+            }
+
+            _textTextureReferences[key] = 1;
+        }
+
+        public void ReleaseTextTexture(Font font, string text, SDL.SDL_Color color)
+        {
+            var key = getTextTextureKey(font, text, color);
+
+            if(!_textTextureReferences.TryGetValue(key, out var references))
+                return;
+
+            references--;
+
+            if(references > 0)
+            {
+                _textTextureReferences[key] = references;
+
+                return;
+            }
+
+            _textTextureReferences.Remove(key);
+
+            UnloadById<Texture>(key);
         }
 
         public void DrawText(Font font, string text, SDL.SDL_Color color, SDL.SDL_Rect destination)
@@ -162,7 +214,7 @@ namespace GameEngine.Scene
             if (string.IsNullOrEmpty(text)) return;
 
             // a unique key for the texture
-            var key = $"{font.Handle}:{color.r}:{color.g}:{color.b}:{color.a}:{text}";
+            var key = getTextTextureKey(font, text, color);
 
             var existingTexture = _resourceManager.TryGetById<Texture>(key);
             if(existingTexture != null)
@@ -225,6 +277,11 @@ namespace GameEngine.Scene
             {
                 _modContext.EventManager.IsQuitting = true;
             }
+        }
+
+        private static string getTextTextureKey(Font font, string text, SDL.SDL_Color color)
+        {
+            return $"{font.Id}:{color.r}:{color.g}:{color.b}:{color.a}:{text}";
         }
     }
 }

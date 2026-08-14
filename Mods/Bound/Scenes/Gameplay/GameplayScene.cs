@@ -1,10 +1,7 @@
 using GameEngine;
 using GameEngine.Event.Input;
-using GameEngine.Graphics;
 using GameEngine.Mod;
-using GameEngine.Resources;
 using GameEngine.Scene;
-using GameEngine.SharedInterface;
 using Mods.Bound.Gameplay;
 using Mods.Bound.Scenes.MainMenu;
 
@@ -36,11 +33,13 @@ namespace Mods.Bound.Scenes.Gameplay
         public override void Render()
         {
             _gameplay?.Render();
+            UI.Render();
         }
 
         public override void Update(float? delta)
         {
             _gameplay?.Update(delta);
+            UI.Update(delta);
         }
     }
 }

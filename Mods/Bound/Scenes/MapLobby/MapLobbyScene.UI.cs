@@ -2,7 +2,7 @@ using GameEngine.Graphics.Primitives;
 using GameEngine.UI;
 using GameEngine.UI.Elements;
 using GameEngine.UI.Properties;
-using Mods.Bound.UIThemes;
+using Mods.Bound.UI.Themes;
 
 namespace Mods.Bound.Scenes.Gameplay
 {
@@ -23,7 +23,6 @@ namespace Mods.Bound.Scenes.Gameplay
 
             UI.Root.AddChild(layout);
 
-            UI.Root.SetBorderColor(Color.White);
             UI.Root.SetPadding(new(0, 100, 0, 100));
         }
 
@@ -52,7 +51,8 @@ namespace Mods.Bound.Scenes.Gameplay
         {
             var body = new UIFlexBox(new Fill(), new Fill())
                 .SetBorderColor(Color.Green)
-                .SetGap(50);
+                .SetGap(50)
+                .SetMargin(new UISpacing(50, 0, 100, 0));
             
             var mapPanel = new UIPanel(new Fixed(500), new Fill())
                 .SetBorderColor(Color.Red);
@@ -64,23 +64,6 @@ namespace Mods.Bound.Scenes.Gameplay
             body.AddChild(rightPanel);
 
             return body;
-            // var bodyPanel = new UIPanel(new Fill(), new Fill())
-            //     // .SetBorderColor(Color.Green)
-            //     .SetPadding(new UISpacing(150, 0, 150, 0));
-            
-            // var mapPanel = new UIPanel(new Fixed(500), new Fill())
-            //     .SetBorderColor(new Color(255, 255, 255, 50))
-            //     .SetBackgroundColor(new Color(17, 17, 17, 255));
-            
-            // var rightPanel = new UIPanel(new Fill(), new Fill())
-            //     .SetBorderColor(new Color(255, 255, 255, 50))
-            //     .SetBackgroundColor(new Color(17, 17, 17, 255))
-            //     .SetMargin(new UISpacing(0, 0, 0, 600));
-            
-            // bodyPanel.AddChild(mapPanel);
-            // bodyPanel.AddChild(rightPanel);
-
-            // return bodyPanel;
         }
     }
 }

@@ -9,5 +9,6 @@ namespace GameEngine.World.Player
         public int Id { get; }
         public string Color { get; }
         public bool IsHuman { get; }
+        public Dictionary<string, object> CustomVariables { get; }
     }
 }

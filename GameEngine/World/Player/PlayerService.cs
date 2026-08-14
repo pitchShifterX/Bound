@@ -50,5 +50,30 @@ namespace GameEngine.World.Player
 
             return player;
         }
+
+        public void SetCustomVariableForPlayer(int playerId, string key, object value)
+        {
+            var player = GetPlayer(playerId);
+
+            player.CustomVariables[key] = value;
+        }
+
+        public bool IsCustomVariableForPlayer(int playerId, string key)
+        {
+            var player = GetPlayer(playerId);
+
+            return player.CustomVariables.ContainsKey(key);
+        }
+
+        public bool TryGetCustomVariableValueForPlayer(
+            int playerId, 
+            string key, 
+            out object? value
+        )
+        {
+            var player = GetPlayer(playerId);
+
+            return player.CustomVariables.TryGetValue(key, out value);
+        }
     }
 }

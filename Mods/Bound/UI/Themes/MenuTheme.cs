@@ -1,7 +1,7 @@
 using GameEngine.Graphics.Primitives;
 using GameEngine.UI;
 
-namespace Mods.Bound.UIThemes
+namespace Mods.Bound.UI.Themes
 {
     public class MenuTheme : IUITheme
     {

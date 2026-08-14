@@ -6,5 +6,6 @@ namespace GameEngine.World.Player
         public required int Id { get; set; }
         public required string Color { get; set; }
         public bool IsHuman { get; set; }
+        public Dictionary<string, object> CustomVariables { get; init; } = [];
     }
 }

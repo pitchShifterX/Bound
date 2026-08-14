@@ -1,16 +1,13 @@
+using GameEngine.Event;
 using GameEngine.Event.Input;
 using GameEngine.Scene;
-using GameEngine.World.Assets;
 using GameEngine.World.Bootstrap;
 using GameEngine.World.ECS;
-using GameEngine.World.Input;
 using GameEngine.World.Input.Commands;
-using GameEngine.World.Map;
 using GameEngine.World.Map.Locations;
 using GameEngine.World.Map.Triggers;
 using GameEngine.World.Player;
 using GameEngine.World.Rendering;
-using GameEngine.World.Rendering.Cameras;
 using GameEngine.World.Runtime;
 using GameEngine.World.Time;
 using GameEngine.World.Unit;
@@ -86,6 +83,11 @@ namespace GameEngine
         /// Service utility for time management.
         /// </summary>
         public TimeService Time { get; init; }
+
+        /// <summary>
+        /// Communication bridge to UI.
+        /// </summary>
+        public UIEventBus UIEvents => _sceneContext.UIEvents;
 
         public GameplayContext(ISceneContext scene, GameRegistries registries)
         {

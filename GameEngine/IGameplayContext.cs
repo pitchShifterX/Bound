@@ -1,3 +1,4 @@
+using GameEngine.Event;
 using GameEngine.SharedInterface;
 using GameEngine.World.ECS;
 using GameEngine.World.Input;
@@ -16,9 +17,11 @@ namespace GameEngine
         public TriggerEngine TriggerEngine { get; }
         public UnitService Unit { get; }
         public LocationService Location { get; }
-        public PlayerService? Player { get; }
+        public PlayerService Player { get; }
         public CommandService Commands { get; }
         public TimeService Time { get; }
+        
+        public UIEventBus UIEvents { get; }
 
         public void LoadMap(string fileName);
     }

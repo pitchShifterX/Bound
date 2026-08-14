@@ -2,6 +2,7 @@ using GameEngine;
 using GameEngine.Resources;
 using GameEngine.Scene;
 using GameEngine.World.Map.Tiles;
+using Mods.Bound.Gameplay.Triggers.Actions;
 using Mods.Bound.Gameplay.Unit;
 
 namespace Mods.Bound.Gameplay
@@ -66,6 +67,15 @@ namespace Mods.Bound.Gameplay
                     new(){ IsWalkable = false },
                 ]
             });
+
+            Registries.Triggers.RegisterAction(
+                "SetScore",
+                args => new SetScoreAction(
+                    args.Int(0),
+                    args.Int(1),
+                    args.String(2)
+                )
+            );
         }
     }
 }

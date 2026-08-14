@@ -79,6 +79,11 @@ namespace GameEngine.UI
             Root.Render();
         }
 
+        public void Unsubscribe()
+        {
+            Root.Unsubscribe();
+        }
+
         private UIRenderContext createRenderContext()
         {
             var scaleX = (float)_screenResolution.x / _virtualResolution.x;

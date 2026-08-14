@@ -37,9 +37,15 @@ namespace GameEngine.Scene
         public virtual void Initialize() => Load();
         public abstract void Load();
         public abstract void BuildUI();
-        public virtual void Unload() => Context.UnloadAll();
         public abstract void ProcessInput(IRecordInput input);
         public abstract void Update(float? delta);
         public abstract void Render();
+
+        public virtual void Unload()
+        {
+            Context.UnloadAll();
+
+            UI.Unsubscribe();
+        }
     }
 }

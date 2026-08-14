@@ -3,7 +3,7 @@ using GameEngine.UI;
 using GameEngine.UI.Elements;
 using GameEngine.UI.Properties;
 using Mods.Bound.Scenes.Gameplay;
-using Mods.Bound.UIThemes;
+using Mods.Bound.UI.Themes;
 
 namespace Mods.Bound.Scenes.MainMenu
 {

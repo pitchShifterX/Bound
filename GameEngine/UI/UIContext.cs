@@ -1,3 +1,4 @@
+using GameEngine.Event;
 using GameEngine.Scene;
 
 namespace GameEngine.UI
@@ -7,6 +8,8 @@ namespace GameEngine.UI
         public ISceneContext Scene { get; }
         public UIRenderContext Render { get; }
         public IUITheme Theme { get; }
+
+        public UIEventBus Events => Scene.UIEvents;
 
         public UIContext(
             ISceneContext scene,
