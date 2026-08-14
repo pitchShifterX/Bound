@@ -27,7 +27,8 @@ namespace GameEngine.World.ECS.Systems
                 var texture = sceneContext.GetById<Texture>(spriteComponent.TextureId);
 
                 var worldPosition = camera.WorldPositionToScreenPosition(position.x, position.y);
-                var textureSize = (int)(Constants.TileSize * camera.Zoom);
+                var textureWidth = (int)(spriteComponent.Size.x * camera.Zoom);
+                var textureHeight = (int)(spriteComponent.Size.y * camera.Zoom);
 
                 var originX = spriteComponent.Origin.x * camera.Zoom;
                 var originY = spriteComponent.Origin.y * camera.Zoom;
@@ -48,7 +49,7 @@ namespace GameEngine.World.ECS.Systems
                 sceneContext.DrawTexture(
                     texture,
                     srcRect,
-                    new SDL.SDL_Rect { x = absoluteX, y = absoluteY, w = textureSize, h = textureSize }
+                    new SDL.SDL_Rect { x = absoluteX, y = absoluteY, w = textureWidth, h = textureHeight }
                 );
             }
         }
