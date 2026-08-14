@@ -112,6 +112,7 @@ namespace GameEngine
 
             _runtime = new GameplayRuntime(
                 _registries,
+                UIEvents,
                 Player,
                 TriggerEngine,
                 Time,

@@ -16,7 +16,7 @@ namespace Mods.Bound.Scenes.Gameplay
             var scoreText = new ScoreText()
                 .SetColor(Color.White);
 
-            var welcome = new UIText("Welcome!")
+            var welcome = new WorldTimer()
                 .SetColor(Color.White);
 
             var layout = new UIFlexBox(new Fill(), new Fixed(75))

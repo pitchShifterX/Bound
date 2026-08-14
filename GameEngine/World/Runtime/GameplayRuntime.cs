@@ -1,3 +1,4 @@
+using GameEngine.Event;
 using GameEngine.Scene;
 using GameEngine.World.ECS;
 using GameEngine.World.Input;
@@ -51,8 +52,11 @@ namespace GameEngine.World.Runtime
         /// </summary>
         public SpatialHashGrid SpatialHashGrid { get; }
 
+        public UIEventBus UIEvents { get; }
+
         public GameplayRuntime(
-            GameRegistries registries, 
+            GameRegistries registries,
+            UIEventBus uiEvents,
             PlayerService player, 
             TriggerEngine trigger,
             TimeService time,
@@ -66,7 +70,7 @@ namespace GameEngine.World.Runtime
             _ecs = ecs;
 
             SpatialHashGrid = new SpatialHashGrid();
-
+            UIEvents = uiEvents;
         }
 
         public void Initialize(
@@ -94,7 +98,12 @@ namespace GameEngine.World.Runtime
 
         public void Update(float? delta)
         {
-            _time.World.Update(delta);
+            // fires a UI event every second for any UI elements listening
+            if(_time.Update(delta))
+            {
+                UIEvents.Publish(new WorldSecondEvent(_time.WorldSeconds));
+            }
+
             Camera?.Controller.Update(delta);
             _systems?.Update(delta);
             _trigger.Update(delta);
