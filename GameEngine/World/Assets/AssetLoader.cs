@@ -1,6 +1,5 @@
 using GameEngine.Resources;
 using GameEngine.Scene;
-using GameEngine.Utilities;
 using GameEngine.World.Map;
 
 namespace GameEngine.World.Assets
@@ -22,6 +21,7 @@ namespace GameEngine.World.Assets
         public void Initialize(MapData map)
         {
             initializeTilesets(map);
+            initializeSounds(map);
         }
 
         private void initializeTilesets(MapData map)
@@ -36,6 +36,22 @@ namespace GameEngine.World.Assets
                 var tileset = tilesetRegistry.GetTilesetById(requestedTileset);
 
                 _sceneContext.Load<Texture>(tileset.Id, tileset.TexturePath);
+            }
+        }
+
+        private void initializeSounds(MapData map)
+        {
+            var soundRegistry = _registries.Sounds;
+            var requestedSounds = map.Sounds;
+
+            if(requestedSounds == null) return;
+
+            foreach(var requestedSound in requestedSounds)
+            {
+                if(soundRegistry.Get(requestedSound, out var sound))
+                {
+                    _sceneContext.Load<Resources.Audio>(sound.Id, sound.Path);
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 using GameEngine.World.Map.Tiles;
 using GameEngine.World.Map.Triggers;
+using GameEngine.World.Sounds;
 using GameEngine.World.Unit;
 
 namespace GameEngine
@@ -23,5 +24,10 @@ namespace GameEngine
         /// Mods register tilesets that can be referenced by map files.
         /// </summary>
         public TilesetRegistry Tilesets { get; init; } = new();
+
+        /// <summary>
+        /// Mods register music and sounds to be referenced by map files.
+        /// </summary>
+        public SoundRegistry Sounds { get; init; } = new();
     }
 }

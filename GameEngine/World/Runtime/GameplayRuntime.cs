@@ -52,6 +52,9 @@ namespace GameEngine.World.Runtime
         /// </summary>
         public SpatialHashGrid SpatialHashGrid { get; }
 
+        /// <summary>
+        /// Communication bridge from gameplay and UI.
+        /// </summary>
         public UIEventBus UIEvents { get; }
 
         public GameplayRuntime(

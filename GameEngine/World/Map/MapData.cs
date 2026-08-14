@@ -9,6 +9,7 @@ namespace GameEngine.World.Map
         public Tile[][]? Tiles { get; set; }
         public List<TriggerGroup>? TriggerGroups { get; set; }
         public List<string>? Tilesets { get; set; }
+        public List<string>? Sounds { get; set; }
 
         public override string ToString()
         {

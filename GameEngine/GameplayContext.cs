@@ -9,6 +9,7 @@ using GameEngine.World.Map.Triggers;
 using GameEngine.World.Player;
 using GameEngine.World.Rendering;
 using GameEngine.World.Runtime;
+using GameEngine.World.Sounds;
 using GameEngine.World.Time;
 using GameEngine.World.Unit;
 
@@ -85,6 +86,11 @@ namespace GameEngine
         public TimeService Time { get; init; }
 
         /// <summary>
+        /// Service for controlling music and sounds.
+        /// </summary>
+        public SoundService Sound { get; init; }
+
+        /// <summary>
         /// Communication bridge to UI.
         /// </summary>
         public UIEventBus UIEvents => _sceneContext.UIEvents;
@@ -100,6 +106,7 @@ namespace GameEngine
             Unit = new UnitService(ECS, _registries.UnitPrefab, Location);
             Commands = new CommandService(ECS);
             Time = new TimeService();
+            Sound = new SoundService(_sceneContext, _registries.Sounds);
 
             _bootstrap = new GameplayBootstrap(
                 _sceneContext,

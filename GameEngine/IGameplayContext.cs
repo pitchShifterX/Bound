@@ -6,6 +6,7 @@ using GameEngine.World.Input.Commands;
 using GameEngine.World.Map.Locations;
 using GameEngine.World.Map.Triggers;
 using GameEngine.World.Player;
+using GameEngine.World.Sounds;
 using GameEngine.World.Time;
 using GameEngine.World.Unit;
 
@@ -20,6 +21,7 @@ namespace GameEngine
         public PlayerService Player { get; }
         public CommandService Commands { get; }
         public TimeService Time { get; }
+        public SoundService Sound { get; }
         
         public UIEventBus UIEvents { get; }
 

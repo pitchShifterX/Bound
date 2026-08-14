@@ -102,6 +102,14 @@ namespace GameEngine
             );
 
             Registries.Triggers.RegisterAction(
+                "SetMusic",
+                args => new SetMusicAction(
+                    args.String(0),
+                    args.Bool(1)
+                )
+            );
+
+            Registries.Triggers.RegisterAction(
                 "SetTriggerGroupStatus",
                 args => new SetTriggerGroupStatusAction(
                     args.String(0),

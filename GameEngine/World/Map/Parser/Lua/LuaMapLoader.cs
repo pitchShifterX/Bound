@@ -1,6 +1,7 @@
 using GameEngine.Exception;
 using GameEngine.Utilities;
 using GameEngine.World.Map.Parser.Lua.Metadata;
+using GameEngine.World.Map.Parser.Lua.Sounds;
 using GameEngine.World.Map.Parser.Lua.Tiles;
 using GameEngine.World.Map.Parser.Lua.Triggers;
 using GameEngine.World.Map.Triggers;
@@ -17,6 +18,7 @@ namespace GameEngine.World.Map.Parser.Lua
         private LuaTilesetsParser _tilesets = new();
         private LuaTileParser _tile = new();
         private LuaTriggerGroupParser _triggerGroups = new();
+        private LuaSoundParser _sound = new();
 
         public LuaMapLoader(LuaTriggerBinder triggers)
         {
@@ -89,13 +91,15 @@ namespace GameEngine.World.Map.Parser.Lua
             var tilesets = _tilesets.Parse(lua.Table("tilesets"));
             var tiles = _tile.Parse(lua.Table("tiles"), mapWidth!.Value, mapHeight!.Value);
             var triggerGroups = _triggerGroups.Parse(lua.Table("triggerGroups"));
+            var sounds = _sound.Parse(lua.Table("sounds"));
 
             return new MapData
             {
                 Metadata = metadata,
                 Tilesets = tilesets,
                 Tiles = tiles,
-                TriggerGroups = triggerGroups
+                TriggerGroups = triggerGroups,
+                Sounds = sounds
             };
         }
     }
