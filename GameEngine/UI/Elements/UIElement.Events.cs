@@ -34,7 +34,7 @@ namespace GameEngine.UI.Elements
         /// <typeparam name="T"></typeparam>
         /// <param name="handler"></param>
         /// <exception cref="InvalidOperationException"></exception>
-        protected void Subscribe<T>(Action<T> handler) where T : UIEvent
+        protected void Subscribe<TEvent>(Action<TEvent> handler) where TEvent : UIEvent
         {
             if(Context == null)
                 throw new InvalidOperationException("Cannot subscribe to event. Missing context for UI element");
