@@ -52,8 +52,6 @@ namespace GameEngine.UI.Elements
         /// </summary>
         public void Unsubscribe()
         {
-            Log.Debug($"Unsubscribing @ type: {GetType().Name}");
-
             OnUnsubscribe();
             
             foreach(var unsubscribe in _unsubscribeActions)
