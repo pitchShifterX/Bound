@@ -93,6 +93,9 @@ namespace GameEngine.World.Input
         {
             foreach (var entity in _selectedEntities)
             {
+                if (!_ecs.HasComponent<PlayerOwnerComponent>(entity))
+                    continue;
+
                 ref var owner = ref _ecs.GetComponent<PlayerOwnerComponent>(entity);
 
                 if (owner.PlayerOwnerId == _player.CurrentPlayer.Id)
@@ -111,7 +114,7 @@ namespace GameEngine.World.Input
             float closestDistance = float.MaxValue;
             bool closestIsCurrentPlayer = false;
 
-            var entities = _ecs.GetEntitiesWith<UnitComponent, TransformComponent, PlayerOwnerComponent>();
+            var entities = _ecs.GetEntitiesWith<SelectionCircleSettingsComponent, TransformComponent, PlayerOwnerComponent>();
 
             foreach(var entity in entities)
             {
@@ -199,15 +202,16 @@ namespace GameEngine.World.Input
 
         private void clearSelection()
         {
-            var entities = _ecs.GetEntitiesWith<SelectedUnitByPlayerComponent>().ToList();
-
-            foreach(var entity in entities)
+            foreach(var entity in _selectedEntities)
             {
-                _selectedEntities.Remove(entity);
-                
-                _ecs.RemoveComponent<SelectedUnitByPlayerComponent>(entity);
-                _ecs.RemoveComponent<SelectionCircleComponent>(entity);
+                if(_ecs.HasComponent<SelectedUnitByPlayerComponent>(entity))
+                    _ecs.RemoveComponent<SelectedUnitByPlayerComponent>(entity);
+
+                if(_ecs.HasComponent<SelectionCircleComponent>(entity))
+                    _ecs.RemoveComponent<SelectionCircleComponent>(entity);
             }
+
+            _selectedEntities.Clear();
         }
     }
 }
