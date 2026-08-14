@@ -16,17 +16,20 @@ namespace Mods.Bound.Scenes.Gameplay
             var scoreText = new ScoreText()
                 .SetColor(Color.White);
 
-            var welcome = new WorldTimer()
+            var wip = new UIText("Work in Progress")
+                .SetColor(Color.Red);
+
+            var timer = new WorldTimer()
                 .SetColor(Color.White);
 
             var layout = new UIFlexBox(new Fill(), new Fixed(75))
                 .SetBackgroundColor(Color.Transparent)
                 .SetJustifyContent(FlexJustify.SpaceBetween)
-                .SetBorderColor(Color.Green)
                 .SetPadding(UISpacing.All(10));
 
             layout.AddChild(scoreText);
-            layout.AddChild(welcome);
+            layout.AddChild(wip);
+            layout.AddChild(timer);
 
             UI.Root.AddChild(layout);
         }

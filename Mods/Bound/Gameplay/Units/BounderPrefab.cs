@@ -17,7 +17,7 @@ namespace Mods.Bound.Gameplay.Unit
         {
             service.AddComponent(entityId, new SpriteComponent
             {
-                TextureId = "runner" ,
+                TextureId = "runner",
                 SourceRectangle = new Rectangle<int>(0, 0, 48, 48),
                 Size = new(32, 32),
                 Origin = new(16, 32)
@@ -32,11 +32,6 @@ namespace Mods.Bound.Gameplay.Unit
                     Width = 24,
                     Height = 24
                 }
-            });
-
-            service.AddComponent(entityId, new BorderRenderComponent
-            {
-                BorderColor = Color.Red
             });
 
             service.AddComponent(entityId, new SelectionCircleSettingsComponent

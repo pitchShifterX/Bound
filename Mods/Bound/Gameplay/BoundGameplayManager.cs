@@ -2,6 +2,7 @@ using GameEngine;
 using GameEngine.Resources;
 using GameEngine.Scene;
 using GameEngine.World.Map.Tiles;
+using Mods.Bound.Gameplay.Sounds;
 using Mods.Bound.Gameplay.Triggers.Actions;
 using Mods.Bound.Gameplay.Unit;
 
@@ -25,8 +26,12 @@ namespace Mods.Bound.Gameplay
             base.RegisterModContent();
 
             SceneContext.Load<Texture>("runner", "textures/runner.png");
+            SceneContext.Load<Texture>("explosion", "textures/explosion.png");
             
             Registries.UnitPrefab.Register(new BounderPrefab());
+            Registries.UnitPrefab.Register(new ExplosionPrefab());
+
+            Registries.Sounds.Register(new ZombifiedSound());
 
             Registries.Tilesets.Register(new TilesetDefinition
             {
