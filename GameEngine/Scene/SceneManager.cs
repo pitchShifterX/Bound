@@ -25,6 +25,14 @@ namespace GameEngine.Scene
             popRequestedSceneAtEndFrame();
         }
 
+        public void Load(){}
+
+        public void Unload()
+        {
+            foreach(var scene in _stack)
+                scene.Unload();
+        }
+
         public void ProcessInput(IRecordInput input)
         {
             Current?.ProcessInput(input);

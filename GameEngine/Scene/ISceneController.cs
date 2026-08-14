@@ -7,7 +7,8 @@ namespace GameEngine.Scene
         IStackController<IScene>, 
         IUpdatable, 
         IRenderable, 
-        IFrameLifecycle
+        IFrameLifecycle,
+        ILoadable
     {
         public void ProcessInput(IRecordInput inputManager);
     }

@@ -158,6 +158,7 @@ namespace GameEngine.Mod
 
         public virtual void Close()
         {
+            Context?.SceneManager?.Unload();
             Context?.AudioManager?.Close();
             Context?.ResourceManager?.UnloadAllResourceCaches();
             Context?.RendererManager?.Destroy();

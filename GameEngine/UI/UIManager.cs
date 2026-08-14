@@ -81,6 +81,8 @@ namespace GameEngine.UI
 
         public void Unsubscribe()
         {
+            Log.Info("Unsubscribing from UIManager");
+            
             Root.Unsubscribe();
         }
 
