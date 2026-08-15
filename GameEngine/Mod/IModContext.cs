@@ -21,5 +21,6 @@ namespace GameEngine.Mod
         public IResourceController? ResourceManager { get; set; }
         public IAudioController? AudioManager { get; set; }
         public ISceneController? SceneManager { get; set; }
+        public GameRegistries? GameRegistries { get; set; }
     }
 }

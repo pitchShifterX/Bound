@@ -4,6 +4,8 @@ namespace GameEngine.World.Unit
     {
         private readonly Dictionary<string, IUnitPrefab> _prefabs = [];
 
+        public IReadOnlyDictionary<string, IUnitPrefab> Prefabs => _prefabs;
+
         public void Register(IUnitPrefab prefab)
         {
             _prefabs[prefab.Name] = prefab;

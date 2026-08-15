@@ -15,7 +15,7 @@ namespace GameEngine.World.Map.Triggers
         public List<ITriggerCondition> Conditions { get; } = [];
         public List<ITriggerAction> Actions { get; } = [];
 
-        public void Update(float? delta, IGameplayContext context)
+        public void Update(float? delta, IWorldContext context)
         {
             if (!IsPreserved && HasExecuted)
                 return;

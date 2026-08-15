@@ -2,7 +2,7 @@ using GameEngine.Graphics.Primitives;
 
 namespace GameEngine.UI
 {
-    public struct UIPanelTheme
+    public struct ContainerTheme
     {
         public Color BackgroundColor;
         public Color BorderColor;
@@ -18,7 +18,8 @@ namespace GameEngine.UI
     public interface IUITheme
     {
         public string FontResource { get; }
-        public UIPanelTheme Panels { get; }
+        public ContainerTheme FlexBoxes { get; }
+        public ContainerTheme Panels { get; }
         public UIButtonTheme Buttons { get; }
     }
 }

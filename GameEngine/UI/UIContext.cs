@@ -1,5 +1,5 @@
-using GameEngine.Event;
 using GameEngine.Scene;
+using GameEngine.UI.Event;
 
 namespace GameEngine.UI
 {

@@ -1,27 +1,35 @@
+using GameEngine.Event;
 using GameEngine.Event.Input;
+using GameEngine.MapEditor.Bootstrap;
+using GameEngine.Platform;
 using GameEngine.Scene;
 using GameEngine.UI.Event;
+using GameEngine.World;
 using GameEngine.World.Bootstrap;
 using GameEngine.World.ECS;
-using GameEngine.World.Input.Commands;
 using GameEngine.World.Map.Locations;
 using GameEngine.World.Map.Triggers;
 using GameEngine.World.Player;
 using GameEngine.World.Rendering;
-using GameEngine.World.Runtime;
 using GameEngine.World.Sounds;
 using GameEngine.World.Time;
 using GameEngine.World.Unit;
 
-namespace GameEngine
+namespace GameEngine.MapEditor
 {
-    public class GameplayContext : IGameplayContext
+    public class EditorContext : IWorldContext
     {
         /// <summary>
         /// Context for underlying core systems which manage resources, 
         /// scenes, rendering, etc.
         /// </summary>
         private ISceneContext _sceneContext { get; init; }
+
+        /// <summary>
+        /// Random instance for generating random data when necessary 
+        /// e.g. random tiles on map.
+        /// </summary>
+        private readonly Random _random;
 
         /// <summary>
         /// Registries for various pre-defined functionality. For example, 
@@ -42,9 +50,14 @@ namespace GameEngine
         private IMapBootstrap _bootstrap;
 
         /// <summary>
-        /// Initializes and updates gameplay systems.
+        /// Service for opening and saving files.
         /// </summary>
-        private IGameplayRuntime _runtime;
+        public FileService? File { get; private set; }
+
+        /// <summary>
+        /// Engine for evaluating and executing triggers.
+        /// </summary>
+        public TriggerEngine TriggerEngine { get; init; }
 
         /// <summary>
         /// Core service for managing entities and components. This is often 
@@ -52,11 +65,6 @@ namespace GameEngine
         /// entities.
         /// </summary>
         public ECSService ECS { get; init; } = new();
-
-        /// <summary>
-        /// Engine for evaluating and executing triggers.
-        /// </summary>
-        public TriggerEngine TriggerEngine { get; init; }
 
         /// <summary>
         /// Service for managing players (and computers).
@@ -76,11 +84,6 @@ namespace GameEngine
         public LocationService Location { get; init; }
 
         /// <summary>
-        /// Commands are mouse-issued orders. Gamepad will not use this.
-        /// </summary>
-        public CommandService Commands { get; init; }
-
-        /// <summary>
         /// Service utility for time management.
         /// </summary>
         public TimeService Time { get; init; }
@@ -95,19 +98,20 @@ namespace GameEngine
         /// </summary>
         public UIEventBus UIEvents => _sceneContext.UIEvents;
 
-        public GameplayContext(ISceneContext scene)
+        public EditorContext(ISceneContext sceneContext, Random random)
         {
-            _sceneContext = scene;
+            _sceneContext = sceneContext;
+            _random = random;
 
+            File = new FileService();
             Player = new PlayerService();
             TriggerEngine = new TriggerEngine(this);
             Location = new LocationService(ECS);
             Unit = new UnitService(ECS, _registries.UnitPrefab, Location);
-            Commands = new CommandService(ECS);
             Time = new TimeService();
             Sound = new SoundService(_sceneContext, _registries.Sounds);
 
-            _bootstrap = new GameplayBootstrap(
+            _bootstrap = new EditorBootstrap(
                 _sceneContext,
                 _registries,
                 ECS,
@@ -115,60 +119,34 @@ namespace GameEngine
                 Location,
                 TriggerEngine
             );
-
-            _runtime = new GameplayRuntime(
-                _registries,
-                UIEvents,
-                Player,
-                TriggerEngine,
-                Time,
-                ECS
-            );
         }
 
-        public void LoadMap(string fileName)
+        public void LoadMap(string path)
         {
+            // we expect a full path so let's just get the filename
+            var fileName = Path.GetFileName(path);
+
             _bootstrap.LoadMap(fileName);
             _bootstrap.Validate();
             _bootstrap.Initialize();
-
-            _runtime.Initialize(
-                _sceneContext,
-                _bootstrap.MapContext,
-                Player,
-                Commands,
-                ECS
-            );
-
-            initializeRendering();
         }
 
-        public void Process(IRecordInput input)
+        public virtual void Process(IRecordInput input)
         {
-            _runtime?.Input?.Process(input);
+            
         }
 
-        public void Update(float? delta)
+        public virtual void Update(float? delta)
         {
-            _runtime?.Update(delta);
+            if(Time != null && Time.Update(delta))
+            {
+                _sceneContext.UIEvents.Publish(new WorldSecondEvent(Time.WorldSeconds));
+            }
         }
 
-        public void Render()
+        public virtual void Render()
         {
-            _renderManager?.Render();
-        }
-
-        private void initializeRendering()
-        {
-            // should refactor
-            _renderManager = new RenderManager(
-                _bootstrap.MapContext,
-                ECS,
-                _sceneContext,
-                _runtime.Camera!.View,
-                _runtime.Selection!,
-                _registries.Tilesets
-            );
+            
         }
     }
 }

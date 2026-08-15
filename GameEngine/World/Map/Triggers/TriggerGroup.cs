@@ -13,7 +13,7 @@ namespace GameEngine.World.Map.Triggers
             Description = description;
         }
 
-        public void Update(float? delta, IGameplayContext context)
+        public void Update(float? delta, IWorldContext context)
         {
             if(!IsEnabled) return;
 

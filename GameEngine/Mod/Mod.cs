@@ -87,6 +87,13 @@ namespace GameEngine.Mod
             IsRunning = true;
         }
 
+        public virtual void RegisterModContent()
+        {
+            Context.GameRegistries = new();
+
+            Context.GameRegistries.Defaults();
+        }
+
         public virtual void Start()
         {
             try
@@ -95,7 +102,7 @@ namespace GameEngine.Mod
             }
             catch(System.Exception e)
             {
-                Console.WriteLine($"Fatal error: {e}");
+                Log.Error($"Fatal error: {e}");
             }
             finally
             {
@@ -109,6 +116,8 @@ namespace GameEngine.Mod
             double previous = stopwatch.Elapsed.TotalSeconds;
             const double fixedDelta = 1.0 / 60.0;
             double timeAccumulator = 0;
+
+            RegisterModContent();
 
             while(IsRunning)
             {

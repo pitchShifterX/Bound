@@ -3,6 +3,7 @@ using GameEngine.Mod;
 using GameEngine.Resources;
 using GameEngine.Scene;
 using Mods.Bound.Scenes.Gameplay;
+using Mods.Bound.Scenes.MapEditor;
 
 namespace Mods.Bound.Scenes.MainMenu
 {
@@ -33,6 +34,11 @@ namespace Mods.Bound.Scenes.MainMenu
                 Console.WriteLine("quitting");
 
                 Context.QuitMod();
+            }
+
+            if(input.WasKeyPressed(KeyCode.W))
+            {
+                Context.ReplaceScene(() => new MapEditorScene(ModContext));
             }
         }
 

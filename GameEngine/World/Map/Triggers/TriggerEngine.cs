@@ -5,9 +5,9 @@ namespace GameEngine.World.Map.Triggers
     public class TriggerEngine : IUpdatable
     {
         private Dictionary<string, TriggerGroup> _triggerGroups = [];
-        private IGameplayContext _context;
+        private IWorldContext _context;
 
-        public TriggerEngine(IGameplayContext context)
+        public TriggerEngine(IWorldContext context)
         {
             _context = context;
         }

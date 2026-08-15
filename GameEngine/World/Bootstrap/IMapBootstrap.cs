@@ -3,7 +3,7 @@ using GameEngine.World.Map;
 
 namespace GameEngine.World.Bootstrap
 {
-    public interface IGameplayBootstrap
+    public interface IMapBootstrap
     {
         public IMapContext MapContext { get; }
         public AssetLoader AssetLoader { get; }

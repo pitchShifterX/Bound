@@ -1,4 +1,4 @@
-using GameEngine.UI;
+using GameEngine.UI.Event;
 
 namespace Mods.Bound.UI.Events
 {

@@ -17,7 +17,7 @@ namespace GameEngine.World.Map.Triggers.Actions
             _locationId = locationId;
         }
 
-        public TriggerActionResult Execute(IGameplayContext context, float? delta)
+        public TriggerActionResult Execute(IWorldContext context, float? delta)
         {
             context.Unit.KillAllUnitsAtLocation(_unitName, _playerId, _locationId);
             

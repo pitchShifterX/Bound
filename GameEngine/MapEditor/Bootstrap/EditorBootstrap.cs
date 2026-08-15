@@ -1,19 +1,21 @@
 using GameEngine.Scene;
+using GameEngine.Utilities;
 using GameEngine.World.Assets;
+using GameEngine.World.Bootstrap;
 using GameEngine.World.ECS;
 using GameEngine.World.Map;
 using GameEngine.World.Map.Locations;
 using GameEngine.World.Map.Triggers;
 using GameEngine.World.Player;
 
-namespace GameEngine.World.Bootstrap
+namespace GameEngine.MapEditor.Bootstrap
 {
-    public class GameplayBootstrap : IMapBootstrap
+    public class EditorBootstrap : IMapBootstrap
     {
         private readonly ISceneContext _sceneContext;
         private readonly GameRegistries _registries;
         private readonly ECSService _ecs;
-
+        
         /// <summary>
         /// Reads map data from map context and initializes the entities, 
         /// ranging from units to locations.
@@ -34,7 +36,7 @@ namespace GameEngine.World.Bootstrap
         /// </summary>
         public AssetLoader AssetLoader { get; private set; }
 
-        public GameplayBootstrap(
+        public EditorBootstrap(
             ISceneContext sceneContext, 
             GameRegistries registries,
             ECSService ecs,
@@ -60,18 +62,20 @@ namespace GameEngine.World.Bootstrap
         public void Validate()
         {
             if(MapContext?.Data == null || MapContext.Data.Metadata == null)
-                throw new System.Exception("Could not initialize game; map data missing!");
+                throw new System.Exception("Could not initialize world; map data missing!");
         }
 
         public void LoadMap(string fileName)
         {
+            Log.Info("called");
             MapContext.LoadMap(fileName);
+
+            Log.Info(MapContext.Data!.ToString());
         }
 
         public void Initialize()
         {
             AssetLoader.Initialize(MapContext.Data!);
-            MapInitializer.Initialize(MapContext.Data!);
         }
     }
 }

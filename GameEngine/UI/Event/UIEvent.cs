@@ -1,4 +1,4 @@
-namespace GameEngine.UI
+namespace GameEngine.UI.Event
 {
     public abstract class UIEvent {}
 }

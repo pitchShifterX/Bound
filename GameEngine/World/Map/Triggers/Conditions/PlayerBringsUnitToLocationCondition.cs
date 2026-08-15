@@ -21,7 +21,7 @@ namespace GameEngine.World.Map.Triggers.Conditions
             _locationName = locationName;
         }
 
-        public bool Evaluate(IGameplayContext context)
+        public bool Evaluate(IWorldContext context)
         {
             var ecs = context.ECS;
             var entities = ecs.GetEntitiesWith<UnitComponent, TransformComponent, PlayerOwnerComponent>();

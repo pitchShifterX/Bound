@@ -1,8 +1,8 @@
-using GameEngine.Event;
 using GameEngine.Graphics.Primitives;
 using GameEngine.Mod;
 using GameEngine.Resources;
 using GameEngine.Settings;
+using GameEngine.UI.Event;
 using GameEngine.Utilities;
 using SDL2;
 
@@ -17,6 +17,7 @@ namespace GameEngine.Scene
         public IModPath Paths => _modContext.Paths!;
         public ISettingsController SettingsManager => _modContext.SettingsManager!;
         public Settings.Settings Settings => _modContext.SettingsManager!.Settings;
+        public GameRegistries Registries => _modContext.GameRegistries!;
 
         public UIEventBus UIEvents { get; init; }
 

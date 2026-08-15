@@ -6,7 +6,12 @@ namespace GameEngine.UI.Themes
     {
         public string FontResource => "default";
 
-        public UIPanelTheme Panels => new()
+        public ContainerTheme FlexBoxes => new()
+        {
+            
+        };
+
+        public ContainerTheme Panels => new()
         {
             BackgroundColor = Color.White,
             BorderColor = Color.Black

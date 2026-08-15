@@ -1,5 +1,5 @@
-using GameEngine;
 using GameEngine.Utilities;
+using GameEngine.World;
 using GameEngine.World.Map.Triggers;
 using Mods.Bound.UI.Events;
 
@@ -18,7 +18,7 @@ namespace Mods.Bound.Gameplay.Triggers.Actions
             _method = method;
         }
 
-        public TriggerActionResult Execute(IGameplayContext context, float? delta)
+        public TriggerActionResult Execute(IWorldContext context, float? delta)
         {
             int currentScore = 0;
 

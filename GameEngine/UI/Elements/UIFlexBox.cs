@@ -96,6 +96,19 @@ namespace GameEngine.UI.Elements
             return false;
         }
 
+        public override void Render()
+        {
+            Context?.Render.DrawRectangle(Bounds, BackgroundColor, BorderColor);
+
+            base.Render();
+        }
+
+        protected override void OnContextAssigned()
+        {
+            BackgroundColor ??= Context!.Theme.FlexBoxes.BackgroundColor;
+            BorderColor ??= Context!.Theme.FlexBoxes.BorderColor;
+        }
+
         private void layoutRow(Rectangle<float> content)
         {
             if(Children.Count == 0)

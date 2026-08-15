@@ -10,7 +10,7 @@ namespace GameEngine.World.Map.Triggers.Actions
             _seconds = seconds;
         }
 
-        public TriggerActionResult Execute(IGameplayContext context, float? delta)
+        public TriggerActionResult Execute(IWorldContext context, float? delta)
         {
             if(delta == null) return TriggerActionResult.Completed;
 

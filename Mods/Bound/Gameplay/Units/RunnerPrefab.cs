@@ -9,15 +9,16 @@ using GameEngine.World.Unit;
 
 namespace Mods.Bound.Gameplay.Unit
 {
-    public class BounderPrefab : IUnitPrefab
+    public class RunnerPrefab : IUnitPrefab
     {
-        public string Name => "Bounder";
+        public string Name => "Runner";
+        public string TexturePath => "textures/runner.png";
 
         public void CreatePrefab(int entityId, ECSService service)
         {
             service.AddComponent(entityId, new SpriteComponent
             {
-                TextureId = "runner",
+                TextureId = Name,
                 SourceRectangle = new Rectangle<int>(0, 0, 48, 48),
                 Size = new(32, 32),
                 Origin = new(16, 32)

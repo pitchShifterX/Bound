@@ -1,8 +1,8 @@
 using GameEngine.Audio;
-using GameEngine.Event;
 using GameEngine.Graphics.Rendering;
 using GameEngine.Resources;
 using GameEngine.Settings;
+using GameEngine.UI.Event;
 using GameEngine.Utilities;
 using SDL2;
 
@@ -13,6 +13,7 @@ namespace GameEngine.Scene
         public IModPath Paths { get; }
         public ISettingsController SettingsManager { get; }
         public Settings.Settings Settings { get; }
+        public GameRegistries Registries { get; }
 
         public UIEventBus UIEvents { get; }
 

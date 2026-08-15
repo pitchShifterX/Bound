@@ -11,12 +11,13 @@ namespace Mods.Bound.Gameplay.Unit
     public class ExplosionPrefab : IUnitPrefab
     {
         public string Name => "Explosion2x2";
+        public string TexturePath => "textures/explosion.png";
 
         public void CreatePrefab(int entityId, ECSService service)
         {
             service.AddComponent(entityId, new SpriteComponent
             {
-                TextureId = "explosion",
+                TextureId = Name,
                 SourceRectangle = new(0, 0, 64, 64),
                 Size = new(64, 64),
                 Origin = new(32, 32)

@@ -3,13 +3,16 @@ using GameEngine.UI;
 
 namespace Mods.Bound.UI.Themes
 {
-    public class MenuTheme : IUITheme
+    public class MapEditorTheme : IUITheme
     {
-        public string FontResource => "default";
+        public string FontResource => "normal";
+
+        public Color PrimaryBackground => new(41, 44, 45);
+        public Color SecondaryBackground => new(36, 40, 41);
 
         public ContainerTheme FlexBoxes => new ContainerTheme
         {
-            
+            BackgroundColor = new(21, 22, 22)
         };
 
         public ContainerTheme Panels => new ContainerTheme

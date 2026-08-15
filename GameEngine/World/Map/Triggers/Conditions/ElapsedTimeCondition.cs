@@ -9,7 +9,7 @@ namespace GameEngine.World.Map.Triggers.Conditions
             _seconds = seconds;
         }
 
-        public bool Evaluate(IGameplayContext context)
+        public bool Evaluate(IWorldContext context)
         {
             return context.Time.World.ElapsedSeconds >= _seconds;
         }

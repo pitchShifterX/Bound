@@ -20,8 +20,19 @@ namespace GameEngine.World.Assets
 
         public void Initialize(MapData map)
         {
+            initializeUnitPrefabs();
             initializeTilesets(map);
             initializeSounds(map);
+        }
+        
+        private void initializeUnitPrefabs()
+        {
+            foreach(var prefab in _registries.UnitPrefab.Prefabs)
+            {
+                var unit = prefab.Value;
+
+                _sceneContext.Load<Texture>(unit.Name, unit.TexturePath);
+            }
         }
 
         private void initializeTilesets(MapData map)

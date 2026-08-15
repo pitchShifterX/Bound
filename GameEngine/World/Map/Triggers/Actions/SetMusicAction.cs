@@ -11,7 +11,7 @@ namespace GameEngine.World.Map.Triggers.Actions
             _isPlaying = on;
         }
 
-        public TriggerActionResult Execute(IGameplayContext context, float? delta)
+        public TriggerActionResult Execute(IWorldContext context, float? delta)
         {
             // audio service
             if(_isPlaying)

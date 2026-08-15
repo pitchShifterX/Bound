@@ -11,6 +11,7 @@ namespace GameEngine.World.Unit
     public interface IUnitPrefab
     {
         public string Name { get; }
+        public string TexturePath { get; }
         public void CreatePrefab(int entityId, ECSService service);
     }
 }

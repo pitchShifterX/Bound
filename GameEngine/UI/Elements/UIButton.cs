@@ -93,7 +93,9 @@ namespace GameEngine.UI.Elements
         {
             if(Context?.Render == null) return;
 
-            Context.Render.DrawRectangle(Bounds, BackgroundColor!.Value, BorderColor!.Value);
+            Color? border = BorderColor.HasValue ? BorderColor.Value : null;
+
+            Context.Render.DrawRectangle(Bounds, BackgroundColor!.Value, border);
 
             base.Render();
         }

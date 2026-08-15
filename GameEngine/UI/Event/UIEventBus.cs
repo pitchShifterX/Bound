@@ -2,7 +2,7 @@ using GameEngine.SharedInterface;
 using GameEngine.UI;
 using GameEngine.Utilities;
 
-namespace GameEngine.Event
+namespace GameEngine.UI.Event
 {
     public class UIEventBus : ILoadable
     {

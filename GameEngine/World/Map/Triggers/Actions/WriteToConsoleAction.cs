@@ -11,7 +11,7 @@ namespace GameEngine.World.Map.Triggers.Actions
             _text = text;
         }
 
-        public TriggerActionResult Execute(IGameplayContext context, float? delta)
+        public TriggerActionResult Execute(IWorldContext context, float? delta)
         {
             Log.Info(_text);
 

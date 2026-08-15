@@ -2,6 +2,6 @@ namespace GameEngine.World.Map.Triggers.Conditions
 {
     public class AlwaysCondition : ITriggerCondition
     {
-        public bool Evaluate(IGameplayContext context) => true;
+        public bool Evaluate(IWorldContext context) => true;
     }
 }
