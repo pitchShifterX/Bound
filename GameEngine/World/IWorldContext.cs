@@ -13,6 +13,7 @@ namespace GameEngine.World
 {
     public interface IWorldContext : IUpdatable, IRenderable, IProcessInput
     {
+        public GameRegistries Registries { get; }
         public ECSService ECS { get; }
         public TriggerEngine TriggerEngine { get; }
         public UnitService Unit { get; }

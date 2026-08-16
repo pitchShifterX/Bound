@@ -52,12 +52,14 @@ namespace GameEngine.Resources
             return ((ResourceCache<T>)cache).GetById(id);
         }
 
-        public T? TryGetById<T>(string id) where T : Resource
+        public bool TryGetById<T>(string id, out T? resource) where T : Resource
         {
+            resource = null;
+
             if(!_caches.TryGetValue(typeof(T), out var cache))
-                return null;
+                return false;
                 
-            return ((ResourceCache<T>)cache).TryGetById(id);
+            return ((ResourceCache<T>)cache).TryGetById(id, out resource);
         }
 
         public void Unload<T>(Type type, string id) where T : Resource

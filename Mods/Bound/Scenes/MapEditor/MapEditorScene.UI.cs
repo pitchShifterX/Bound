@@ -1,7 +1,5 @@
-using GameEngine.Graphics.Primitives;
-using GameEngine.Resources;
-using GameEngine.UI;
 using GameEngine.UI.Elements;
+using GameEngine.UI.Elements.Editor;
 using GameEngine.UI.Properties;
 using Mods.Bound.UI.Elements;
 using Mods.Bound.UI.Themes;
@@ -15,11 +13,11 @@ namespace Mods.Bound.Scenes.MapEditor
         public override void BuildUI()
         {
             var menuBar = buildMenuBar();
-            var container = buildContainer();
+            var body = buildBody();
             var bottomBar = buildBottomBar();
 
             UI.Root.AddChild(menuBar);
-            UI.Root.AddChild(container);
+            UI.Root.AddChild(body);
             UI.Root.AddChild(bottomBar);
         }
 
@@ -49,7 +47,7 @@ namespace Mods.Bound.Scenes.MapEditor
             return menuBar;
         }
 
-        private UIFlexBox buildContainer()
+        private UIFlexBox buildBody()
         {
             var container = new UIFlexBox(new Fill(), new Fill())
                 .SetGap(10)
@@ -73,20 +71,23 @@ namespace Mods.Bound.Scenes.MapEditor
 
         private UIFlexBox buildToolbox()
         {
-            var toolBox = new UIFlexBox(new Fixed(300), new Fill())
+            var container = new UIFlexBox(new Fixed(306), new Fill())
                 .SetBackgroundColor(UITheme.SecondaryBackground)
                 .SetDirection(FlexDirection.Column)
                 .SetGap(10)
                 .SetPadding(UISpacing.All(10));
 
-            var minimap = new UIFlexBox(new Fill(), new Fixed(250));
+            var minimap = new UIFlexBox(new Fill(), new Fixed(266));
 
-            var tools = new UIFlexBox(new Fill(), new Fill());
+            var tools = new EditorToolbox(_mapEditor!.Context, new Fill(), new Fill())
+                .SetDirection(FlexDirection.Row)
+                .SetGap(10)
+                .SetWrap(FlexWrap.Wrap);
 
-            toolBox.AddChild(minimap);
-            toolBox.AddChild(tools);
+            container.AddChild(minimap);
+            container.AddChild(tools);
 
-            return toolBox;
+            return container;
         }
 
         private UIFlexBox buildMapCanvas()
@@ -118,7 +119,7 @@ namespace Mods.Bound.Scenes.MapEditor
             var timer = new WorldTimer();
 
             bottomBar.AddChild(mapSize);
-            bottomBar.AddChild(timer);
+            // bottomBar.AddChild(timer);
             
             return bottomBar;
         }

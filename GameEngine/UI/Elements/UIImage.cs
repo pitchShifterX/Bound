@@ -9,10 +9,24 @@ namespace GameEngine.UI.Elements
     {
         private readonly Texture _resource;
 
-        public UIImage(Texture texture, UISize? width = null, UISize? height = null) : 
-            base(width, height)
+        public Rectangle<float>? SourceRectangle { get; set; }
+
+        public UIImage(
+            Texture texture, 
+            UISize? width = null, 
+            UISize? height = null,
+            Rectangle<float>? source = null
+        ) : base(width, height)
         {
             _resource = texture;
+            SourceRectangle = source;
+        }
+
+        public UIImage SetSource(Rectangle<float> source)
+        {
+            SourceRectangle = source;
+
+            return Self;
         }
 
         public override bool Process(UIInput input)
@@ -44,7 +58,7 @@ namespace GameEngine.UI.Elements
             {
                 Context?.Render.DrawTexture(
                     _resource,
-                    null,
+                    SourceRectangle,
                     Bounds
                 );
             }

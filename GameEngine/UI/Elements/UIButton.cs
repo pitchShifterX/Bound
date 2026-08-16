@@ -2,6 +2,7 @@ using GameEngine.Graphics.Primitives;
 using GameEngine.Resources;
 using GameEngine.UI.Input;
 using GameEngine.UI.Properties;
+using GameEngine.Utilities;
 
 namespace GameEngine.UI.Elements
 {
@@ -42,21 +43,30 @@ namespace GameEngine.UI.Elements
                 VerticalAlignment = VerticalAlignment.Center
             });
 
-            return this;
+            return Self;
         }
 
         public UIButton SetLabelColor(Color color)
         {
             LabelColor = color;
             
-            return this;
+            return Self;
+        }
+
+        public UIButton SetImage(Texture texture, Rectangle<float>? source = null)
+        {
+            AddChild(
+                new UIImage(texture, new Fill(), new Fill(), source)
+            );
+
+            return Self;
         }
 
         public UIButton SetAction(Action action)
         {
             Action = action;
 
-            return this;
+            return Self;
         }
 
         public override bool Process(UIInput input)

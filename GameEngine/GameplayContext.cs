@@ -24,14 +24,6 @@ namespace GameEngine
         private ISceneContext _sceneContext { get; init; }
 
         /// <summary>
-        /// Registries for various pre-defined functionality. For example, 
-        /// there are registries for conditions and actions to be used by 
-        /// the trigger system. Mods can extend this list by adding to the 
-        /// Registries property in GameplayManager.
-        /// </summary>
-        private GameRegistries _registries => _sceneContext.Registries;
-
-        /// <summary>
         /// Manages the order of rendering.
         /// </summary>
         private RenderManager? _renderManager { get; set; }
@@ -45,6 +37,14 @@ namespace GameEngine
         /// Initializes and updates gameplay systems.
         /// </summary>
         private IGameplayRuntime _runtime;
+
+        /// <summary>
+        /// Registries for various pre-defined functionality. For example, 
+        /// there are registries for conditions and actions to be used by 
+        /// the trigger system. Mods can extend this list by adding to the 
+        /// Registries property in GameplayManager.
+        /// </summary>
+        public GameRegistries Registries => _sceneContext.Registries;
 
         /// <summary>
         /// Core service for managing entities and components. This is often 
@@ -102,14 +102,14 @@ namespace GameEngine
             Player = new PlayerService();
             TriggerEngine = new TriggerEngine(this);
             Location = new LocationService(ECS);
-            Unit = new UnitService(ECS, _registries.UnitPrefab, Location);
+            Unit = new UnitService(ECS, Registries.UnitPrefab, Location);
             Commands = new CommandService(ECS);
             Time = new TimeService();
-            Sound = new SoundService(_sceneContext, _registries.Sounds);
+            Sound = new SoundService(_sceneContext, Registries.Sounds);
 
             _bootstrap = new GameplayBootstrap(
                 _sceneContext,
-                _registries,
+                Registries,
                 ECS,
                 Player,
                 Location,
@@ -117,7 +117,7 @@ namespace GameEngine
             );
 
             _runtime = new GameplayRuntime(
-                _registries,
+                Registries,
                 UIEvents,
                 Player,
                 TriggerEngine,
@@ -167,7 +167,7 @@ namespace GameEngine
                 _sceneContext,
                 _runtime.Camera!.View,
                 _runtime.Selection!,
-                _registries.Tilesets
+                Registries.Tilesets
             );
         }
     }

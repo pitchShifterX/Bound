@@ -1,4 +1,4 @@
-namespace GameEngine.UI.Event
+namespace GameEngine.UI.Event.Types
 {
     public class FileOpenDialogEvent : UIEvent
     {

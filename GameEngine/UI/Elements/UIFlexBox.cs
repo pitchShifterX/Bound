@@ -28,8 +28,16 @@ namespace GameEngine.UI.Elements
         Stretch
     }
 
+    public enum FlexWrap
+    {
+        NoWrap,
+        Wrap
+    }
+
     public class UIFlexBox : AbstractContainerElement<UIFlexBox>
     {
+        public FlexWrap Wrap { get; set; } = FlexWrap.NoWrap;
+
         public FlexDirection Direction { get; set; } = FlexDirection.Row;
 
         public FlexAlign AlignItems { get; set; } = FlexAlign.Start;
@@ -54,6 +62,13 @@ namespace GameEngine.UI.Elements
         {
             AlignItems = align;
             
+            return Self;
+        }
+
+        public UIFlexBox SetWrap(FlexWrap wrap)
+        {
+            Wrap = wrap;
+
             return Self;
         }
 
@@ -82,10 +97,21 @@ namespace GameEngine.UI.Elements
         {
             var content = GetContentBounds();
 
-            if(Direction == FlexDirection.Row)
-                layoutRow(content);
+            if (Direction == FlexDirection.Row)
+            {
+                if (Wrap == FlexWrap.Wrap)
+                {
+                    layoutWrappedRows(content);
+                }
+                else
+                {
+                    layoutRow(content);
+                }
+            }
             else
+            {
                 layoutColumn(content);
+             }
         }
 
         public override bool Process(UIInput input)
@@ -306,6 +332,79 @@ namespace GameEngine.UI.Elements
 
                 if (i < Children.Count - 1)
                     y += spacing;
+            }
+        }
+
+        private void layoutWrappedRows(Rectangle<float> content)
+        {
+            if(Children.Count == 0)
+                return;
+
+            float x = content.X;
+            float y = content.Y;
+
+            float rowHeight = 0f;
+
+            for(int i = 0; i < Children.Count; i++)
+            {
+                var child = Children[i];
+                var desired = getChildDesiredSize(child);
+
+                float width = child.Width switch
+                {
+                    Fixed fixedSize => fixedSize.Value,
+                    Auto => desired.x,
+                    Fill => content.Width,
+                    _ => 0f
+                };
+
+                float height = child.Height switch
+                {
+                    Fixed fixedSize => fixedSize.Value,
+                    Auto => desired.y,
+                    Fill => content.Height,
+                    _ => 0f
+                };
+
+                float totalWidth =
+                    child.Margin.Left +
+                    width +
+                    child.Margin.Right;
+
+                // if this child element overflows current row
+                // start a new row
+                if(
+                    x > content.X &&
+                    x + totalWidth > content.X + content.Width
+                )
+                {
+                    x = content.X;
+                    y += rowHeight + Gap;
+                    rowHeight = 0f;
+                }
+
+                x += child.Margin.Left;
+
+                child.Layout(new Rectangle<float>
+                {
+                    X = x,
+                    Y = y + child.Margin.Top,
+                    Width = width,
+                    Height = height
+                });
+
+                x += width;
+                x += child.Margin.Right;
+
+                rowHeight = MathF.Max(
+                    rowHeight,
+                    child.Margin.Top +
+                    height +
+                    child.Margin.Bottom
+                );
+
+                if(i < Children.Count - 1)
+                    x += Gap;
             }
         }
 

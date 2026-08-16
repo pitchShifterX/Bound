@@ -8,7 +8,7 @@ namespace GameEngine.MapEditor
     public abstract class Editor : IUpdatable, IRenderable, IProcessInput
     {
         protected ISceneContext SceneContext;
-        protected EditorContext Context;
+        public EditorContext Context;
 
         protected GameRegistries Registries => SceneContext.Registries;
 

@@ -34,14 +34,9 @@ namespace GameEngine.Resources
             return resource;
         }
 
-        public T? TryGetById(string id)
+        public bool TryGetById(string id, out T? resource)
         {
-            if(!Resources.TryGetValue(id, out var resource))
-            {
-                return null;
-            }
-
-            return resource;
+            return Resources.TryGetValue(id, out resource);
         }
 
         public void UnloadById(string id)

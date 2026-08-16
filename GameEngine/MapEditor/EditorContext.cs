@@ -32,14 +32,6 @@ namespace GameEngine.MapEditor
         private readonly Random _random;
 
         /// <summary>
-        /// Registries for various pre-defined functionality. For example, 
-        /// there are registries for conditions and actions to be used by 
-        /// the trigger system. Mods can extend this list by adding to the 
-        /// Registries property in GameplayManager.
-        /// </summary>
-        private GameRegistries _registries => _sceneContext.Registries;
-
-        /// <summary>
         /// Manages the order of rendering.
         /// </summary>
         private RenderManager? _renderManager { get; set; }
@@ -48,6 +40,14 @@ namespace GameEngine.MapEditor
         /// Sets up our gameplay by loading and validating content.
         /// </summary>
         private IMapBootstrap _bootstrap;
+
+        /// <summary>
+        /// Registries for various pre-defined functionality. For example, 
+        /// there are registries for conditions and actions to be used by 
+        /// the trigger system. Mods can extend this list by adding to the 
+        /// Registries property in GameplayManager.
+        /// </summary>
+        public GameRegistries Registries => _sceneContext.Registries;
 
         /// <summary>
         /// Service for opening and saving files.
@@ -107,13 +107,13 @@ namespace GameEngine.MapEditor
             Player = new PlayerService();
             TriggerEngine = new TriggerEngine(this);
             Location = new LocationService(ECS);
-            Unit = new UnitService(ECS, _registries.UnitPrefab, Location);
+            Unit = new UnitService(ECS, Registries.UnitPrefab, Location);
             Time = new TimeService();
-            Sound = new SoundService(_sceneContext, _registries.Sounds);
+            Sound = new SoundService(_sceneContext, Registries.Sounds);
 
             _bootstrap = new EditorBootstrap(
                 _sceneContext,
-                _registries,
+                Registries,
                 ECS,
                 Player,
                 Location,

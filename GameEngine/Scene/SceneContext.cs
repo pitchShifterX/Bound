@@ -127,9 +127,9 @@ namespace GameEngine.Scene
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public T? TryGetById<T>(string id) where T : Resource
+        public bool TryGetById<T>(string id, out T resource) where T : Resource
         {
-            return _resourceManager.TryGetById<T>(id);
+            return _resourceManager.TryGetById(id, out resource);
         }
 
         /// <summary>
@@ -217,8 +217,7 @@ namespace GameEngine.Scene
             // a unique key for the texture
             var key = getTextTextureKey(font, text, color);
 
-            var existingTexture = _resourceManager.TryGetById<Texture>(key);
-            if(existingTexture != null)
+            if(_resourceManager.TryGetById<Texture>(key, out var existingTexture))
             {
                 _modContext.RendererManager.DrawText(existingTexture.Handle, ref destination);
 

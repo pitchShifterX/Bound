@@ -1,4 +1,5 @@
 using GameEngine.Scene;
+using GameEngine.UI.Event.Types;
 using GameEngine.Utilities;
 using GameEngine.World.Assets;
 using GameEngine.World.Bootstrap;
@@ -67,15 +68,14 @@ namespace GameEngine.MapEditor.Bootstrap
 
         public void LoadMap(string fileName)
         {
-            Log.Info("called");
             MapContext.LoadMap(fileName);
-
-            Log.Info(MapContext.Data!.ToString());
         }
 
         public void Initialize()
         {
             AssetLoader.Initialize(MapContext.Data!);
+
+            _sceneContext.UIEvents.Publish(new MapLoadEvent());
         }
     }
 }
