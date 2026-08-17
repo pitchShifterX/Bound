@@ -61,7 +61,6 @@ namespace GameEngine.World.Rendering
             );
         }
         
-        // update this later to render world vs ui
         public void Render()
         {
             Tiles.Render();

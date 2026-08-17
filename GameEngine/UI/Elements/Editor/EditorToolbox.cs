@@ -1,4 +1,6 @@
 using GameEngine.Graphics.Primitives;
+using GameEngine.MapEditor;
+using GameEngine.MapEditor.Tools;
 using GameEngine.Resources;
 using GameEngine.UI.Event.Types;
 using GameEngine.UI.Properties;
@@ -13,9 +15,9 @@ namespace GameEngine.UI.Elements.Editor
     /// </summary>
     public class EditorToolbox : UIFlexBox
     {
-        private IWorldContext _context;
+        private IEditorContext _context;
 
-        public EditorToolbox(IWorldContext context, UISize width, UISize height) :
+        public EditorToolbox(IEditorContext context, UISize width, UISize height) :
             base(width, height)
         {
             _context = context;
@@ -74,6 +76,10 @@ namespace GameEngine.UI.Elements.Editor
                         )
                             .SetBorderColor(Color.Transparent)
                             .SetImage(texture!, tile.Source.To<float>())
+                            .SetAction(() =>
+                            {
+                                _context.PlacementTool = new TilePlacementTool(tile.TilesetId, tile.Index);
+                            })
                     );
                 }
             }

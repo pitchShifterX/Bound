@@ -7,12 +7,30 @@ namespace GameEngine.World.Input
     public class InputService
     {
         private readonly SelectionService _selection;
-        private readonly CommandService _commands;
+        private readonly CommandService? _commands;
         private readonly CameraContext _camera;
 
         private CameraInputController _cameraInputController;
         private MouseInputController _mouse;
         private GamepadInputController _gamepad;
+
+        public InputService(
+            SelectionService selection,
+            CameraContext camera
+        )
+        {
+            _selection = selection;
+            _camera = camera;
+
+            _cameraInputController = new CameraInputController(_camera.Controller);
+
+            _mouse = new MouseInputController(
+                _selection,
+                _camera
+            );
+
+            _gamepad = new GamepadInputController();
+        }
 
         public InputService(
             SelectionService selection, 

@@ -3,7 +3,7 @@ using GameEngine.MapEditor;
 using GameEngine.Mod;
 using GameEngine.Resources;
 using GameEngine.Scene;
-using Mods.Bound.MapEditor;
+using GameEngine.UI.Elements.Editor;
 
 namespace Mods.Bound.Scenes.MapEditor
 {
@@ -11,15 +11,12 @@ namespace Mods.Bound.Scenes.MapEditor
         : Scene(modContext)
     {
         private Editor? _mapEditor;
-        private Font? _smallInter;
+        private EditorCanvas? _editorCanvas;
 
         public override void Load()
         {
-            _mapEditor = new BoundMapEditor(Context);
-            _mapEditor.Start();
-
             Context.LoadFont("normal", "fonts/Inter24Regular.ttf", 16);
-            _smallInter = Context.GetById<Font>("normal");
+            Context.GetById<Font>("normal");
         }
 
         public override void ProcessInput(IRecordInput input)
@@ -30,8 +27,8 @@ namespace Mods.Bound.Scenes.MapEditor
 
         public override void Render()
         {
-            _mapEditor?.Render();
             UI.Render();
+            _mapEditor?.Render();
         }
 
         public override void Update(float? delta)

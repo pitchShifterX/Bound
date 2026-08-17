@@ -1,6 +1,7 @@
 using GameEngine.UI.Elements;
 using GameEngine.UI.Elements.Editor;
 using GameEngine.UI.Properties;
+using Mods.Bound.MapEditor;
 using Mods.Bound.UI.Elements;
 using Mods.Bound.UI.Themes;
 
@@ -12,6 +13,11 @@ namespace Mods.Bound.Scenes.MapEditor
 
         public override void BuildUI()
         {
+            _editorCanvas = new EditorCanvas(new Fill(), new Fixed(800));
+
+            _mapEditor = new BoundMapEditor(Context, _editorCanvas);
+            _mapEditor.Start();
+
             var menuBar = buildMenuBar();
             var body = buildBody();
             var bottomBar = buildBottomBar();
@@ -60,7 +66,7 @@ namespace Mods.Bound.Scenes.MapEditor
                 .SetDirection(FlexDirection.Column)
                 .SetGap(30);
             
-            rightPanel.AddChild(buildMapCanvas());
+            rightPanel.AddChild(_editorCanvas!);
             rightPanel.AddChild(buildUtilityBar());
 
             container.AddChild(leftPanel);
@@ -88,13 +94,6 @@ namespace Mods.Bound.Scenes.MapEditor
             container.AddChild(tools);
 
             return container;
-        }
-
-        private UIFlexBox buildMapCanvas()
-        {
-            var mapCanvas = new UIFlexBox(new Fill(), new Fixed(800));
-
-            return mapCanvas;
         }
 
         private UIFlexBox buildUtilityBar()

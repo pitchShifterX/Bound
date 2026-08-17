@@ -1,6 +1,7 @@
 using GameEngine.Event.Input;
 using GameEngine.Scene;
 using GameEngine.SharedInterface;
+using GameEngine.UI.Elements.Editor;
 using GameEngine.World.Input;
 
 namespace GameEngine.MapEditor
@@ -12,11 +13,11 @@ namespace GameEngine.MapEditor
 
         protected GameRegistries Registries => SceneContext.Registries;
 
-        public Editor(ISceneContext sceneContext)
+        public Editor(ISceneContext sceneContext, IEditorViewport viewport)
         {
             SceneContext = sceneContext;
             
-            Context = new EditorContext(SceneContext, new Random());
+            Context = new EditorContext(SceneContext, viewport, new Random());
         }
 
         public abstract void Start();

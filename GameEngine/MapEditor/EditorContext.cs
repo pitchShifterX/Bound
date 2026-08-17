@@ -1,12 +1,16 @@
-using GameEngine.Event;
 using GameEngine.Event.Input;
 using GameEngine.MapEditor.Bootstrap;
+using GameEngine.MapEditor.Input;
+using GameEngine.MapEditor.Runtime;
+using GameEngine.MapEditor.Tools;
 using GameEngine.Platform;
 using GameEngine.Scene;
+using GameEngine.UI.Elements.Editor;
 using GameEngine.UI.Event;
-using GameEngine.World;
+using GameEngine.Utilities;
 using GameEngine.World.Bootstrap;
 using GameEngine.World.ECS;
+using GameEngine.World.Map;
 using GameEngine.World.Map.Locations;
 using GameEngine.World.Map.Triggers;
 using GameEngine.World.Player;
@@ -17,13 +21,18 @@ using GameEngine.World.Unit;
 
 namespace GameEngine.MapEditor
 {
-    public class EditorContext : IWorldContext
+    public class EditorContext : IEditorContext
     {
         /// <summary>
         /// Context for underlying core systems which manage resources, 
         /// scenes, rendering, etc.
         /// </summary>
         private ISceneContext _sceneContext { get; init; }
+
+        /// <summary>
+        /// The viewport to render to.
+        /// </summary>
+        private IEditorViewport _viewport { get; init; }
 
         /// <summary>
         /// Random instance for generating random data when necessary 
@@ -42,12 +51,22 @@ namespace GameEngine.MapEditor
         private IMapBootstrap _bootstrap;
 
         /// <summary>
+        /// Updates and renders our editor.
+        /// </summary>
+        private EditorRuntime _runtime;
+
+        /// <summary>
         /// Registries for various pre-defined functionality. For example, 
         /// there are registries for conditions and actions to be used by 
         /// the trigger system. Mods can extend this list by adding to the 
         /// Registries property in GameplayManager.
         /// </summary>
         public GameRegistries Registries => _sceneContext.Registries;
+
+        /// <summary>
+        /// The current map context.
+        /// </summary>
+        public IMapContext? Map { get; private set; }
 
         /// <summary>
         /// Service for opening and saving files.
@@ -94,13 +113,19 @@ namespace GameEngine.MapEditor
         public SoundService Sound { get; init; }
 
         /// <summary>
+        /// Abstract placement tool for tiles, units, etc.
+        /// </summary>
+        public PlacementTool? PlacementTool { get; set; }
+
+        /// <summary>
         /// Communication bridge to UI.
         /// </summary>
         public UIEventBus UIEvents => _sceneContext.UIEvents;
 
-        public EditorContext(ISceneContext sceneContext, Random random)
+        public EditorContext(ISceneContext sceneContext, IEditorViewport viewport, Random random)
         {
             _sceneContext = sceneContext;
+            _viewport = viewport;
             _random = random;
 
             File = new FileService();
@@ -119,6 +144,16 @@ namespace GameEngine.MapEditor
                 Location,
                 TriggerEngine
             );
+
+            _runtime = new EditorRuntime(
+                _viewport,
+                Registries,
+                UIEvents,
+                Player,
+                TriggerEngine,
+                Time,
+                ECS
+            );
         }
 
         public void LoadMap(string path)
@@ -129,15 +164,55 @@ namespace GameEngine.MapEditor
             _bootstrap.LoadMap(fileName);
             _bootstrap.Validate();
             _bootstrap.Initialize();
+
+            Map = _bootstrap.MapContext;
+
+            _runtime.Initialize(
+                _sceneContext,
+                _bootstrap.MapContext,
+                Player,
+                ECS
+            );
+
+            initializeRendering();
         }
 
         public virtual void Process(IRecordInput input)
         {
-            
+            _runtime?.Input?.Process(input);
+
+            if (_runtime?.Camera == null)
+                return;
+
+            var screenPosition = new Vector2<int>(
+                input.MousePositionX,
+                input.MousePositionY
+            );
+
+            var worldPosition =
+                _runtime.Camera.View.ScreenPositionToWorldPosition(screenPosition.To<float>());
+
+            var tilePosition =
+                Map?.TileCoordinateConverter?.WorldPositionToTile(worldPosition.x, worldPosition.y);
+
+            if (tilePosition == null)
+                return;
+
+            var editorInput = new EditorInput(
+                screenPosition,
+                worldPosition.To<int>(),
+                tilePosition.Value,
+                input.WasMouseButtonPressed(MouseButton.Left),
+                input.IsMouseButtonPressed(MouseButton.Left)
+            );
+
+            PlacementTool?.Process(this, editorInput);
         }
 
         public virtual void Update(float? delta)
         {
+            _runtime?.Update(delta);
+            
             if(Time != null && Time.Update(delta))
             {
                 _sceneContext.UIEvents.Publish(new WorldSecondEvent(Time.WorldSeconds));
@@ -146,7 +221,25 @@ namespace GameEngine.MapEditor
 
         public virtual void Render()
         {
-            
+            var bounds = _viewport.Bounds;
+
+            _sceneContext.SetClipRect(bounds.To<int>());
+
+            _renderManager?.Render();
+
+            _sceneContext.SetClipRect(null);
+        }
+
+        private void initializeRendering()
+        {
+            _renderManager = new RenderManager(
+                _bootstrap.MapContext,
+                ECS,
+                _sceneContext,
+                _runtime.Camera!.View,
+                _runtime.Selection!,
+                Registries.Tilesets
+            );
         }
     }
 }

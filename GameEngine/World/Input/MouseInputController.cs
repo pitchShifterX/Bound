@@ -9,7 +9,16 @@ namespace GameEngine.World.Input
     {
         private readonly SelectionService _selection;
         private readonly CameraContext _camera;
-        private readonly CommandService _commands;
+        private readonly CommandService? _commands;
+
+        public MouseInputController(
+            SelectionService selection,
+            CameraContext camera
+        )
+        {
+            _selection = selection;
+            _camera = camera;
+        }
 
         public MouseInputController(
             SelectionService selection, 
@@ -57,7 +66,7 @@ namespace GameEngine.World.Input
 
                 if(_selection.SelectedEntities == null) return;
 
-                _commands.MoveUnits(
+                _commands?.MoveUnits(
                     _selection.GetControllableEntities(),
                     worldPosition
                 );

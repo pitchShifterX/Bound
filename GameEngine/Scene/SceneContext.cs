@@ -4,6 +4,7 @@ using GameEngine.Resources;
 using GameEngine.Settings;
 using GameEngine.UI.Event;
 using GameEngine.Utilities;
+using GameEngine.Utilities.Extensions;
 using SDL2;
 
 namespace GameEngine.Scene
@@ -206,6 +207,26 @@ namespace GameEngine.Scene
             _textTextureReferences.Remove(key);
 
             UnloadById<Texture>(key);
+        }
+
+        public void SetClipRect(Rectangle<int>? rectangle)
+        {
+            if (rectangle.HasValue)
+            {
+                var rect = rectangle.Value.ToSDLRect();
+
+                SDL.SDL_RenderSetClipRect(
+                    Renderer,
+                    ref rect
+                );
+            }
+            else
+            {
+                SDL.SDL_RenderSetClipRect(
+                    Renderer,
+                    IntPtr.Zero
+                );
+            }
         }
 
         public void DrawText(Font font, string text, SDL.SDL_Color color, SDL.SDL_Rect destination)
