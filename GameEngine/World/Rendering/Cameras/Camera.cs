@@ -9,15 +9,15 @@ namespace GameEngine.World.Rendering.Cameras
         private float _movementSpeed = 300f;
         private Vector2<float> _movementDirection = Vector2<float>.Zero;
 
-        private int _viewportWidth;
-        private int _viewportHeight;
+        private Rectangle<int> _viewport;
 
         private int _worldPixelWidth;
         private int _worldPixelHeight;
 
-        public int ViewportWidth => _viewportWidth;
-        public int ViewportHeight => _viewportHeight;
+        public int ViewportWidth => _viewport.Width;
+        public int ViewportHeight => _viewport.Height;
 
+        public Rectangle<int> Viewport => _viewport;
         public Vector2<float> WorldPosition => _position;
         public float Zoom => _zoom;
         public float MovementSpeed => _movementSpeed;
@@ -39,20 +39,15 @@ namespace GameEngine.World.Rendering.Cameras
         }
 
         public Camera(
-            int viewportWidth, 
-            int viewportHeight, 
-            int worldTileWidth, 
-            int worldTileHeight,
+            Rectangle<int> bounds,
+            Vector2<int> mapSize,
             Vector2<float>? defaultPosition = null
         )
         {
-            _viewportWidth = viewportWidth;
-            _viewportHeight = viewportHeight;
-            _worldPixelWidth = worldTileWidth * Constants.TileSize;
-            _worldPixelHeight = worldTileHeight * Constants.TileSize;
+            _viewport = bounds;
+            _worldPixelWidth = mapSize.x * Constants.TileSize;
+            _worldPixelHeight = mapSize.y * Constants.TileSize;
 
-            // Sets default position for world
-            // if not set, set position to center of world
             _position = defaultPosition ?? new Vector2<float>(
                 _worldPixelWidth / 2f, _worldPixelHeight / 2f
             );
@@ -61,20 +56,19 @@ namespace GameEngine.World.Rendering.Cameras
         }
 
         public Camera(
-            Vector2<int> resolution,
+            Rectangle<float> bounds,
             Vector2<int> mapSize,
             Vector2<float>? defaultPosition = null
-        ) : this(resolution.x, resolution.y, mapSize.x, mapSize.y, defaultPosition) {}
+        ) : this(bounds.To<int>(), mapSize, defaultPosition){}
 
         /// <summary>
         /// Should be called when resolution is changed.
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public void SetViewportSize(int width, int height)
+        public void SetViewport(Rectangle<int> viewport)
         {
-            _viewportWidth = width;
-            _viewportHeight = height;
+            _viewport = viewport;
             
             clampPosition();
         }
@@ -119,8 +113,8 @@ namespace GameEngine.World.Rendering.Cameras
 
         public Vector2<float> ScreenPositionToWorldPosition(Vector2<float> screenPosition)
         {
-            var centerX = _viewportWidth / 2f;
-            var centerY = _viewportHeight / 2f;
+            var centerX = _viewport.X + _viewport.Width / 2f;
+            var centerY = _viewport.Y + _viewport.Height / 2f;
 
             var offsetX = screenPosition.x - centerX;
             var offsetY = screenPosition.y - centerY;
@@ -133,8 +127,8 @@ namespace GameEngine.World.Rendering.Cameras
 
         public Vector2<int> WorldPositionToScreenPosition(float worldX, float worldY)
         {
-            int centerX = _viewportWidth / 2;
-            int centerY = _viewportHeight / 2;
+            int centerX = _viewport.X + _viewport.Width / 2;
+            int centerY = _viewport.Y + _viewport.Height / 2;
 
             int screenX = centerX + (int)((worldX - _position.x) * _zoom);
             int screenY = centerY + (int)((worldY - _position.y) * _zoom);
@@ -174,8 +168,8 @@ namespace GameEngine.World.Rendering.Cameras
 
         private void clampPosition()
         {
-            var visibleWidth = _viewportWidth / _zoom;
-            var visibleHeight = _viewportHeight / _zoom;
+            var visibleWidth = _viewport.Width / _zoom;
+            var visibleHeight = _viewport.Height / _zoom;
 
             var minX = visibleWidth / 2f;
             var maxX = _worldPixelWidth - (visibleWidth / 2f);

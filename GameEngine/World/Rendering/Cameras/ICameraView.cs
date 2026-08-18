@@ -4,6 +4,7 @@ namespace GameEngine.World.Rendering.Cameras
 {
     public interface ICameraView
     {
+        public Rectangle<int> Viewport { get; }
         public int ViewportWidth { get; }
         public int ViewportHeight { get; }
         public Vector2<float> WorldPosition { get; }

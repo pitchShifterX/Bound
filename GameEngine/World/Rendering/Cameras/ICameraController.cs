@@ -1,4 +1,5 @@
 using GameEngine.SharedInterface;
+using GameEngine.Utilities;
 
 namespace GameEngine.World.Rendering.Cameras
 {
@@ -6,7 +7,7 @@ namespace GameEngine.World.Rendering.Cameras
     {
         public float MovementSpeed { get; }
 
-        public void SetViewportSize(int width, int height);
+        public void SetViewport(Rectangle<int> viewport);
         public void SetZoom(float zoom);
         public void MoveDirection(Direction direction);
     }

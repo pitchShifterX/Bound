@@ -1,5 +1,6 @@
 using GameEngine.Scene;
 using GameEngine.UI.Event;
+using GameEngine.Utilities;
 using GameEngine.World.ECS;
 using GameEngine.World.Input;
 using GameEngine.World.Input.Commands;
@@ -86,8 +87,10 @@ namespace GameEngine.World.Runtime
         {
             _time.Initialize();
 
+            var resolution = scene.Settings.WindowSize;
+
             var camera = new Camera(
-                scene.Settings.WindowSize,
+                new Rectangle<int>(0, 0, resolution.x, resolution.y),
                 map.Data!.Metadata!.GetSize()!.Value
             );
 

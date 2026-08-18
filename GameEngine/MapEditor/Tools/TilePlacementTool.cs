@@ -31,7 +31,8 @@ namespace GameEngine.MapEditor.Tools
 
         public override void Process(EditorContext context, EditorInput input)
         {
-            if (!input.LeftPressed)
+            
+            if(!input.LeftPressed)
                 return;
 
             Place(context, input.MouseTilePosition);

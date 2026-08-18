@@ -1,6 +1,8 @@
+using System.Numerics;
 using GameEngine.Scene;
 using GameEngine.UI.Elements.Editor;
 using GameEngine.UI.Event;
+using GameEngine.Utilities;
 using GameEngine.World.ECS;
 using GameEngine.World.Input;
 using GameEngine.World.Map;
@@ -92,7 +94,7 @@ namespace GameEngine.MapEditor.Runtime
             _time.Initialize();
 
             var camera = new Camera(
-                scene.Settings.WindowSize,
+                _viewport.Bounds,
                 map.Data!.Metadata!.GetSize()!.Value
             );
 

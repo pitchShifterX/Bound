@@ -206,7 +206,8 @@ namespace GameEngine.MapEditor
                 input.IsMouseButtonPressed(MouseButton.Left)
             );
 
-            PlacementTool?.Process(this, editorInput);
+            if(_runtime.Camera.View.Viewport.Contains(new(input.MousePositionX, input.MousePositionY)))
+                PlacementTool?.Process(this, editorInput);
         }
 
         public virtual void Update(float? delta)

@@ -7,7 +7,6 @@ namespace GameEngine.UI.Elements.Editor
     {
         public EditorCanvas(UISize width, UISize height) : base(width, height)
         {
-            
         }
 
         public override bool Process(UIInput input)
