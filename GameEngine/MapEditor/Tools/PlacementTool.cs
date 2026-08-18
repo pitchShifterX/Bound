@@ -1,4 +1,5 @@
 using GameEngine.MapEditor.Input;
+using GameEngine.UI.Event.Types;
 using GameEngine.Utilities;
 
 namespace GameEngine.MapEditor.Tools

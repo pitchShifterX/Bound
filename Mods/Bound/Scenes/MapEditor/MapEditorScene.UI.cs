@@ -107,7 +107,7 @@ namespace Mods.Bound.Scenes.MapEditor
         private UIFlexBox buildBottomBar()
         {
             var bottomBar = new UIFlexBox(new Fill(), new Fixed(30))
-                .SetJustifyContent(FlexJustify.SpaceBetween)
+                .SetJustifyContent(FlexJustify.Start)
                 .SetAlignment(HorizontalAlignment.Left, VerticalAlignment.Center)
                 .SetAlignItems(FlexAlign.Center)
                 .SetBackgroundColor(UITheme.PrimaryBackground)
@@ -115,9 +115,11 @@ namespace Mods.Bound.Scenes.MapEditor
                 .SetPadding(UISpacing.All(10));
 
             var mapSize = new UIText("Map Size 64x64");
+            var tileCoords = new EditorTileCoordinatesText();
             var timer = new WorldTimer();
 
             bottomBar.AddChild(mapSize);
+            bottomBar.AddChild(tileCoords);
             // bottomBar.AddChild(timer);
             
             return bottomBar;

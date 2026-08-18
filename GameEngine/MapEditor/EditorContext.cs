@@ -7,6 +7,7 @@ using GameEngine.Platform;
 using GameEngine.Scene;
 using GameEngine.UI.Elements.Editor;
 using GameEngine.UI.Event;
+using GameEngine.UI.Event.Types;
 using GameEngine.Utilities;
 using GameEngine.World.Bootstrap;
 using GameEngine.World.ECS;
@@ -184,13 +185,13 @@ namespace GameEngine.MapEditor
             if (_runtime?.Camera == null)
                 return;
 
-            var screenPosition = new Vector2<int>(
-                input.MousePositionX,
-                input.MousePositionY
-            );
+            var mousePosition = new Vector2<int>(input.MousePositionX, input.MousePositionY);
+
+            if(!_runtime.Camera.View.Viewport.Contains(mousePosition))
+                return;
 
             var worldPosition =
-                _runtime.Camera.View.ScreenPositionToWorldPosition(screenPosition.To<float>());
+                _runtime.Camera.View.ScreenPositionToWorldPosition(mousePosition.To<float>());
 
             var tilePosition =
                 Map?.TileCoordinateConverter?.WorldPositionToTile(worldPosition.x, worldPosition.y);
@@ -199,15 +200,21 @@ namespace GameEngine.MapEditor
                 return;
 
             var editorInput = new EditorInput(
-                screenPosition,
+                mousePosition,
                 worldPosition.To<int>(),
                 tilePosition.Value,
                 input.WasMouseButtonPressed(MouseButton.Left),
                 input.IsMouseButtonPressed(MouseButton.Left)
             );
 
-            if(_runtime.Camera.View.Viewport.Contains(new(input.MousePositionX, input.MousePositionY)))
-                PlacementTool?.Process(this, editorInput);
+            UIEvents.Publish(
+                new TileHoverEvent(
+                    tilePosition.Value.x, 
+                    tilePosition.Value.y
+                )
+            );
+
+            PlacementTool?.Process(this, editorInput);
         }
 
         public virtual void Update(float? delta)
